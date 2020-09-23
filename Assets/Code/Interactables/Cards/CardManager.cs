@@ -18,7 +18,7 @@ public class CardManager {
     private Hand hand = new Hand();
     private Discard discard = new Discard();
 
-    private HorizontalLayoutGroup handGrid;
+    private CurvedLayout handArea;
     private TextMeshProUGUI deckCount;
     private TextMeshProUGUI discardCount;
 
@@ -29,7 +29,7 @@ public class CardManager {
         deck.Initialize(cardSource.allCards);
         discard.Initialize();
 
-        handGrid = VisualController.SharedInstance.GetHand().GetComponent<HorizontalLayoutGroup>();
+        handArea = VisualController.SharedInstance.GetHand().GetComponent<CurvedLayout>();
         deckCount = VisualController.SharedInstance.GetDeckCount().GetComponent<TextMeshProUGUI>();
         discardCount = VisualController.SharedInstance.GetDiscardCount().GetComponent<TextMeshProUGUI>();
     }
@@ -123,20 +123,21 @@ public class CardManager {
         deckCount.text = deck.GetSize().ToString();
         discardCount.text = discard.GetSize().ToString();
 
-        // Recalculates the grid squeeze on the hand if there are more than 7 cards in it
-        int size = hand.GetSize();
-        int spacing = 10;
-        switch (size) {
-            case 8:
-                spacing -= 25;
-                break;
-            case 9:
-                spacing -= 45;
-                break;
-            case 10:
-                spacing -= 60;
-                break;
-        }
-        handGrid.spacing = spacing;
+        handArea.UpdateCardPositions();
+        //// Recalculates the grid squeeze on the hand if there are more than 7 cards in it
+        //int size = hand.GetSize();
+        //int spacing = 10;
+        //switch (size) {
+        //    case 8:
+        //        spacing -= 25;
+        //        break;
+        //    case 9:
+        //        spacing -= 45;
+        //        break;
+        //    case 10:
+        //        spacing -= 60;
+        //        break;
+        //}
+        //handGrid.spacing = spacing;
     }
 }

@@ -10,7 +10,7 @@ public class PlayerTurn : State {
 
     public PlayerTurn(TurnSystem turnSystem) : base(turnSystem) {
         EndTurnButton.OnEndTurnClicked += OnEndTurnButtonClicked;
-        CardMouseInteraction.OnCardPlayed += OnCardPlayed;
+        CardControl.OnCardPlayed += OnCardPlayed;
     }
 
     public override IEnumerator Start() {

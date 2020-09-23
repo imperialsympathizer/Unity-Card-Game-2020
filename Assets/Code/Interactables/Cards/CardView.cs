@@ -12,14 +12,6 @@ public class CardView : MonoBehaviour {
     private TextMeshProUGUI cost;
     private TextMeshProUGUI description;
 
-    // This is our placeholder object for the purposes of keeping hand size constant while moving a card around
-    // Can also provide a shadow effect when used in hand by setting the alpha to ~0.5f
-    private GameObject dummy;
-
-    private TextMeshProUGUI dummyName;
-    private TextMeshProUGUI dummyCost;
-    private TextMeshProUGUI dummyDescription;
-
     public void InitializeView(int id, GameObject prefab) {
         this.Id = id;
         visual = this.gameObject;
@@ -33,44 +25,30 @@ public class CardView : MonoBehaviour {
         // Move the card to hand
         VisualController.SharedInstance.ParentToHand(visual.transform);
 
-        // Since regular and dummy card objects both come from the same pool, ensure the real card doesn't have lingering effects from an old card
+        // Ensure the real card doesn't have lingering effects from an old card
         visual.transform.localScale = new Vector3(1, 1, 1);
-        visual.GetComponent<CanvasGroup>().alpha = 1;
-        visual.GetComponent<CardMouseInteraction>().enabled = true;
-
-        // Initialize the dummy card, but do not make it visible
-        // Dummy card is only necessary for dragging and zooming
-        dummy = ObjectPooler.Spawn(prefab, new Vector3(0, 0, 0), Quaternion.identity);
-
-        dummy.SetActive(false);
-        dummyName = dummy.transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>();
-        dummyCost = dummy.transform.GetChild(1).GetChild(1).GetComponent<TextMeshProUGUI>();
-        dummyDescription = dummy.transform.GetChild(1).GetChild(2).GetComponent<TextMeshProUGUI>();
-
-        // Remove the card control component from the dummy
-        dummy.GetComponent<CardMouseInteraction>().enabled = false;
+        // Set the position roughly to where the "deck" is so it animates to hand from that location
+        visual.transform.localPosition = new Vector3(-VisualController.SharedInstance.GetDisplaySize().x / 3f, 0, 0);
+        visual.transform.rotation = Quaternion.identity;
 
         // Set the CardInteraction parameters for the visual to hook up interaction
-        CardMouseInteraction control = visual.GetComponent<CardMouseInteraction>();
+        CardControl control = visual.GetComponent<CardControl>();
         control.cardId = id;
-        control.placeholder = dummy;
-        control.handTransform = visual.transform.parent;
+        control.hand = VisualController.SharedInstance.GetHand().GetComponent<CurvedLayout>();
         visual.SetActive(true);
     }
 
     public void SetName(string name) {
         this.cardName.text = name;
-        this.dummyName.text = name;
     }
 
     public void SetDescription(string description) {
         this.description.text = description;
-        this.dummyDescription.text = description;
     }
 
     public void SetCost(int cost) {
         this.cost.text = cost.ToString();
-        this.dummyCost.text = cost.ToString();
+        // this.dummyCost.text = cost.ToString();
     }
 
     // It's a good idea to deactivate visuals before making updates to an object because
@@ -82,6 +60,5 @@ public class CardView : MonoBehaviour {
 
     public void Despawn() {
         ObjectPooler.Despawn(visual);
-        ObjectPooler.Despawn(dummy);
     }
 }

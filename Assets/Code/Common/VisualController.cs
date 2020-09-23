@@ -129,8 +129,8 @@ public class VisualController {
         return playZone.GetComponent<RectTransform>().rect;
     }
 
-    public Rect GetDisplayRect() {
-        return displayCanvas.GetComponent<RectTransform>().rect;
+    public Vector2 GetDisplaySize() {
+        return displayCanvas.GetComponent<RectTransform>().sizeDelta;
     }
 
     public GameObject GetHand() {

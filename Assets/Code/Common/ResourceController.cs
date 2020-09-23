@@ -15,12 +15,12 @@ public class ResourceController : MonoBehaviour {
     public static ResourceController SharedInstance;
 
     private VisualController visualController;
-    private CardManager cardController;
     private PlayerController playerController;
     private SummonController summonController;
     private EnemyController enemyController;
 
     private NumberAnimator numberAnimator;
+    private CardManager cardManager;
     private GameEndManager gameOverManager;
 
     private static int uniqueId = 0;
@@ -38,7 +38,7 @@ public class ResourceController : MonoBehaviour {
 
         // Create Controllers and Managers
         visualController = new VisualController(); // Dependencies - prefabs
-        cardController = new CardManager(); // Dependencies - VisualController (prefabs)
+        cardManager = new CardManager(); // Dependencies - VisualController (prefabs)
         playerController = new PlayerController(); // Dependencies - VisualController (prefabs), NumberAnimator, needs to know what player to spawn
         summonController = new SummonController(); // Dependencies - VisualController
         enemyController = new EnemyController();
@@ -70,7 +70,7 @@ public class ResourceController : MonoBehaviour {
         // Initialize Controllers
         visualController.Initialize(cardPrefab, necromancerPrefab, slotPrefab, zombiePrefab, knightPrefab);
         numberAnimator.Initialize();
-        cardController.Initialize();
+        cardManager.Initialize();
         playerController.Initialize();
         summonController.Initialize();
         enemyController.Initialize();
