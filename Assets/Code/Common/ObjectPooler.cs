@@ -73,7 +73,6 @@ public static class ObjectPooler {
 			obj.SetActive(false);
 			inactive.Push(obj);
 		}
-
 	}
 
 	/// <summary>

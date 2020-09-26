@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class EffectController : MonoBehaviour {
@@ -27,6 +25,7 @@ public class EffectController : MonoBehaviour {
             effectInProgress = true;
             PlayEffect effect = effects.Dequeue();
             if (effect != null) {
+                Debug.Log("Resolving effect.");
                 effect.AddBeginListener();
                 OnEffectBegin.Invoke();
             }
@@ -37,6 +36,7 @@ public class EffectController : MonoBehaviour {
     }
 
     public void AddEffects(PlayEffect[] newEffects) {
+        Debug.Log("Adding effects to effect queue.");
         for (int i = 0; i < newEffects.Length; i++) {
             PlayEffect effect = newEffects[i];
             if (effect != null && effect.IsValid()) {
@@ -46,6 +46,7 @@ public class EffectController : MonoBehaviour {
     }
 
     public void AddEffects(List<PlayEffect> newEffects) {
+        Debug.Log("Adding effects to effect queue.");
         for (int i = 0; i < newEffects.Count; i++) {
             PlayEffect effect = newEffects[i];
             if (effect != null && effect.IsValid()) {
@@ -55,6 +56,7 @@ public class EffectController : MonoBehaviour {
     }
 
     private void OnEffectComplete() {
+        Debug.Log("Effect completed.");
         effectInProgress = false;
     }
 }

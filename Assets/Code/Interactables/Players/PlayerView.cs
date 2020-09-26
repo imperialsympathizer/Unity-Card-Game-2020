@@ -14,6 +14,9 @@ public class PlayerView  {
     private TextMeshProUGUI lifeValue;
     private TextMeshProUGUI willValue;
 
+    // Sprite Renderer of the player
+    private SpriteRenderer sprite;
+
     // Visual component of the slots
     private List<GameObject> slots = new List<GameObject>();
     private GameObject slotPrefab;
@@ -23,11 +26,15 @@ public class PlayerView  {
         visual = player;
         this.slotPrefab = slotPrefab;
         visual.SetActive(false);
+        sprite = visual.transform.GetChild(0).GetComponent<SpriteRenderer>();
         VisualController.SharedInstance.ParentToPlayerCanvas(visual.transform);
         // When parented to the canvas, for some reason the sprite likes to size itself to an arbitrarily large amount
         // This ensures its scale is correct
         visual.transform.localScale = new Vector3(1, 1, 1);
         visual.transform.localPosition = new Vector3(0, 0, -100);
+        // Set outline alpha of sprite to 0
+        sprite.material.SetColor("_OutlineColor", new Color(0, 0, 0, 0));
+
 
         attackValue = visual.transform.GetChild(2).GetComponent<TextMeshProUGUI>();
         attackTimes = visual.transform.GetChild(3).GetComponent<TextMeshProUGUI>();

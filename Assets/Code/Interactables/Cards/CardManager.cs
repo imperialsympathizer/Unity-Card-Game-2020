@@ -39,6 +39,17 @@ public class CardManager {
         // Remove the card from hand
         Card playedCard = hand.RemoveCard(cardId);
 
+        // Get all required targets for the card from the player
+        if (playedCard.SetTargets()) {
+
+        }
+        else {
+            // If the player cancels the card while choosing targets/actions, return it to hand and do not play the card
+            hand.AddCard(playedCard);
+            UpdateVisuals();
+        }
+
+
         // If there was a matching card in the hand, calculate resulting life and will (the player can kill themselves)
         // Then, clear the visuals and add the card to the discard
         // Then, push any PlayEffects related to the card to the EffectController queue
@@ -124,20 +135,5 @@ public class CardManager {
         discardCount.text = discard.GetSize().ToString();
 
         handArea.UpdateCardPositions();
-        //// Recalculates the grid squeeze on the hand if there are more than 7 cards in it
-        //int size = hand.GetSize();
-        //int spacing = 10;
-        //switch (size) {
-        //    case 8:
-        //        spacing -= 25;
-        //        break;
-        //    case 9:
-        //        spacing -= 45;
-        //        break;
-        //    case 10:
-        //        spacing -= 60;
-        //        break;
-        //}
-        //handGrid.spacing = spacing;
     }
 }

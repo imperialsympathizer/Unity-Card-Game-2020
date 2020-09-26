@@ -50,11 +50,38 @@ public class Card {
         display.SetActive(true);
     }
 
+    public void DisableVisual() {
+        display.SetActive(false);
+    }
+
     // Function to call before moving card off the screen to another location (such as deck or discard)
     public void ClearVisual() {
         if (display != null) {
             display.Despawn();
             display = null;
         }
+    }
+
+    // When a card is played, for each PlayEffect that requires targets, request the player to pick them
+    // Returns whether all targets were chosen (if there were no targets, will return true)
+    public bool SetTargets() {
+        bool targetsChosen = true;
+        for (int i = 0; i < Effects.Count; i++) {
+            PlayEffect effect = Effects[i];
+            // if GetValidTargets returns null, the effect does not target
+            if (effect.GetValidTargets() != null) {
+                // Set the card visual out of the way while targets are chosen
+                // TargetSelector will enable the targeting canvas and make targetable objects selectable
+                DisableVisual();
+                TargetSelector.SharedInstance.EnableTargetCanvas();
+
+                // If this is the first effect
+
+                // Should make a call to TargetSelector for target selection
+                targetsChosen = false;
+            }
+        }
+
+        return targetsChosen;
     }
 }
