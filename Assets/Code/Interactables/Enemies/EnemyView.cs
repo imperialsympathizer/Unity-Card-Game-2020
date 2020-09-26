@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using TMPro;
+using UnityEditor.U2D;
 using UnityEngine;
 
 public class EnemyView {
@@ -12,15 +13,20 @@ public class EnemyView {
     private TextMeshProUGUI attackTimes;
     private TextMeshProUGUI lifeValue;
 
+    private SpriteRenderer sprite;
+
     public void InitializeView(GameObject enemy, int id) {
         this.Id = id;
         visual = enemy;
         visual.SetActive(false);
+        sprite = visual.transform.GetChild(0).GetComponent<SpriteRenderer>();
         VisualController.SharedInstance.ParentToEnemyCanvas(visual.transform);
         // When parented to the enemy canvas, for some reason the sprite likes to size itself to an abritrarily large amount
         // This ensures its scale is correct
         visual.transform.localScale = new Vector3(1, 1, 1);
         visual.transform.localPosition = new Vector3(0, 0, -50);
+        // Set outline alpha of sprite to 0
+        sprite.material.SetColor("_OutlineColor", new Color(0, 0, 0, 0));
 
         attackValue = visual.transform.GetChild(1).GetComponent<TextMeshProUGUI>();
         attackTimes = visual.transform.GetChild(2).GetComponent<TextMeshProUGUI>();

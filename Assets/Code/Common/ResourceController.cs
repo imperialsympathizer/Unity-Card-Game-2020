@@ -20,6 +20,7 @@ public class ResourceController : MonoBehaviour {
     private EnemyController enemyController;
 
     private NumberAnimator numberAnimator;
+    private TargetSelector targetSelector;
     private CardManager cardManager;
     private GameEndManager gameOverManager;
 
@@ -45,6 +46,7 @@ public class ResourceController : MonoBehaviour {
 
         gameOverManager = new GameEndManager();
         numberAnimator = new NumberAnimator();
+        targetSelector = new TargetSelector();
 
         // Load requisite resources
         GameObject cardPrefab = Resources.Load<GameObject>("Prefabs/Card");
@@ -75,6 +77,7 @@ public class ResourceController : MonoBehaviour {
         summonController.Initialize();
         enemyController.Initialize();
         gameOverManager.Initialize();
+        targetSelector.Initialize();
 
         // When resources are completely loaded, fires an event that tells the TurnSystem to begin the game
         Loaded = true;

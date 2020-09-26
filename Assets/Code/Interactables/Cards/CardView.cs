@@ -38,6 +38,15 @@ public class CardView : MonoBehaviour {
         visual.SetActive(true);
     }
 
+    // Function to call for a card that has choices needing resolution before the card can be played
+    public void StageCard() {
+        visual.SetActive(false);
+        // Move the card to the "Staging Area position" if it isn't already there
+        VisualController.SharedInstance.ParentToDisplayCanvas(visual.transform);
+        visual.SetActive(true);
+        LeanTween.moveLocal(visual, new Vector3(0, -200, 0), 0.2f);
+    }
+
     public void SetName(string name) {
         this.cardName.text = name;
     }
