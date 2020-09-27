@@ -1,15 +1,12 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class DiscardCard : PlayEffect {
-
-    public override List<Target> GetValidTargets() {
-        return null;
+    public DiscardCard(int repeatCount) : base(repeatCount) {
     }
 
     public override void ResolveEffect() {
-        Debug.Log("amount:" + amount.ToString());
-        for (int i = 0; i < amount; i++) {
+        Debug.Log("amount:" + repeatCount.ToString());
+        for (int i = 0; i < repeatCount; i++) {
             CardManager.SharedInstance.DiscardRandomCard();
         }
 

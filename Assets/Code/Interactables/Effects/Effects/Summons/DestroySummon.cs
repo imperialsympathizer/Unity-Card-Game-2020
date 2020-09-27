@@ -1,16 +1,18 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class DamageTarget : PlayEffect {
-    public List<Target> validTargets = new List<Target>();
+public class DestroySummon : TargetableEffect {
+    public DestroySummon(int repeatCount, List<Target> validTargets) : base(repeatCount, validTargets) {
+    }
 
     public override List<Target> GetValidTargets() {
+        // TODO
         return validTargets;
     }
 
     public override void ResolveEffect() {
-        Debug.Log("Dealing " + amount.ToString() + " damage.");
-        for (int i = 0; i < amount; i++) {
+        Debug.Log("Dealing " + repeatCount.ToString() + " damage.");
+        for (int i = 0; i < repeatCount; i++) {
             CardManager.SharedInstance.DrawCard();
         }
 

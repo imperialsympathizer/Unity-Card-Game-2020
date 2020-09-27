@@ -7,9 +7,7 @@ public class CardSource {
         allCards = new Dictionary<int, Card>();
 
         // First card in the library
-        DrawCard drawEffect = new DrawCard();
-        drawEffect.amount = 2;
-        drawEffect.description = "draw 2 cards";
+        DrawCard drawEffect = new DrawCard(2);
         List<PlayEffect> effects = new List<PlayEffect>();
         effects.Add(drawEffect);
 
@@ -17,9 +15,7 @@ public class CardSource {
         allCards.Add(0, newCard);
 
         // Second card in the library
-        drawEffect = new DrawCard();
-        drawEffect.amount = 1;
-        drawEffect.description = "draw 1 card";
+        drawEffect = new DrawCard(1);
         effects = new List<PlayEffect>();
         effects.Add(drawEffect);
 
@@ -27,9 +23,7 @@ public class CardSource {
         allCards.Add(1, newCard);
 
         // Third card in the library
-        drawEffect = new DrawCard();
-        drawEffect.amount = 3;
-        drawEffect.description = "draw 3 cards";
+        drawEffect = new DrawCard(3);
         effects = new List<PlayEffect>();
         effects.Add(drawEffect);
 
@@ -37,10 +31,7 @@ public class CardSource {
         allCards.Add(2, newCard);
 
         // card 4
-        CreateSummon summonEffect = new CreateSummon();
-        summonEffect.amount = 1;
-        summonEffect.summonType = Summon.Summonable.ZOMBIE;
-        summonEffect.description = "summon 1 zombie";
+        CreateSummon summonEffect = new CreateSummon(1, Summon.Summonable.ZOMBIE);
         effects = new List<PlayEffect>();
         effects.Add(summonEffect);
 
@@ -48,10 +39,7 @@ public class CardSource {
         allCards.Add(3, newCard);
 
         // card 5
-        ChangeSlots slotEffect = new ChangeSlots();
-        slotEffect.amount = 2;
-        slotEffect.addSlots = true;
-        slotEffect.description = "add 2 summon slots";
+        ChangeSlots slotEffect = new ChangeSlots(2, true);
         effects = new List<PlayEffect>();
         effects.Add(slotEffect);
 
@@ -59,10 +47,7 @@ public class CardSource {
         allCards.Add(4, newCard);
 
         // card 6
-        slotEffect = new ChangeSlots();
-        slotEffect.amount = 1;
-        slotEffect.addSlots = false;
-        slotEffect.description = "remove 1 summon slot";
+        slotEffect = new ChangeSlots(1, false);
         effects = new List<PlayEffect>();
         effects.Add(slotEffect);
 

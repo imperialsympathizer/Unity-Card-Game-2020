@@ -1,15 +1,12 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class DrawCard : PlayEffect {
-
-    public override List<Target> GetValidTargets() {
-        return null;
+    public DrawCard(int repeatCount) : base(repeatCount) {
     }
 
     public override void ResolveEffect() {
-        Debug.Log("Drawing " + amount.ToString() + " cards.");
-        for (int i = 0; i < amount; i++) {
+        Debug.Log("Drawing " + repeatCount.ToString() + " cards.");
+        for (int i = 0; i < repeatCount; i++) {
             CardManager.SharedInstance.DrawCard();
         }
 

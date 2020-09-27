@@ -1,16 +1,18 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class StatusTarget : PlayEffect {
-    public List<Target> validTargets = new List<Target>();
+public class StatusTarget : TargetableEffect {
+    public StatusTarget(int repeatCount, List<Target> validTargets) : base(repeatCount, validTargets) {
+    }
 
     public override List<Target> GetValidTargets() {
+        // TODO
         return validTargets;
     }
 
     public override void ResolveEffect() {
-        Debug.Log("amount:" + amount.ToString());
-        for (int i = 0; i < amount; i++) {
+        Debug.Log("amount:" + repeatCount.ToString());
+        for (int i = 0; i < repeatCount; i++) {
             CardManager.SharedInstance.DrawCard();
         }
 

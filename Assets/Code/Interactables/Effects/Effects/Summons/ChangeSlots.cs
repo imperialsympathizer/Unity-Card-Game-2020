@@ -3,22 +3,22 @@ using UnityEngine;
 
 public class ChangeSlots : PlayEffect {
     // determines whether the effect is adding (true) or removing (false) slots
-    public bool addSlots = true;
+    protected bool addSlots = true;
 
-    public override List<Target> GetValidTargets() {
-        return null;
+    public ChangeSlots(int repeatCount, bool addSlots) : base(repeatCount) {
+        this.addSlots = addSlots;
     }
 
     public override void ResolveEffect() {
         if (addSlots) {
-            Debug.Log("Adding " + amount.ToString() + " slots.");
-            for (int i = 0; i < amount; i++) {
+            Debug.Log("Adding " + repeatCount.ToString() + " slots.");
+            for (int i = 0; i < repeatCount; i++) {
                 PlayerController.SharedInstance.AddSlot();
             }
         }
         else {
-            Debug.Log("Removing " + amount.ToString() + " slots.");
-            for (int i = 0; i < amount; i++) {
+            Debug.Log("Removing " + repeatCount.ToString() + " slots.");
+            for (int i = 0; i < repeatCount; i++) {
                 PlayerController.SharedInstance.RemoveSlot();
             }
         }
