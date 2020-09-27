@@ -7,10 +7,12 @@
     public int id;
     public string name;
 
-
     // There are primarily 2 different types of StaticEffects
     // Modifiers, which directly influence the value of certain parameters, such as attack on a character
+    // Modifiers can only be attached to specific characters and entities, they cannot be passive
+    //
     // Statuses, which tend to be more "special" effects that often require unique implementation
+    // Statuses can be both attached and passive
     public enum ModifierType {
         ATK_VALUE,
         ATK_TIMES,
@@ -24,6 +26,11 @@
         INFECTION,
         UNDYING,
         DRAW_PER_TURN
+    }
+
+    public StaticEffect(int id, string name) {
+        this.id = id;
+        this.name = name;
     }
 
     // The method requiring implementation by every static effect

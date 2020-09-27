@@ -23,7 +23,7 @@ public class ChangeSlots : DynamicEffect {
         }
 
         // After resolving effects, remove event listener then fire OnEffectComplete
-        EffectController.OnEffectBegin -= ResolveEffect;
+        DynamicEffectController.OnEffectBegin -= ResolveEffect;
         EffectCompleteEvent();
     }
 }

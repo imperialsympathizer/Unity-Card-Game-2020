@@ -52,7 +52,7 @@ public class CardManager {
 
         // If there was a matching card in the hand, calculate resulting life and will (the player can kill themselves)
         // Then, clear the visuals and add the card to the discard
-        // Then, push any DynamicEffects related to the card to the EffectController queue
+        // Then, push any DynamicEffects related to the card to the DynamicEffectController queue
         // Effects of the card in question are resolved in a FIFO order
         if (playedCard != null) {
             // Calculate resulting life/will
@@ -71,7 +71,7 @@ public class CardManager {
             // Move card to discard and disable visual
             playedCard.ClearVisual();
             discard.AddCard(playedCard);
-            EffectController.SharedInstance.AddEffects(playedCard.Effects);
+            DynamicEffectController.SharedInstance.AddEffects(playedCard.Effects);
 
             // Update visuals on screen
             PlayerController.SharedInstance.UpdateVisual();

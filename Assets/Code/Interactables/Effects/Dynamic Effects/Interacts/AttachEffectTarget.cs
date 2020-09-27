@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class StatusTarget : TargetableDynamicEffect {
-    public StatusTarget(int effectCount, List<Target> validTargets) : base(effectCount, validTargets) {
+public class AttachEffectTarget : TargetableDynamicEffect {
+    // DynamicEffect that adds the specified AttachedStaticEffect (Status or Modifier) to the target
+
+    public AttachEffectTarget(int effectCount, List<Target> validTargets) : base(effectCount, validTargets) {
     }
 
     public override List<Target> GetValidTargets() {
@@ -17,7 +19,7 @@ public class StatusTarget : TargetableDynamicEffect {
         }
 
         // After resolving effects, remove event listener then fire OnEffectComplete
-        EffectController.OnEffectBegin -= ResolveEffect;
+        DynamicEffectController.OnEffectBegin -= ResolveEffect;
         EffectCompleteEvent();
     }
 }

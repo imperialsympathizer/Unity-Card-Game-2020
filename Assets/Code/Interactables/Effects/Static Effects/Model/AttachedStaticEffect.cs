@@ -4,4 +4,8 @@
 
     // reference to the character that has the static effect
     public Fighter character;
+
+    public AttachedStaticEffect(Fighter character, int id, string name) : base(id, name) {
+        this.character = character;
+    }
 }

@@ -2,8 +2,8 @@
 
 public abstract class DynamicEffect {
     // This class is to be instantiated for specific effects that are dynamically created (by card plays, attacks, etc.)
-    // DynamicEffects will be pushed into the EffectController's queue and resolved in sequence
-    // DynamicEffects can be owned/created by many different classes, but all effects will still be sent to the same EffectController
+    // DynamicEffects will be pushed into the DynamicEffectController's queue and resolved in sequence
+    // DynamicEffects can be owned/created by many different classes, but all effects will still be sent to the same DynamicEffectController
     public int id;
 
     // Number of times to directly repeat this effect in a row.
@@ -17,7 +17,7 @@ public abstract class DynamicEffect {
     }
 
     public void AddBeginListener() {
-        EffectController.OnEffectBegin += ResolveEffect;
+        DynamicEffectController.OnEffectBegin += ResolveEffect;
     }
 
     public bool IsValid() {

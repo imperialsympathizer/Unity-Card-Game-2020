@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EffectController : MonoBehaviour {
-    public static EffectController SharedInstance;
-    // This class waits for effects (from cards or other sources) to be pushed onto its queue, then resolves them in sequence (FIFO)
+public class DynamicEffectController : MonoBehaviour {
+    public static DynamicEffectController SharedInstance;
+    // This class waits for dynamic effects (from cards or other sources) to be pushed onto its queue, then resolves them in sequence (FIFO)
     // effects will resolve in tandem with their animations, and the next effect will not be pushed until all previous animations are complete
 
     private Queue<DynamicEffect> effects = new Queue<DynamicEffect>();
