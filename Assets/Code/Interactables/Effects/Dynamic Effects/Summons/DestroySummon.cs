@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class StatusTarget : TargetablePlayEffect {
-    public StatusTarget(int effectCount, List<Target> validTargets) : base(effectCount, validTargets) {
+public class DestroySummon : TargetableDynamicEffect {
+    public DestroySummon(int effectCount, List<Target> validTargets) : base(effectCount, validTargets) {
     }
 
     public override List<Target> GetValidTargets() {
@@ -11,7 +11,7 @@ public class StatusTarget : TargetablePlayEffect {
     }
 
     public override void ResolveEffect() {
-        Debug.Log("amount:" + effectCount.ToString());
+        Debug.Log("Dealing " + effectCount.ToString() + " damage.");
         for (int i = 0; i < effectCount; i++) {
             CardManager.SharedInstance.DrawCard();
         }

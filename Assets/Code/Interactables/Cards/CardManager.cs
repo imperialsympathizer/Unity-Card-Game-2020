@@ -52,7 +52,7 @@ public class CardManager {
 
         // If there was a matching card in the hand, calculate resulting life and will (the player can kill themselves)
         // Then, clear the visuals and add the card to the discard
-        // Then, push any PlayEffects related to the card to the EffectController queue
+        // Then, push any DynamicEffects related to the card to the EffectController queue
         // Effects of the card in question are resolved in a FIFO order
         if (playedCard != null) {
             // Calculate resulting life/will

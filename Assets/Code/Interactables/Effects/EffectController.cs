@@ -7,7 +7,7 @@ public class EffectController : MonoBehaviour {
     // This class waits for effects (from cards or other sources) to be pushed onto its queue, then resolves them in sequence (FIFO)
     // effects will resolve in tandem with their animations, and the next effect will not be pushed until all previous animations are complete
 
-    private Queue<PlayEffect> effects = new Queue<PlayEffect>();
+    private Queue<DynamicEffect> effects = new Queue<DynamicEffect>();
 
     private bool effectInProgress = false;
 
@@ -15,7 +15,7 @@ public class EffectController : MonoBehaviour {
 
     private void Awake() {
         SharedInstance = this;
-        PlayEffect.OnEffectComplete += OnEffectComplete;
+        DynamicEffect.OnEffectComplete += OnEffectComplete;
     }
 
     // Will not resolve an effect until the previous effect is finished resolving
@@ -23,7 +23,7 @@ public class EffectController : MonoBehaviour {
     void Update() {
         if (effects.Count > 0 && !effectInProgress) {
             effectInProgress = true;
-            PlayEffect effect = effects.Dequeue();
+            DynamicEffect effect = effects.Dequeue();
             if (effect != null) {
                 Debug.Log("Resolving effect.");
                 effect.AddBeginListener();
@@ -35,20 +35,20 @@ public class EffectController : MonoBehaviour {
         }
     }
 
-    public void AddEffects(PlayEffect[] newEffects) {
+    public void AddEffects(DynamicEffect[] newEffects) {
         Debug.Log("Adding effects to effect queue.");
         for (int i = 0; i < newEffects.Length; i++) {
-            PlayEffect effect = newEffects[i];
+            DynamicEffect effect = newEffects[i];
             if (effect != null && effect.IsValid()) {
                 effects.Enqueue(effect);
             }
         }
     }
 
-    public void AddEffects(List<PlayEffect> newEffects) {
+    public void AddEffects(List<DynamicEffect> newEffects) {
         Debug.Log("Adding effects to effect queue.");
         for (int i = 0; i < newEffects.Count; i++) {
-            PlayEffect effect = newEffects[i];
+            DynamicEffect effect = newEffects[i];
             if (effect != null && effect.IsValid()) {
                 effects.Enqueue(effect);
             }

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class DrawCard : PlayEffect {
+public class DrawCard : DynamicEffect {
     public DrawCard(int effectCount) : base(effectCount) {
     }
 

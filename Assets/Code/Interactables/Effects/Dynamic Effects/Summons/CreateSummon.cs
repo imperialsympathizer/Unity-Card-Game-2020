@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class CreateSummon : PlayEffect {
+public class CreateSummon : DynamicEffect {
     // The type of summon to create
     private readonly Summon.Summonable summonType;
 

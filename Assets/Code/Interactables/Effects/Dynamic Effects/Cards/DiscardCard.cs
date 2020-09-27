@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class DiscardCard : PlayEffect {
+public class DiscardCard : DynamicEffect {
     public DiscardCard(int effectCount) : base(effectCount) {
     }
 

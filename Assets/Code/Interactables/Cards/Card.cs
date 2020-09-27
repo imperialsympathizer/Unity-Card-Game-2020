@@ -11,7 +11,7 @@ public class Card {
     public int lifeCost { get; private set; }
     public bool hasTargets { get; private set; }
     // this is the list of game effects to perform when a card is played
-    public List<PlayEffect> Effects { get; private set; }
+    public List<DynamicEffect> Effects { get; private set; }
 
     // Visual component of the card, stored within its own View class
     private CardView display;
@@ -19,7 +19,7 @@ public class Card {
 
     // Constructor that creates the object, but does not instantiate visuals.
     // Those can be called as needed by the CreateVisual() function
-    public Card(string name, int id, string description, int cost, bool hasTargets, List<PlayEffect> effects) {
+    public Card(string name, int id, string description, int cost, bool hasTargets, List<DynamicEffect> effects) {
         this.name = name;
         this.Id = id;
         this.description = description;
@@ -62,14 +62,14 @@ public class Card {
         }
     }
 
-    // When a card is played, for each PlayEffect that requires targets, request the player to pick them
+    // When a card is played, for each DynamicEffect that requires targets, request the player to pick them
     // Returns whether all targets were chosen (if there were no targets, will return true)
     public bool SetTargets() {
         bool targetsChosen = true;
         for (int i = 0; i < Effects.Count; i++) {
-            PlayEffect effect = Effects[i];
+            DynamicEffect effect = Effects[i];
             // if GetValidTargets returns null, the effect does not target
-            if (effect is TargetablePlayEffect) {
+            if (effect is TargetableDynamicEffect) {
                 // Set the card visual out of the way while targets are chosen
                 // TargetSelector will enable the targeting canvas and make targetable objects selectable
                 DisableVisual();

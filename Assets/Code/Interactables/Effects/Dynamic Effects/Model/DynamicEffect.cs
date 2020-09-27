@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 
-public abstract class PlayEffect {
-    // This class is to be instantiated for specific effects
-    // PlayEffects will be pushed into the EffectController's queue and resolved in sequence
-    // PlayEffects can be owned by many different classes, but all effects will still be sent to the same EffectController
+public abstract class DynamicEffect {
+    // This class is to be instantiated for specific effects that are dynamically created (by card plays, attacks, etc.)
+    // DynamicEffects will be pushed into the EffectController's queue and resolved in sequence
+    // DynamicEffects can be owned/created by many different classes, but all effects will still be sent to the same EffectController
     public int id;
 
     // Number of times to directly repeat this effect in a row.
@@ -13,7 +12,7 @@ public abstract class PlayEffect {
     // TODO: implement animations for effects so that they can be paired together
     public static event Action OnEffectComplete;
 
-    public PlayEffect(int effectCount) {
+    public DynamicEffect(int effectCount) {
         this.effectCount = effectCount;
     }
 

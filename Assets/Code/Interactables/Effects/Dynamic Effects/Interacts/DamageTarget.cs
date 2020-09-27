@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class DamageTarget : TargetablePlayEffect {
+public class DamageTarget : TargetableDynamicEffect {
     public DamageTarget(int effectCount, List<Target> validTargets) : base(effectCount, validTargets) {
     }
 

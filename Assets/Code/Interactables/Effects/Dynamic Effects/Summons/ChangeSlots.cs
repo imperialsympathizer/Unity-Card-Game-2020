@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class ChangeSlots : PlayEffect {
+public class ChangeSlots : DynamicEffect {
     // determines whether the effect is adding (true) or removing (false) slots
     private readonly bool addSlots = true;
 
