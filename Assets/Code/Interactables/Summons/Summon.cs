@@ -51,7 +51,7 @@ public class Summon : Fighter {
                 break;
             case Summonable.SPIRIT:
                 this.name = "Spirit";
-                this.description = "Not much more than rotten meat";
+                this.description = "3 sp00ky 5 me";
                 this.Id = id;
                 this.HasLife = false;
                 this.MaxLife = 0;
