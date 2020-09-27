@@ -6,16 +6,15 @@ public abstract class PlayEffect {
     // PlayEffects will be pushed into the EffectController's queue and resolved in sequence
     // PlayEffects can be owned by many different classes, but all effects will still be sent to the same EffectController
     public int id;
-    public int amount;
-    public string description;
+
+    // Number of times to directly repeat this effect in a row.
+    protected int repeatCount;
 
     // TODO: implement animations for effects so that they can be paired together
     public static event Action OnEffectComplete;
 
-    public enum Target {
-        PLAYER,
-        SUMMON,
-        ENEMY
+    public PlayEffect(int repeatCount) {
+        this.repeatCount = repeatCount;
     }
 
     public void AddBeginListener() {
@@ -23,13 +22,11 @@ public abstract class PlayEffect {
     }
 
     public bool IsValid() {
-        if (id < 0 || amount < 0) {
+        if (id < 0 || repeatCount < 0) {
             return false;
         }
         return true;
     }
-
-    public abstract List<Target> GetValidTargets();
 
     public abstract void ResolveEffect();
 
