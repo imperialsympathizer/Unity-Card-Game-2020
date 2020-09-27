@@ -2,7 +2,7 @@
 using UnityEngine;
 
 public class StatusTarget : TargetablePlayEffect {
-    public StatusTarget(int repeatCount, List<Target> validTargets) : base(repeatCount, validTargets) {
+    public StatusTarget(int effectCount, List<Target> validTargets) : base(effectCount, validTargets) {
     }
 
     public override List<Target> GetValidTargets() {
@@ -11,8 +11,8 @@ public class StatusTarget : TargetablePlayEffect {
     }
 
     public override void ResolveEffect() {
-        Debug.Log("amount:" + repeatCount.ToString());
-        for (int i = 0; i < repeatCount; i++) {
+        Debug.Log("amount:" + effectCount.ToString());
+        for (int i = 0; i < effectCount; i++) {
             CardManager.SharedInstance.DrawCard();
         }
 

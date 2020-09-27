@@ -4,7 +4,7 @@ public abstract class TargetablePlayEffect : PlayEffect {
 
     public List<Target> validTargets = new List<Target>();
 
-    protected TargetablePlayEffect(int repeatCount, List<Target> validTargets) : base(repeatCount) {
+    protected TargetablePlayEffect(int effectCount, List<Target> validTargets) : base(effectCount) {
         this.validTargets = validTargets;
     }
     public abstract List<Target> GetValidTargets();

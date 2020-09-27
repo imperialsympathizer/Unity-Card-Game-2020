@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 
 public class DrawCard : PlayEffect {
-    public DrawCard(int repeatCount) : base(repeatCount) {
+    public DrawCard(int effectCount) : base(effectCount) {
     }
 
     public override void ResolveEffect() {
-        Debug.Log("Drawing " + repeatCount.ToString() + " cards.");
-        for (int i = 0; i < repeatCount; i++) {
+        Debug.Log("Drawing " + effectCount.ToString() + " cards.");
+        for (int i = 0; i < effectCount; i++) {
             CardManager.SharedInstance.DrawCard();
         }
 

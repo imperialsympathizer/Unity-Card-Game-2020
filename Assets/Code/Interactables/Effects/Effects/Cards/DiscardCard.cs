@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 
 public class DiscardCard : PlayEffect {
-    public DiscardCard(int repeatCount) : base(repeatCount) {
+    public DiscardCard(int effectCount) : base(effectCount) {
     }
 
     public override void ResolveEffect() {
-        Debug.Log("amount:" + repeatCount.ToString());
-        for (int i = 0; i < repeatCount; i++) {
+        Debug.Log("amount:" + effectCount.ToString());
+        for (int i = 0; i < effectCount; i++) {
             CardManager.SharedInstance.DiscardRandomCard();
         }
 

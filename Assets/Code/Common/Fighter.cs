@@ -1,6 +1,6 @@
 ﻿using System;
 
-public class Fighter {
+public abstract class Fighter {
     // abstract class defining any combatant
 
     // Some fighters may not be hittable (spirits?)

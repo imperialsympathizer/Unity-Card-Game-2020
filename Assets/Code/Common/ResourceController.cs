@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class ResourceController : MonoBehaviour {
@@ -48,29 +45,16 @@ public class ResourceController : MonoBehaviour {
         numberAnimator = new NumberAnimator();
         targetSelector = new TargetSelector();
 
-        // Load requisite resources
-        GameObject cardPrefab = Resources.Load<GameObject>("Prefabs/Card");
-        if (cardPrefab == null)
-            Debug.Log("failed to load prefab.");
+        // Load requisite prefabs into a dictionary indexed by prefab name
+        GameObject[] prefabs = Resources.LoadAll<GameObject>("Prefabs");
+        Dictionary<string, GameObject> prefabDictionary = new Dictionary<string, GameObject>();
 
-        GameObject necromancerPrefab = Resources.Load<GameObject>("Prefabs/Necromancer Sprite");
-        if (necromancerPrefab == null)
-            Debug.Log("failed to load prefab.");
-
-        GameObject slotPrefab = Resources.Load<GameObject>("Prefabs/Slot Sprite");
-        if (slotPrefab == null)
-            Debug.Log("failed to load prefab.");
-
-        GameObject zombiePrefab = Resources.Load<GameObject>("Prefabs/Zombie Sprite");
-        if (zombiePrefab == null)
-            Debug.Log("failed to load prefab.");
-
-        GameObject knightPrefab = Resources.Load<GameObject>("Prefabs/Knight Sprite");
-        if (knightPrefab == null)
-            Debug.Log("failed to load prefab.");
+        for (int i = 0; i < prefabs.Length; i++) {
+            prefabDictionary.Add(prefabs[i].name, prefabs[i]);
+        }
 
         // Initialize Controllers
-        visualController.Initialize(cardPrefab, necromancerPrefab, slotPrefab, zombiePrefab, knightPrefab);
+        visualController.Initialize(prefabDictionary);
         numberAnimator.Initialize();
         cardManager.Initialize();
         playerController.Initialize();

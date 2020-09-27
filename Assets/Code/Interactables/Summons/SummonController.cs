@@ -30,13 +30,24 @@ public class SummonController {
     public bool ResolveAttack(int damage) {
         // This function returns false if there are no summons available to take damage from an attack
         // Otherwise, damage is dealt to the front summon (at the end of the list)
-        int numSummons = summonList.Count;
-        if (numSummons < 1) {
+        int summonIndex = summonList.Count - 1;
+        if (summonIndex < 0) {
             return false;
         }
 
+        // Only attack the summon if it has life
+        // Otherwise, attack the next summon
+        Summon summon = summonList[summonIndex];
+        while (!summon.HasLife) {
+            summonIndex--;
+            if (summonIndex < 0) {
+                return false;
+            }
+
+            summon = summonList[summonIndex];
+        }
+
         // Change the life total to reflect damage taken
-        Summon summon = summonList[numSummons - 1];
         int lifeResult = summon.LifeValue - damage;
 
         // If damage exceeds the life remaining, the summon is defeated
@@ -45,13 +56,13 @@ public class SummonController {
             // TODO: death animation
             // Clear the visual first to ensure proper removal
             summon.ClearVisual();
-            summonList.RemoveAt(numSummons - 1);
+            summonList.RemoveAt(summonIndex);
             summonDictionary.Remove(summon.Id);
         }
         else {
             summon.LifeValue = lifeResult;
             // Update the summon objects in the list and dictionary
-            summonList[numSummons - 1] = summon;
+            summonList[summonIndex] = summon;
             summonDictionary[summon.Id] = summon;
             // Update the list
             summon.UpdateVisual();
