@@ -17,7 +17,9 @@ public class Summon : Fighter {
     private GameObject prefab;
 
     public enum Summonable {
-        ZOMBIE
+        ZOMBIE,
+        SKELETON,
+        SPIRIT
     }
 
 
@@ -30,11 +32,33 @@ public class Summon : Fighter {
                 this.description = "Not much more than rotten meat";
                 this.Id = id;
                 this.HasLife = true;
-                this.MaxLife = 5;
+                this.MaxLife = 1;
+                this.LifeValue = MaxLife;
+                this.AttackValue = 1;
+                this.AttackTimes = 1;
+                this.prefab = VisualController.SharedInstance.GetPrefab("ZombiePrefab");
+                break;
+            case Summonable.SKELETON:
+                this.name = "Skeleton";
+                this.description = "Skin and bones without the skin";
+                this.Id = id;
+                this.HasLife = true;
+                this.MaxLife = 10;
                 this.LifeValue = MaxLife;
                 this.AttackValue = 5;
-                this.AttackTimes = 1;
-                this.prefab = VisualController.SharedInstance.zombiePrefab;
+                this.AttackTimes = 2;
+                this.prefab = VisualController.SharedInstance.GetPrefab("SkeletonPrefab");
+                break;
+            case Summonable.SPIRIT:
+                this.name = "Spirit";
+                this.description = "Not much more than rotten meat";
+                this.Id = id;
+                this.HasLife = false;
+                this.MaxLife = 0;
+                this.LifeValue = MaxLife;
+                this.AttackValue = 0;
+                this.AttackTimes = 0;
+                this.prefab = VisualController.SharedInstance.GetPrefab("SpiritPrefab");
                 break;
         }
     }

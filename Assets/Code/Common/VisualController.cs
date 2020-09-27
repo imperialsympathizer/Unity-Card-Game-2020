@@ -29,14 +29,16 @@ public class VisualController {
     private GameObject gameController;
 
     // Prefabs must be loaded by the ResourceController and passed as arguments to the Initialize method
-    public GameObject cardPrefab;
-    public GameObject necromancerPrefab;
-    public GameObject slotPrefab;
-    public GameObject zombiePrefab;
-    public GameObject knightPrefab;
+    private Dictionary<string, GameObject> prefabs;
+
+    //public GameObject cardPrefab;
+    //public GameObject necromancerPrefab;
+    //public GameObject slotPrefab;
+    //public GameObject zombiePrefab;
+    //public GameObject knightPrefab;
 
 
-    public void Initialize(GameObject card, GameObject necromancer, GameObject slot, GameObject zombie, GameObject knight) {
+    public void Initialize(Dictionary<string, GameObject> prefabs) {
         SharedInstance = this;
 
         // Main camera is sometimes useful for positional calculation,
@@ -45,11 +47,7 @@ public class VisualController {
         mainCamera = Camera.main;
 
         // Initialize prefabs
-        this.cardPrefab = card;
-        this.necromancerPrefab = necromancer;
-        this.slotPrefab = slot;
-        this.zombiePrefab = zombie;
-        this.knightPrefab = knight;
+        this.prefabs = prefabs;
 
         // Game controller
         gameController = GameObject.Find("GameController");
@@ -74,6 +72,10 @@ public class VisualController {
 
         // Game Over canvas
         gameOver = displayCanvas.transform.GetChild(3).gameObject;
+    }
+
+    public GameObject GetPrefab(string prefabKey) {
+        return prefabs[prefabKey];
     }
 
     #region Parenting Functions

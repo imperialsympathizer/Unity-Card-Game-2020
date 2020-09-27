@@ -4,13 +4,13 @@ public class CreateSummon : PlayEffect {
     // The type of summon to create
     private readonly Summon.Summonable summonType;
 
-    public CreateSummon(int repeatCount, Summon.Summonable summonType) : base(repeatCount) {
+    public CreateSummon(int effectCount, Summon.Summonable summonType) : base(effectCount) {
         this.summonType = summonType;
     }
 
     public override void ResolveEffect() {
-        Debug.Log("Summoning " + repeatCount.ToString() + " summons.");
-        for (int i = 0; i < repeatCount; i++) {
+        Debug.Log("Summoning " + effectCount.ToString() + " summons.");
+        for (int i = 0; i < effectCount; i++) {
             SummonController.SharedInstance.CreateSummon(summonType);
         }
 

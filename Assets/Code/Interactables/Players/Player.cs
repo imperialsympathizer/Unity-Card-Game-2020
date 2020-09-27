@@ -16,7 +16,6 @@ public class Player : Fighter {
     public int MaxSlots { get; private set; }
     public int SlotsValue { get; set; }
 
-
     private string description;
 
     // Visual component of the player, stored within its own View class
@@ -50,8 +49,8 @@ public class Player : Fighter {
                 this.SlotsValue = 3;
                 this.AttackValue = 5;
                 this.AttackTimes = 1;
-                this.prefab = VisualController.SharedInstance.necromancerPrefab;
-                this.slotPrefab = VisualController.SharedInstance.slotPrefab;
+                this.prefab = VisualController.SharedInstance.GetPrefab("NecromancerPrefab");
+                this.slotPrefab = VisualController.SharedInstance.GetPrefab("SlotPrefab");
                 break;
         }
     }

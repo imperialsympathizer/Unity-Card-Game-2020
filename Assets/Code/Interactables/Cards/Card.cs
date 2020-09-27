@@ -40,7 +40,7 @@ public class Card {
 
     public void CreateVisual() {
         // Spawn an object to view the card on screen
-        prefab = VisualController.SharedInstance.cardPrefab;
+        prefab = VisualController.SharedInstance.GetPrefab("CardPrefab");
         display = ObjectPooler.Spawn(prefab, new Vector3(0, 0, 0), Quaternion.identity).GetComponent<CardView>();
         display.InitializeView(Id, prefab);
         display.SetActive(false);

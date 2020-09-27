@@ -33,7 +33,7 @@ public class Enemy : Fighter {
                 this.LifeValue = MaxLife;
                 this.AttackValue = 10;
                 this.AttackTimes = 2;
-                this.prefab = VisualController.SharedInstance.knightPrefab;
+                this.prefab = VisualController.SharedInstance.GetPrefab("KnightPrefab");
                 break;
         }
     }

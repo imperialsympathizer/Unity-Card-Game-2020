@@ -8,13 +8,13 @@ public abstract class PlayEffect {
     public int id;
 
     // Number of times to directly repeat this effect in a row.
-    protected int repeatCount;
+    protected int effectCount;
 
     // TODO: implement animations for effects so that they can be paired together
     public static event Action OnEffectComplete;
 
-    public PlayEffect(int repeatCount) {
-        this.repeatCount = repeatCount;
+    public PlayEffect(int effectCount) {
+        this.effectCount = effectCount;
     }
 
     public void AddBeginListener() {
@@ -22,7 +22,7 @@ public abstract class PlayEffect {
     }
 
     public bool IsValid() {
-        if (id < 0 || repeatCount < 0) {
+        if (id < 0 || effectCount < 0) {
             return false;
         }
         return true;

@@ -2,7 +2,7 @@
 using UnityEngine;
 
 public class DestroySummon : TargetablePlayEffect {
-    public DestroySummon(int repeatCount, List<Target> validTargets) : base(repeatCount, validTargets) {
+    public DestroySummon(int effectCount, List<Target> validTargets) : base(effectCount, validTargets) {
     }
 
     public override List<Target> GetValidTargets() {
@@ -11,8 +11,8 @@ public class DestroySummon : TargetablePlayEffect {
     }
 
     public override void ResolveEffect() {
-        Debug.Log("Dealing " + repeatCount.ToString() + " damage.");
-        for (int i = 0; i < repeatCount; i++) {
+        Debug.Log("Dealing " + effectCount.ToString() + " damage.");
+        for (int i = 0; i < effectCount; i++) {
             CardManager.SharedInstance.DrawCard();
         }
 
