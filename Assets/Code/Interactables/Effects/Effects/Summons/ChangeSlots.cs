@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class ChangeSlots : PlayEffect {
     // determines whether the effect is adding (true) or removing (false) slots
-    protected bool addSlots = true;
+    private bool addSlots = true;
 
     public ChangeSlots(int repeatCount, bool addSlots) : base(repeatCount) {
         this.addSlots = addSlots;

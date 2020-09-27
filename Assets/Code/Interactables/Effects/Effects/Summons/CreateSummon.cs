@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class CreateSummon : PlayEffect {
     // The type of summon to create
-    protected Summon.Summonable summonType;
+    private readonly Summon.Summonable summonType;
 
     public CreateSummon(int repeatCount, Summon.Summonable summonType) : base(repeatCount) {
         this.summonType = summonType;
