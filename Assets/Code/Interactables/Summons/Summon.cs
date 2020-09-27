@@ -26,11 +26,11 @@ public class Summon : Fighter {
     // Constructor that creates the object, but does not instantiate visuals.
     // Those can be called as needed by the CreateVisual() function
     public Summon(Summonable summonType, int id) {
+        this.Id = id;
         switch (summonType) {
             case Summonable.ZOMBIE:
                 this.name = "Zombie";
                 this.description = "Not much more than rotten meat";
-                this.Id = id;
                 this.HasLife = true;
                 this.MaxLife = 1;
                 this.LifeValue = MaxLife;
@@ -41,7 +41,6 @@ public class Summon : Fighter {
             case Summonable.SKELETON:
                 this.name = "Skeleton";
                 this.description = "Skin and bones without the skin";
-                this.Id = id;
                 this.HasLife = true;
                 this.MaxLife = 10;
                 this.LifeValue = MaxLife;
@@ -52,7 +51,6 @@ public class Summon : Fighter {
             case Summonable.SPIRIT:
                 this.name = "Spirit";
                 this.description = "3 sp00ky 5 me";
-                this.Id = id;
                 this.HasLife = false;
                 this.MaxLife = 0;
                 this.LifeValue = MaxLife;
