@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class DamageTarget : TargetableEffect {
+public class DamageTarget : TargetablePlayEffect {
     public DamageTarget(int repeatCount, List<Target> validTargets) : base(repeatCount, validTargets) {
     }
 

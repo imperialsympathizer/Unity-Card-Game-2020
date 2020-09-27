@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class StatusTarget : TargetableEffect {
+public class StatusTarget : TargetablePlayEffect {
     public StatusTarget(int repeatCount, List<Target> validTargets) : base(repeatCount, validTargets) {
     }
 

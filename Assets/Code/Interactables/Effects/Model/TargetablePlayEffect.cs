@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 
-public abstract class TargetableEffect : PlayEffect {
+public abstract class TargetablePlayEffect : PlayEffect {
 
     public List<Target> validTargets = new List<Target>();
 
-    protected TargetableEffect(int repeatCount, List<Target> validTargets) : base(repeatCount) {
+    protected TargetablePlayEffect(int repeatCount, List<Target> validTargets) : base(repeatCount) {
         this.validTargets = validTargets;
     }
     public abstract List<Target> GetValidTargets();

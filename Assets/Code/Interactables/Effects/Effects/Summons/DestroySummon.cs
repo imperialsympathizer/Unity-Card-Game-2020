@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class DestroySummon : TargetableEffect {
+public class DestroySummon : TargetablePlayEffect {
     public DestroySummon(int repeatCount, List<Target> validTargets) : base(repeatCount, validTargets) {
     }
 
