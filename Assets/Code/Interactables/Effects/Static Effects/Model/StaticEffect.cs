@@ -5,19 +5,7 @@ public abstract class StaticEffect {
     // However, it is possible that a StaticEffect could, in turn, create DynamicEffects as well
     // For example, a StaticEffect could be something such as a passive of drawing an extra card every turn
     // The passive would create a DrawCard DynamicEffect every turn and pass it to EffectResolver
-    // StaticEffects can also be attached to specific entities in the game (status on a character, modifier on a value)
-
-    // There are 3 different types of StaticEffects
-    // Modifiers, which directly influence the value of certain parameters, such as attack on a character
-    // Modifiers can only be attached to specific characters and entities, they cannot be passive
-    //
-    // Statuses, which tend to be more "special" effects that often require unique implementation
-    // Statuses can only be attached to specific characters and entities, they cannot be passive
-    //
-    // Both Status and Modifier inherit from AttachedStaticEffect (a child of StaticEffect) due to their restrictions on placements
-    //
-    // Passives are the last StaticEffect, and basically encompass any effect that does not require a specific object to be tied to
-    // Passives can cover anything from drawing extra cards per turn to skipping combat steps, etc.
+    // There are 3 different types of StaticEffects: Modifiers, Statuses, and Passives
 
     protected int id;
 

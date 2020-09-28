@@ -13,6 +13,7 @@ public class AttachEffectTarget : TargetableDynamicEffect {
     }
 
     public override void ResolveEffect() {
+        // TODO: implement effect properly
         Debug.Log("amount:" + effectCount.ToString());
         for (int i = 0; i < effectCount; i++) {
             CardManager.SharedInstance.DrawCard();

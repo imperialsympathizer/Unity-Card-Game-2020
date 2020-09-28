@@ -11,6 +11,7 @@ public class DestroySummon : TargetableDynamicEffect {
     }
 
     public override void ResolveEffect() {
+        // TODO: implement effect properly
         Debug.Log("Dealing " + effectCount.ToString() + " damage.");
         for (int i = 0; i < effectCount; i++) {
             CardManager.SharedInstance.DrawCard();
