@@ -5,19 +5,15 @@ using UnityEngine;
 public class SummonView {
     private GameObject visual;
 
-    private int Id;
+    private int id;
 
     private TextMeshProUGUI attackValue;
     private TextMeshProUGUI xText;
     private TextMeshProUGUI attackTimes;
     private TextMeshProUGUI lifeValue;
 
-    // Visual component of the slots
-    private List<GameObject> slots = new List<GameObject>();
-    private GameObject slotPrefab;
-
     public void InitializeView(GameObject summon, int id) {
-        this.Id = id;
+        this.id = id;
         visual = summon;
         visual.SetActive(false);
         VisualController.SharedInstance.ParentToSummonCanvas(visual.transform);

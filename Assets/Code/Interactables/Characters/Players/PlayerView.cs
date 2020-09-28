@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
 public class PlayerView  {
     private GameObject visual;
 
-    private int Id;
+    private int id;
 
     private TextMeshProUGUI attackValue;
     private TextMeshProUGUI xText;
@@ -22,7 +21,7 @@ public class PlayerView  {
     private GameObject slotPrefab;
 
     public void InitializeView(GameObject player, int id, GameObject slotPrefab, int startSlots) {
-        this.Id = id;
+        this.id = id;
         visual = player;
         this.slotPrefab = slotPrefab;
         visual.SetActive(false);

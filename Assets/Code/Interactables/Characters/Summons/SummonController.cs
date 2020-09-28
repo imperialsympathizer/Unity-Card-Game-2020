@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class SummonController {
@@ -10,10 +9,6 @@ public class SummonController {
     private Dictionary<int, Summon> summonDictionary = new Dictionary<int, Summon>();
     private List<Summon> summonList = new List<Summon>();
 
-    // These canvases contain visuals relevant to the player's stats
-    private GameObject playerCanvas;
-    private GameObject slotCanvas;
-
     public void Initialize() {
         SharedInstance = this;
     }
@@ -22,7 +17,7 @@ public class SummonController {
         if (PlayerController.SharedInstance.GetAvailableSlots() - summonList.Count > 0) {
             Summon newSummon = new Summon(summonType, ResourceController.GenerateId());
             newSummon.CreateVisual();
-            summonDictionary.Add(newSummon.Id, newSummon);
+            summonDictionary.Add(newSummon.id, newSummon);
             summonList.Add(newSummon);
         }
     }
@@ -57,13 +52,13 @@ public class SummonController {
             // Clear the visual first to ensure proper removal
             summon.ClearVisual();
             summonList.RemoveAt(summonIndex);
-            summonDictionary.Remove(summon.Id);
+            summonDictionary.Remove(summon.id);
         }
         else {
             summon.LifeValue = lifeResult;
             // Update the summon objects in the list and dictionary
             summonList[summonIndex] = summon;
-            summonDictionary[summon.Id] = summon;
+            summonDictionary[summon.id] = summon;
             // Update the list
             summon.UpdateVisual();
         }

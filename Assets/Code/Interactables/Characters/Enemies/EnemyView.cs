@@ -1,12 +1,10 @@
-﻿using System.Collections.Generic;
-using TMPro;
-using UnityEditor.U2D;
+﻿using TMPro;
 using UnityEngine;
 
 public class EnemyView {
     private GameObject visual;
 
-    private int Id;
+    private int id;
 
     private TextMeshProUGUI attackValue;
     private TextMeshProUGUI xText;
@@ -16,7 +14,7 @@ public class EnemyView {
     private SpriteRenderer sprite;
 
     public void InitializeView(GameObject enemy, int id) {
-        this.Id = id;
+        this.id = id;
         visual = enemy;
         visual.SetActive(false);
         sprite = visual.transform.GetChild(0).GetComponent<SpriteRenderer>();

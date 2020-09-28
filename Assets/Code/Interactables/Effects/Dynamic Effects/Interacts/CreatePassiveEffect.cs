@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 public class CreatePassiveEffect : DynamicEffect {
-    // DynamicEffect that creates the specified PassiveStaticEffect (Status only)
+    // DynamicEffect that creates the specified Passive (Status only)
     // These are specifically for effects that do not target
 
     public CreatePassiveEffect(int effectCount) : base(effectCount) {

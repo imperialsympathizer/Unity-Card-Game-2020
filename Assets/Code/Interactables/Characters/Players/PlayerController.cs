@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System.Collections.Generic;
 
 public class PlayerController {
     public static PlayerController SharedInstance;
 
     private Player player;
-
-    // These canvases contain visuals relevant to the player's stats
-    private GameObject playerCanvas;
-    private GameObject slotCanvas;
 
     public void Initialize() {
         SharedInstance = this;

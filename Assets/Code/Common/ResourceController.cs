@@ -5,11 +5,7 @@ public class ResourceController : MonoBehaviour {
     // This class is for initializing the game's framework at startup
     // Currently it doesn't load other monobehaviour controllers (they are attached to the GameController in Unity),
     // But that may be something to do at a later date
-    // This class is also used for generating ids of objects spawned in the game
-
-    // May not want to give access to the resource controller for general use (GenerateId is already static)
-    // TODO: remove
-    public static ResourceController SharedInstance;
+    // This class is also used for generating unique ids of objects instantiated in the game
 
     private VisualController visualController;
     private PlayerController playerController;
@@ -26,7 +22,6 @@ public class ResourceController : MonoBehaviour {
     public static bool Loaded { get; private set; }
 
     private void Awake() {
-        SharedInstance = this;
         Loaded = false;
         InitializeResources();
     }
@@ -63,7 +58,7 @@ public class ResourceController : MonoBehaviour {
         gameOverManager.Initialize();
         targetSelector.Initialize();
 
-        // When resources are completely loaded, fires an event that tells the TurnSystem to begin the game
+        // When resources are completely loaded, sets the field that tells the TurnSystem to begin the game
         Loaded = true;
     }
 

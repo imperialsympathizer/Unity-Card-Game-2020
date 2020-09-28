@@ -1,15 +1,9 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Enemy : Fighter {
     // Class that houses the data for nemies
     // Contains references to EnemyView but does not directly control it in most instances
     // Accessed and instantiated through the EnemyController
-
-    private string name;
-    public int Id { get; private set; }
-
-    private string description;
 
     // Visual component of the player, stored within its own View class
     private EnemyView display;
@@ -26,8 +20,7 @@ public class Enemy : Fighter {
         switch (enemyType) {
             case EnemyType.KNIGHT:
                 this.name = "Knight";
-                this.description = "You'll have to get through him first";
-                this.Id = id;
+                this.id = id;
                 this.HasLife = true;
                 this.MaxLife = 50;
                 this.LifeValue = MaxLife;
@@ -43,7 +36,7 @@ public class Enemy : Fighter {
         // Not using the ObjectPooler as there is only one player character
         GameObject enemyVisual = ObjectPooler.Spawn(prefab, new Vector3(0, 0, -10), Quaternion.identity);
         display = new EnemyView();
-        display.InitializeView(enemyVisual, Id);
+        display.InitializeView(enemyVisual, id);
         UpdateVisual();
     }
 

@@ -7,11 +7,6 @@ public class Summon : Fighter {
     // Contains references to SummonView but does not directly control it in most instances
     // Accessed and instantiated through the SummonController
 
-    private string name;
-    public int Id { get; private set; }
-
-    private string description;
-
     // Visual component of the player, stored within its own View class
     private SummonView display;
     private GameObject prefab;
@@ -26,11 +21,10 @@ public class Summon : Fighter {
     // Constructor that creates the object, but does not instantiate visuals.
     // Those can be called as needed by the CreateVisual() function
     public Summon(Summonable summonType, int id) {
-        this.Id = id;
+        this.id = id;
         switch (summonType) {
             case Summonable.ZOMBIE:
                 this.name = "Zombie";
-                this.description = "Not much more than rotten meat";
                 this.HasLife = true;
                 this.MaxLife = 1;
                 this.LifeValue = MaxLife;
@@ -40,7 +34,6 @@ public class Summon : Fighter {
                 break;
             case Summonable.SKELETON:
                 this.name = "Skeleton";
-                this.description = "Skin and bones without the skin";
                 this.HasLife = true;
                 this.MaxLife = 10;
                 this.LifeValue = MaxLife;
@@ -50,7 +43,6 @@ public class Summon : Fighter {
                 break;
             case Summonable.SPIRIT:
                 this.name = "Spirit";
-                this.description = "3 sp00ky 5 me";
                 this.HasLife = false;
                 this.MaxLife = 0;
                 this.LifeValue = MaxLife;
@@ -66,7 +58,7 @@ public class Summon : Fighter {
         // Not using the ObjectPooler as there is only one player character
         GameObject summonVisual = ObjectPooler.Spawn(prefab, new Vector3(0, 0, -10), Quaternion.identity);
         display = new SummonView();
-        display.InitializeView(summonVisual, Id);
+        display.InitializeView(summonVisual, id);
         UpdateVisual();
     }
 

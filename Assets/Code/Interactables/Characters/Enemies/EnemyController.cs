@@ -1,7 +1,4 @@
-﻿using System;
-using System.CodeDom;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyController {
@@ -12,14 +9,10 @@ public class EnemyController {
     private Dictionary<int, Enemy> enemyDictionary = new Dictionary<int, Enemy>();
     private List<Enemy> enemyList = new List<Enemy>();
 
-    // These canvases contain visuals relevant to the player's stats
-    private GameObject playerCanvas;
-    private GameObject slotCanvas;
-
     public void Initialize() {
         SharedInstance = this;
         Enemy newEnemy = new Enemy(Enemy.EnemyType.KNIGHT, ResourceController.GenerateId());
-        enemyDictionary.Add(newEnemy.Id, newEnemy);
+        enemyDictionary.Add(newEnemy.id, newEnemy);
         enemyList.Add(newEnemy);
         newEnemy.CreateVisual();
     }
@@ -27,7 +20,7 @@ public class EnemyController {
     public void CreateEnemy(Enemy.EnemyType enemyType) {
         Enemy newEnemy = new Enemy(enemyType, ResourceController.GenerateId());
         newEnemy.CreateVisual();
-        enemyDictionary.Add(newEnemy.Id, newEnemy);
+        enemyDictionary.Add(newEnemy.id, newEnemy);
         enemyList.Add(newEnemy);
     }
 
@@ -49,13 +42,13 @@ public class EnemyController {
             // Clear the visual first to ensure proper removal
             enemy.ClearVisual();
             enemyList.RemoveAt(0);
-            enemyDictionary.Remove(enemy.Id);
+            enemyDictionary.Remove(enemy.id);
         }
         else {
             enemy.LifeValue = lifeResult;
             // Update the summon objects in the list and dictionary
             enemyList[0] = enemy;
-            enemyDictionary[enemy.Id] = enemy;
+            enemyDictionary[enemy.id] = enemy;
             // Update the list
             enemy.UpdateVisual();
         }

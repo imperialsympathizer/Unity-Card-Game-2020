@@ -1,22 +1,15 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.VFX;
+﻿using UnityEngine;
 
 public class Player : Fighter {
     // Class that houses the data for players
     // Contains references to PlayerView but does not directly control it in most instances
     // Accessed and instantiated through the PlayerController
-
-    private string name;
-    public int Id { get; private set; }
     public int MaxWill { get; private set; }
     public int WillValue { get; set; }
 
     public bool HasSlots { get; private set; }
     public int MaxSlots { get; private set; }
     public int SlotsValue { get; set; }
-
-    private string description;
 
     // Visual component of the player, stored within its own View class
     private PlayerView display;
@@ -37,8 +30,7 @@ public class Player : Fighter {
         switch (player) {
             case PlayerCharacter.NECROMANCER:
                 this.name = "The Necromancer";
-                this.description = "Don't let him near your graveyards.";
-                this.Id = id;
+                this.id = id;
                 this.HasLife = true;
                 this.MaxLife = 20;
                 this.LifeValue = MaxLife;
@@ -60,7 +52,7 @@ public class Player : Fighter {
         // Not using the ObjectPooler as there is only one player character
         GameObject playerVisual = GameObject.Instantiate(prefab, new Vector3(0, 0, -10), Quaternion.identity);
         display = new PlayerView();
-        display.InitializeView(playerVisual, Id, slotPrefab, SlotsValue);
+        display.InitializeView(playerVisual, id, slotPrefab, SlotsValue);
         UpdateVisual();
     }
 
