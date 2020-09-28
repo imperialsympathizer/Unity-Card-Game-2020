@@ -7,11 +7,19 @@ public class PlayerController {
 
     public void Initialize() {
         SharedInstance = this;
-        player = new Player(Player.PlayerCharacter.NECROMANCER, ResourceController.GenerateId());
+        CreatePlayer(Player.PlayerCharacter.NECROMANCER);
+    }
+
+    public void CreatePlayer(Player.PlayerCharacter character) {
+        switch (character) {
+            case Player.PlayerCharacter.NECROMANCER:
+                player = new Player("The Necromancer", VisualController.SharedInstance.GetPrefab("NecromancerPrefab"), 5, 1, 20, 20, 20, 20, true, 8, 3);
+                break;
+        }
         player.CreateVisual();
     }
 
-    public int GetAvailableSlots() {
+    public int GetSlotsValue() {
         return player.SlotsValue;
     }
 
@@ -31,16 +39,12 @@ public class PlayerController {
         return player.WillValue;
     }
 
-    public void SetLife(int val) {
-        if (player.HasLife) {
-            player.LifeValue = val;
-        }
+    public void UpdateLife(int val) {
+        player.UpdateLifeValue(val);
     }
 
-    public void SetWill(int val) {
-        if (player.HasLife) {
-            player.WillValue = val;
-        }
+    public void UpdateWill(int val) {
+        player.UpdateWillValue(val);
     }
 
     public void UpdateVisual() {
@@ -55,21 +59,14 @@ public class PlayerController {
         }
 
         // Change the life and will totals to reflect damage taken
-        int lifeResult = player.LifeValue - damage;
-        int willResult = player.WillValue;
-        while (lifeResult < 1) {
-            lifeResult += 20;
-            willResult--;
-        }
+        player.UpdateLifeValue(-damage);
 
         // If damage exceeds the life remaining, the player is defeated
         // In both cases, update the life, will and visuals
-        if (lifeResult < 1 && willResult < 1) {
+        if (player.LifeValue < 1 && player.WillValue < 1) {
             // TODO: death animation
         }
 
-        player.LifeValue = lifeResult;
-        player.WillValue = willResult;
         player.UpdateVisual();
 
         return true;

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using UnityEngine;
 
 public class EnemyController {
     public static EnemyController SharedInstance;
@@ -11,14 +10,20 @@ public class EnemyController {
 
     public void Initialize() {
         SharedInstance = this;
-        Enemy newEnemy = new Enemy(Enemy.EnemyType.KNIGHT, ResourceController.GenerateId());
-        enemyDictionary.Add(newEnemy.id, newEnemy);
-        enemyList.Add(newEnemy);
-        newEnemy.CreateVisual();
+        CreateEnemy(Enemy.EnemyType.KNIGHT);
     }
 
     public void CreateEnemy(Enemy.EnemyType enemyType) {
-        Enemy newEnemy = new Enemy(enemyType, ResourceController.GenerateId());
+        Enemy newEnemy;
+        switch (enemyType) {
+            case Enemy.EnemyType.KNIGHT:
+                newEnemy = new Enemy("Knight", VisualController.SharedInstance.GetPrefab("KnightPrefab"), 10, 2, 50, 50);
+                break;
+            default:
+                // Default enemy is knight
+                newEnemy = new Enemy("Knight", VisualController.SharedInstance.GetPrefab("KnightPrefab"), 10, 2, 50, 50);
+                break;
+        }
         newEnemy.CreateVisual();
         enemyDictionary.Add(newEnemy.id, newEnemy);
         enemyList.Add(newEnemy);
@@ -30,14 +35,26 @@ public class EnemyController {
         if (enemyList.Count < 1) {
             return false;
         }
+        
+        // Only attack the enemy if it has life
+        // Otherwise, attack the next enemy
+        int enemyIndex = 0;
+        Enemy enemy = enemyList[enemyIndex];
+        while (!enemy.HasLife) {
+            enemyIndex++;
+            if (enemyIndex >= enemyList.Count) {
+                return false;
+            }
+
+            enemy = enemyList[enemyIndex];
+        }
 
         // Change the life total to reflect damage taken
-        Enemy enemy = enemyList[0];
-        int lifeResult = enemy.LifeValue - damage;
+        enemy.UpdateLifeValue(-damage);
 
         // If damage exceeds the life remaining, the summon is defeated
         // Otherwise, update the life total and visuals
-        if (lifeResult <= 0) {
+        if (enemy.LifeValue <= 0) {
             // TODO: death animation
             // Clear the visual first to ensure proper removal
             enemy.ClearVisual();
@@ -45,12 +62,10 @@ public class EnemyController {
             enemyDictionary.Remove(enemy.id);
         }
         else {
-            enemy.LifeValue = lifeResult;
-            // Update the summon objects in the list and dictionary
-            enemyList[0] = enemy;
-            enemyDictionary[enemy.id] = enemy;
-            // Update the list
             enemy.UpdateVisual();
+            // Update the enemy objects in the list and dictionary
+            enemyList[enemyIndex] = enemy;
+            enemyDictionary[enemy.id] = enemy;
         }
 
         return true;
@@ -77,7 +92,7 @@ public class EnemyController {
     }
 
     private void UpdateVisual(int id) {
-        // Updates any visuals that display player data
+        // Updates any visuals that display enemy data
         Enemy editEnemy;
         if (enemyDictionary.TryGetValue(id, out editEnemy)) {
             editEnemy.UpdateVisual();

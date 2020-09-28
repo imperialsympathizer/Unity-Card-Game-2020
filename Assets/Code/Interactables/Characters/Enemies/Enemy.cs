@@ -16,19 +16,22 @@ public class Enemy : Fighter {
 
     // Constructor that creates the object, but does not instantiate visuals.
     // Those can be called as needed by the CreateVisual() function
-    public Enemy(EnemyType enemyType, int id) {
-        switch (enemyType) {
-            case EnemyType.KNIGHT:
-                this.name = "Knight";
-                this.id = id;
-                this.HasLife = true;
-                this.MaxLife = 50;
-                this.LifeValue = MaxLife;
-                this.AttackValue = 10;
-                this.AttackTimes = 2;
-                this.prefab = VisualController.SharedInstance.GetPrefab("KnightPrefab");
-                break;
-        }
+    // Constructor for an enemy with health
+    public Enemy(string name,
+        GameObject prefab,
+        int baseAttack,
+        int baseAttackTimes,
+        int baseMaxLife,
+        int baseLife) : base(name, baseAttack, baseAttackTimes, true, baseMaxLife, baseLife) {
+        this.prefab = prefab;
+    }
+
+    // Enemy without health
+    public Enemy(string name,
+        GameObject prefab,
+        int baseAttack,
+        int baseAttackTimes) : base(name, baseAttack, baseAttackTimes) {
+        this.prefab = prefab;
     }
 
     public void CreateVisual() {

@@ -6,14 +6,18 @@ public abstract class Passive : StaticEffect {
     // Because of how broadly applicable this class is, the brunt of the logic will be left to the inheriting child classes
     // This class could cover anything from drawing an extra card per turn to making cards cost less to skipping the next combat step, etc.
 
-    protected PassiveType passiveType;
+    public readonly PassiveType passiveType;
 
-    public Passive(PassiveType passiveType, int effectCount, List<EffectTiming.Trigger> timingTriggers, int priority) : base(effectCount, timingTriggers, priority) {
+    public Passive(PassiveType passiveType, int effectCount, Dictionary<TriggerAction.Trigger, TriggerAction> triggerActions, int priority) : base(effectCount, triggerActions, priority) {
         this.passiveType = passiveType;
     }
 
     public enum PassiveType {
         DRAW,
         DISCARD
+    }
+
+    protected override void RemoveEffect() {
+        StaticEffectController.SharedInstance.RemovePassive(this);
     }
 }

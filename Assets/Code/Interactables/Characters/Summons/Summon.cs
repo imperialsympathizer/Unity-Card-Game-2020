@@ -1,11 +1,10 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.VFX;
+﻿using UnityEngine;
 
 public class Summon : Fighter {
     // Class that houses the data for summons
     // Contains references to SummonView but does not directly control it in most instances
     // Accessed and instantiated through the SummonController
+    Attacker summon;
 
     // Visual component of the player, stored within its own View class
     private SummonView display;
@@ -20,37 +19,23 @@ public class Summon : Fighter {
 
     // Constructor that creates the object, but does not instantiate visuals.
     // Those can be called as needed by the CreateVisual() function
-    public Summon(Summonable summonType, int id) {
-        this.id = id;
-        switch (summonType) {
-            case Summonable.ZOMBIE:
-                this.name = "Zombie";
-                this.HasLife = true;
-                this.MaxLife = 1;
-                this.LifeValue = MaxLife;
-                this.AttackValue = 1;
-                this.AttackTimes = 1;
-                this.prefab = VisualController.SharedInstance.GetPrefab("ZombiePrefab");
-                break;
-            case Summonable.SKELETON:
-                this.name = "Skeleton";
-                this.HasLife = true;
-                this.MaxLife = 10;
-                this.LifeValue = MaxLife;
-                this.AttackValue = 5;
-                this.AttackTimes = 2;
-                this.prefab = VisualController.SharedInstance.GetPrefab("SkeletonPrefab");
-                break;
-            case Summonable.SPIRIT:
-                this.name = "Spirit";
-                this.HasLife = false;
-                this.MaxLife = 0;
-                this.LifeValue = MaxLife;
-                this.AttackValue = 0;
-                this.AttackTimes = 0;
-                this.prefab = VisualController.SharedInstance.GetPrefab("SpiritPrefab");
-                break;
-        }
+    // This constructor creates an Attacker object
+    // Constructor for a summon with health
+    public Summon(string name,
+        GameObject prefab,
+        int baseAttack,
+        int baseAttackTimes,
+        int baseMaxLife,
+        int baseLife) : base(name, baseAttack, baseAttackTimes, true, baseMaxLife, baseLife) {
+        this.prefab = prefab;
+    }
+
+    // Summon without health
+    public Summon(string name,
+        GameObject prefab,
+        int baseAttack,
+        int baseAttackTimes) : base(name, baseAttack, baseAttackTimes) {
+        this.prefab = prefab;
     }
 
     public void CreateVisual() {

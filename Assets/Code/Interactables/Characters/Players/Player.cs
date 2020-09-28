@@ -1,15 +1,16 @@
-﻿using UnityEngine;
+﻿using System.Runtime.CompilerServices;
+using UnityEngine;
 
 public class Player : Fighter {
     // Class that houses the data for players
     // Contains references to PlayerView but does not directly control it in most instances
     // Accessed and instantiated through the PlayerController
     public int MaxWill { get; private set; }
-    public int WillValue { get; set; }
+    public int WillValue { get; private set; }
 
     public bool HasSlots { get; private set; }
     public int MaxSlots { get; private set; }
-    public int SlotsValue { get; set; }
+    public int SlotsValue { get; private set; }
 
     // Visual component of the player, stored within its own View class
     private PlayerView display;
@@ -26,26 +27,28 @@ public class Player : Fighter {
 
     // Constructor that creates the object, but does not instantiate visuals.
     // Those can be called as needed by the CreateVisual() function
-    public Player(PlayerCharacter player, int id) {
-        switch (player) {
-            case PlayerCharacter.NECROMANCER:
-                this.name = "The Necromancer";
-                this.id = id;
-                this.HasLife = true;
-                this.MaxLife = 20;
-                this.LifeValue = MaxLife;
-                this.MaxWill = 20;
-                this.WillValue = MaxWill;
-                this.HasSlots = true;
-                this.MaxSlots = 8;
-                this.SlotsValue = 3;
-                this.AttackValue = 5;
-                this.AttackTimes = 1;
-                this.prefab = VisualController.SharedInstance.GetPrefab("NecromancerPrefab");
-                this.slotPrefab = VisualController.SharedInstance.GetPrefab("SlotPrefab");
-                break;
-        }
+    public Player(
+        string name,
+        GameObject prefab,
+        int baseAttack,
+        int baseAttackTimes,
+        int baseMaxLife,
+        int baseLife,
+        int baseMaxWill, 
+        int baseWillValue,
+        bool hasSlots,
+        int maxSlots = 0,
+        int slotsValue = 0) : base(name, baseAttack, baseAttackTimes, true, baseMaxLife, baseLife) {
+        this.prefab = prefab;
+        slotPrefab = VisualController.SharedInstance.GetPrefab("SlotPrefab");
+        MaxWill = baseMaxWill;
+        WillValue = baseWillValue;
+        HasSlots = hasSlots;
+        MaxSlots = maxSlots;
+        SlotsValue = slotsValue;
     }
+
+    #region Visual Methods
 
     public void CreateVisual() {
         // Spawn an object to view the player on screen
@@ -56,6 +59,25 @@ public class Player : Fighter {
         UpdateVisual();
     }
 
+    public void ClearVisual() {
+        if (display != null) {
+            display.Despawn();
+            display = null;
+        }
+    }
+
+    public void UpdateVisual() {
+        display.SetActive(false);
+        display.SetAttack(AttackValue);
+        display.SetAttackTimes(AttackTimes);
+        display.SetLife(LifeValue);
+        display.SetWill(WillValue);
+        display.SetActive(true);
+    }
+
+    #endregion
+
+    #region Data Methods
     public void AddSlot() {
         if (SlotsValue < MaxSlots) {
             SlotsValue++;
@@ -70,20 +92,29 @@ public class Player : Fighter {
         }
     }
 
-    // Function to call before moving card off the screen to another location (such as deck or discard)
-    public void ClearVisual() {
-        if (display != null) {
-            // Destroy(display);
-            display = null;
+    // Since the player's life is tied to their will, need to override the Fighter update method
+    public new void UpdateLifeValue(int val) {
+        int lifeResult = LifeValue + val;
+        int willLoss = 0;
+        while (lifeResult < 1) {
+            lifeResult += 20;
+            willLoss++;
+        }
+        base.UpdateLifeValue(lifeResult - LifeValue);
+        UpdateWillValue(-willLoss);
+    }
+
+    public void UpdateMaxWill(int val) {
+        MaxWill += val;
+    }
+
+    public void UpdateWillValue(int val) {
+        WillValue += val;
+        if (WillValue > MaxWill) {
+            // Will value cannot exceed max will
+            WillValue = MaxWill;
         }
     }
 
-    public void UpdateVisual() {
-        display.SetActive(false);
-        display.SetAttack(AttackValue);
-        display.SetAttackTimes(AttackTimes);
-        display.SetLife(LifeValue);
-        display.SetWill(WillValue);
-        display.SetActive(true);
-    }
+    #endregion
 }

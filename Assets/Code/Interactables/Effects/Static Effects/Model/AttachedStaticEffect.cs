@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Data.SqlTypes;
 
 public abstract class AttachedStaticEffect : StaticEffect {
     // This StaticEffect child class deals specifically with effects that are attached to specific entities
@@ -8,7 +7,7 @@ public abstract class AttachedStaticEffect : StaticEffect {
     // reference to the character that has the static effect
     protected Character character;
 
-    public AttachedStaticEffect(Character character, int effectCount, List<EffectTiming.Trigger> timingTriggers, int priority) : base(effectCount, timingTriggers, priority) {
+    public AttachedStaticEffect(Character character, int effectCount, Dictionary<TriggerAction.Trigger, TriggerAction> triggerActions, int priority) : base(effectCount, triggerActions, priority) {
         this.character = character;
     }
 }

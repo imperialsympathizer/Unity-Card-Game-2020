@@ -14,8 +14,26 @@ public class SummonController {
     }
 
     public void CreateSummon(Summon.Summonable summonType) {
-        if (PlayerController.SharedInstance.GetAvailableSlots() - summonList.Count > 0) {
-            Summon newSummon = new Summon(summonType, ResourceController.GenerateId());
+        if (PlayerController.SharedInstance.GetSlotsValue() - summonList.Count > 0) {
+            Summon newSummon;
+            switch (summonType) {
+                case Summon.Summonable.ZOMBIE:
+                    newSummon = new Summon("Zombie", VisualController.SharedInstance.GetPrefab("ZombiePrefab"), 1, 1, 1, 1);
+                    // TODO: add attack effect to the zombie so that any enemy hit by it takes infection
+                    // TODO: add death effect to the zombie so that any enemy that kills it takes infection
+                    break;
+                case Summon.Summonable.SKELETON:
+                    newSummon = new Summon("Skeleton", VisualController.SharedInstance.GetPrefab("SkeletonPrefab"), 3, 2, 10, 10);
+                    break;
+                case Summon.Summonable.SPIRIT:
+                    newSummon = new Summon("Spirit", VisualController.SharedInstance.GetPrefab("SpiritPrefab"), 0, 0);
+                    // TODO: add effect to the spirit that reduces all enemy attack values
+                    break;
+                default:
+                    newSummon = new Summon("Zombie", VisualController.SharedInstance.GetPrefab("ZombiePrefab"), 1, 1, 1, 1);
+                    // Default summon is zombie
+                    break;
+            }
             newSummon.CreateVisual();
             summonDictionary.Add(newSummon.id, newSummon);
             summonList.Add(newSummon);
@@ -43,11 +61,11 @@ public class SummonController {
         }
 
         // Change the life total to reflect damage taken
-        int lifeResult = summon.LifeValue - damage;
+        summon.UpdateLifeValue(-damage);
 
         // If damage exceeds the life remaining, the summon is defeated
         // Otherwise, update the life total and visuals
-        if (lifeResult <= 0) {
+        if (summon.LifeValue <= 0) {
             // TODO: death animation
             // Clear the visual first to ensure proper removal
             summon.ClearVisual();
@@ -55,12 +73,10 @@ public class SummonController {
             summonDictionary.Remove(summon.id);
         }
         else {
-            summon.LifeValue = lifeResult;
+            summon.UpdateVisual();
             // Update the summon objects in the list and dictionary
             summonList[summonIndex] = summon;
             summonDictionary[summon.id] = summon;
-            // Update the list
-            summon.UpdateVisual();
         }
 
         return true;
