@@ -9,7 +9,6 @@ public class Card {
     public int Id { get; private set; }
     private string description;
     public int lifeCost { get; private set; }
-    public bool hasTargets { get; private set; }
     // this is the list of game effects to perform when a card is played
     public List<DynamicEffect> Effects { get; private set; }
 
@@ -19,12 +18,11 @@ public class Card {
 
     // Constructor that creates the object, but does not instantiate visuals.
     // Those can be called as needed by the CreateVisual() function
-    public Card(string name, int id, string description, int cost, bool hasTargets, List<DynamicEffect> effects) {
+    public Card(string name, int id, string description, int cost, List<DynamicEffect> effects) {
         this.name = name;
         this.Id = id;
         this.description = description;
         this.lifeCost = cost;
-        this.hasTargets = hasTargets;
         this.Effects = effects;
     }
 
@@ -34,7 +32,6 @@ public class Card {
         this.Id = id;
         this.description = cardSource.description;
         this.lifeCost = cardSource.lifeCost;
-        this.hasTargets = cardSource.hasTargets;
         this.Effects = cardSource.Effects;
     }
 

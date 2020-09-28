@@ -11,7 +11,7 @@ public class CardSource {
         List<DynamicEffect> effects = new List<DynamicEffect>();
         effects.Add(drawEffect);
 
-        Card newCard = new Card("Dark Pact", 0, "Draw 2 Cards", 5, false, effects);
+        Card newCard = new Card("Dark Pact", 0, "Draw 2 Cards", 5, effects);
         allCards.Add(0, newCard);
 
         // Second card in the library
@@ -19,7 +19,7 @@ public class CardSource {
         effects = new List<DynamicEffect>();
         effects.Add(drawEffect);
 
-        newCard = new Card("Not-so-dark pact", 0, "Draw 1 Card", 2, false, effects);
+        newCard = new Card("Not-so-dark pact", 0, "Draw 1 Card", 2, effects);
         allCards.Add(1, newCard);
 
         // Third card in the library
@@ -27,7 +27,7 @@ public class CardSource {
         effects = new List<DynamicEffect>();
         effects.Add(drawEffect);
 
-        newCard = new Card("Got Enough Draw?", 0, "Draw 3 Cards", 10, false, effects);
+        newCard = new Card("Got Enough Draw?", 0, "Draw 3 Cards", 10, effects);
         allCards.Add(2, newCard);
 
         // card 4
@@ -35,7 +35,7 @@ public class CardSource {
         effects = new List<DynamicEffect>();
         effects.Add(summonEffect);
 
-        newCard = new Card("Let's summon Mom, Edward", 0, "Summon a zombie", 10, false, effects);
+        newCard = new Card("Let's summon Mom, Edward", 0, "Summon a zombie", 10, effects);
         allCards.Add(3, newCard);
 
         // card 5
@@ -43,7 +43,7 @@ public class CardSource {
         effects = new List<DynamicEffect>();
         effects.Add(slotEffect);
 
-        newCard = new Card("moar portals", 0, "increase summon slots by 2", 7, false, effects);
+        newCard = new Card("moar portals", 0, "increase summon slots by 2", 7, effects);
         allCards.Add(4, newCard);
 
         // card 6
@@ -51,7 +51,7 @@ public class CardSource {
         effects = new List<DynamicEffect>();
         effects.Add(slotEffect);
 
-        newCard = new Card("too many holes", 0, "reduce summon slots by 1", 7, false, effects);
+        newCard = new Card("too many holes", 0, "reduce summon slots by 1", 7, effects);
         allCards.Add(5, newCard);
 
         // card 7
@@ -59,7 +59,7 @@ public class CardSource {
         effects = new List<DynamicEffect>();
         effects.Add(summonEffect);
 
-        newCard = new Card("Mr. Bones' Wild Ride", 0, "Summon a skeleton", 5, false, effects);
+        newCard = new Card("Mr. Bones' Wild Ride", 0, "Summon a skeleton", 5, effects);
         allCards.Add(6, newCard);
 
         // card 8
@@ -67,7 +67,7 @@ public class CardSource {
         effects = new List<DynamicEffect>();
         effects.Add(summonEffect);
 
-        newCard = new Card("Spooky time", 0, "Summon a spirit", 6, false, effects);
+        newCard = new Card("Spooky time", 0, "Summon a spirit", 6, effects);
         allCards.Add(7, newCard);
     }
 }
