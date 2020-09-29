@@ -58,4 +58,18 @@ public class Enemy : Fighter {
         display.SetLife(LifeValue);
         display.SetActive(true);
     }
+
+    public override void PerformAttacks() {
+        // Resolve attacks on the front summon or player until it is dead, then continue until all attacks are gone or the player is defeated
+        for (int i = 0; i < AttackTimes; i++) {
+            // If there is a summon available to be hit by an attack, attack it
+            if (!SummonController.SharedInstance.ReceiveAttack(this)) {
+                // Otherwise, attack the player
+                if (!PlayerController.SharedInstance.ReceiveAttack(this)) {
+                    // If there are no entities to resolve attacks on (they're dead) escape the loop
+                    break;
+                }
+            }
+        }
+    }
 }

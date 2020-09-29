@@ -19,6 +19,7 @@ public class SummonController {
             switch (summonType) {
                 case Summon.Summonable.ZOMBIE:
                     newSummon = new Summon("Zombie", VisualController.SharedInstance.GetPrefab("ZombiePrefab"), 1, 1, 1, 1);
+                    StaticEffectController.SharedInstance.AddStatus(new Infector(newSummon, 1));
                     // TODO: add attack effect to the zombie so that any enemy hit by it takes infection
                     // TODO: add death effect to the zombie so that any enemy that kills it takes infection
                     break;
@@ -40,7 +41,17 @@ public class SummonController {
         }
     }
 
-    public bool ResolveAttack(int damage) {
+    public void PerformAttacks() {
+        // Iterate from right to left
+        for (int i = summonList.Count - 1; i >= 0; i--) {
+            Summon attacker = summonList[i];
+            if (attacker.AttackTimes > 0 && attacker.AttackValue > 0) {
+                attacker.PerformAttacks();
+            }
+        }
+    }
+
+    public bool ReceiveAttack(Attacker attacker) {
         // This function returns false if there are no summons available to take damage from an attack
         // Otherwise, damage is dealt to the front summon (at the end of the list)
         int summonIndex = summonList.Count - 1;
@@ -61,7 +72,7 @@ public class SummonController {
         }
 
         // Change the life total to reflect damage taken
-        summon.UpdateLifeValue(-damage);
+        summon.ReceiveAttack(attacker);
 
         // If damage exceeds the life remaining, the summon is defeated
         // Otherwise, update the life total and visuals
@@ -80,22 +91,6 @@ public class SummonController {
         }
 
         return true;
-    }
-
-    public Queue<int> GetAttackQueue() {
-        // Returns a queue (FIFO) of attacks performed by summons
-        // Each summon will add its attackValue to a new entry in the queue as many times as their attackTimes is
-        Queue<int> attacks = new Queue<int>();
-        for (int i = 0; i < summonList.Count; i++) {
-            Summon summon = summonList[i];
-            if (summon.AttackTimes > 0) {
-                for (int j = 0; j < summon.AttackTimes; j++) {
-                    attacks.Enqueue(summon.AttackValue);
-                }
-            }
-        }
-
-        return attacks;
     }
 
     private void UpdateVisual(int id) {

@@ -11,6 +11,7 @@ public class ResourceController : MonoBehaviour {
     private PlayerController playerController;
     private SummonController summonController;
     private EnemyController enemyController;
+    private StaticEffectController staticEffectController;
 
     private NumberAnimator numberAnimator;
     private TargetSelector targetSelector;
@@ -35,6 +36,7 @@ public class ResourceController : MonoBehaviour {
         playerController = new PlayerController(); // Dependencies - VisualController (prefabs), NumberAnimator, needs to know what player to spawn
         summonController = new SummonController(); // Dependencies - VisualController
         enemyController = new EnemyController();
+        staticEffectController = new StaticEffectController();
 
         gameOverManager = new GameEndManager();
         numberAnimator = new NumberAnimator();
@@ -57,6 +59,7 @@ public class ResourceController : MonoBehaviour {
         enemyController.Initialize();
         gameOverManager.Initialize();
         targetSelector.Initialize();
+        staticEffectController.Initialize();
 
         // When resources are completely loaded, sets the field that tells the TurnSystem to begin the game
         Loaded = true;

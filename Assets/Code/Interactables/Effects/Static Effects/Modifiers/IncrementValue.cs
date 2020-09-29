@@ -16,15 +16,15 @@ public class IncrementValue : Modifier {
         Character character,
         ModifierType modifierType,
         int effectCount,
-        Dictionary<TriggerAction.Trigger, TriggerAction> triggerActions,
+        List<Trigger> triggers,
         int incrementValue,
         int incrementTimes = -1) 
-        : base(character, modifierType, effectCount, triggerActions, 0) {
+        : base(character, modifierType, effectCount, triggers, 0) {
         this.incrementValue = incrementValue;
         this.incrementTimes = incrementTimes;
     }
 
-    protected override void ResolveEffect() {
+    protected override void ResolveEffect(Trigger trigger) {
         switch (modifierType) {
             case ModifierType.ATK_VALUE:
                 if (character is Attacker) {
@@ -62,12 +62,12 @@ public class IncrementValue : Modifier {
             incrementTimes--;
             if (incrementTimes == 0) {
                 // Remove the effect if this was the last time to resolve it
-                RemoveEffect();
+                RemoveEffect(trigger);
             }
         }
     }
 
-    protected override void OperateOnEffect() {
+    protected override void OperateOnEffect(Trigger trigger) {
         throw new NotImplementedException();
     }
 

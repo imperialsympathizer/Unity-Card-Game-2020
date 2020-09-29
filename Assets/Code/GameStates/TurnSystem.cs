@@ -4,6 +4,8 @@ using UnityEngine;
 public class TurnSystem : StateMachine {
     public static TurnSystem SharedInstance;
 
+    public static int turnCount = 0;
+
     void Start() {
         SharedInstance = this;
         // Will loop waiting for resources to load and then start the game

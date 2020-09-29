@@ -52,14 +52,18 @@ public class PlayerController {
         player.UpdateVisual();
     }
 
-    public bool ResolveAttack(int damage) {
+    public void PerformAttacks() {
+        player.PerformAttacks();
+    }
+
+    public bool ReceiveAttack(Attacker attacker) {
         // This function returns false if the player is already considered dead
         if (player.LifeValue < 1 && player.WillValue < 1) {
             return false;
         }
 
         // Change the life and will totals to reflect damage taken
-        player.UpdateLifeValue(-damage);
+        player.ReceiveAttack(attacker);
 
         // If damage exceeds the life remaining, the player is defeated
         // In both cases, update the life, will and visuals
@@ -70,17 +74,5 @@ public class PlayerController {
         player.UpdateVisual();
 
         return true;
-    }
-
-    public Queue<int> GetAttackQueue() {
-        // Returns a queue (FIFO) of attacks performed by the player
-        Queue<int> attacks = new Queue<int>();
-        if (player.AttackTimes > 0) {
-            for (int j = 0; j < player.AttackTimes; j++) {
-                attacks.Enqueue(player.AttackValue);
-            }
-        }
-
-        return attacks;
     }
 }

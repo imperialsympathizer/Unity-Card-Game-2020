@@ -7,7 +7,7 @@ public abstract class Modifier : AttachedStaticEffect {
 
     // IMPORTANT: All modifiers, no matter what operations they are performing on the value, must convert the operation to an additive value in order for calculation of values to be performed correctly
 
-    public Modifier(Character character, ModifierType modifierType, int effectCount, Dictionary<TriggerAction.Trigger, TriggerAction> triggerActions, int priority) : base(character, effectCount, triggerActions, priority) {
+    public Modifier(Character character, ModifierType modifierType, int effectCount, List<Trigger> triggers, int priority) : base(character, effectCount, triggers, priority) {
         this.modifierType = modifierType;
     }
 
@@ -20,7 +20,13 @@ public abstract class Modifier : AttachedStaticEffect {
         WILL_VALUE
     }
 
-    protected override void RemoveEffect() {
-        StaticEffectController.SharedInstance.RemoveModifier(this, character);
+    protected override void RemoveEffect(Trigger trigger) {
+        // Clear any triggers the effect was subscribed to
+        for (int i = 0; i < Triggers.Count; i++) {
+            Triggers[i].DeactivateTrigger();
+        }
+
+        // Then, remove the effect from the character and from the StaticEffectController
+        StaticEffectController.SharedInstance.RemoveModifier(id);
     }
 }

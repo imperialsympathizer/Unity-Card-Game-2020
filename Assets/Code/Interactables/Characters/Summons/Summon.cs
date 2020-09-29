@@ -62,4 +62,14 @@ public class Summon : Fighter {
         display.SetLife(LifeValue);
         display.SetActive(true);
     }
+
+    public override void PerformAttacks() {
+        // Resolve attacks on the front enemy until it is dead, then continue until all attacks are gone or the player is defeated
+        for (int i = 0; i < AttackTimes; i++) {
+            if (!EnemyController.SharedInstance.ReceiveAttack(this)) {
+                // If there are no enemies to resolve attacks on escape the loop
+                break;
+            }
+        }
+    }
 }

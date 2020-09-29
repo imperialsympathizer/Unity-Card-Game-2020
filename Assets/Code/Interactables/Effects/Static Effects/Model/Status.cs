@@ -5,7 +5,7 @@ public abstract class Status : AttachedStaticEffect {
     // Statuses can only be attached to specific characters and entities, they cannot be passive
     public readonly StatusType statusType;
 
-    public Status(Character character, StatusType statusType, int effectCount, Dictionary<TriggerAction.Trigger, TriggerAction> triggerActions, int priority) : base(character, effectCount, triggerActions, priority) {
+    public Status(Character character, StatusType statusType, int effectCount, List<Trigger> triggers, int priority) : base(character, effectCount, triggers, priority) {
         this.statusType = statusType;
     }
 
@@ -15,7 +15,13 @@ public abstract class Status : AttachedStaticEffect {
         UNDYING
     }
 
-    protected override void RemoveEffect() {
-        StaticEffectController.SharedInstance.RemoveStatus(this, character);
+    protected override void RemoveEffect(Trigger trigger) {
+        // Clear any triggers the effect was subscribed to
+        for (int i = 0; i < Triggers.Count; i++) {
+            Triggers[i].DeactivateTrigger();
+        }
+
+        // Then, remove the effect from the character and from the StaticEffectController
+        StaticEffectController.SharedInstance.RemoveStatus(id);
     }
 }

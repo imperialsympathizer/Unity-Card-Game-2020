@@ -1,4 +1,6 @@
-﻿public abstract class Attacker : Character {
+﻿using System;
+
+public abstract class Attacker : Character {
     // abstract class defining an attacking character, which generally is all characters
     // Some attackers may not have health, so Life and Attack fields are split into separate abstract classes
     // Example - Spirits can attack but do not have health
@@ -11,6 +13,8 @@
     public int AttackValue { get; private set; }
     public int AttackTimes { get; private set; }
 
+    public static Action<Attacker, Fighter> OnAttack;
+
     public void UpdateAttackValue(int valueChange) {
         // Add or subtract an value from the current
         AttackValue += valueChange;
@@ -19,4 +23,6 @@
     public void UpdateAttackTimes(int valueChange) {
         AttackTimes += valueChange;
     }
+
+    public abstract void PerformAttacks();
 }

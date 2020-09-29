@@ -22,6 +22,10 @@ public class CardManager {
     private TextMeshProUGUI deckCount;
     private TextMeshProUGUI discardCount;
 
+    public static event Action<Card> OnCardDraw;
+    public static event Action<Card> OnCardPlay;
+    public static event Action<Card> OnDiscard;
+
     public void Initialize() {
         SharedInstance = this;
 
@@ -66,6 +70,9 @@ public class CardManager {
             // Update visuals on screen
             PlayerController.SharedInstance.UpdateVisual();
             UpdateVisuals();
+
+            // Fire card played event
+            OnCardPlay?.Invoke(playedCard);
         }
     }
 
@@ -82,6 +89,9 @@ public class CardManager {
             hand.AddCard(drawnCard);
             drawnCard.CreateVisual();
             UpdateVisuals();
+
+            // Fire card drawn event
+            OnCardPlay?.Invoke(drawnCard);
         }
     }
 
@@ -89,11 +99,17 @@ public class CardManager {
         // When no card or index is given, a card is discarded at random
         // TODO
         UpdateVisuals();
+
+        // Fire card played event
+        // OnDiscard?.Invoke(discardedCard);
     }
 
     public void DiscardCard(int cardId) {
         // TODO
         UpdateVisuals();
+
+        // Fire card played event
+        // OnDiscard?.Invoke(discardedCard);
     }
 
     public void DiscardHand() {

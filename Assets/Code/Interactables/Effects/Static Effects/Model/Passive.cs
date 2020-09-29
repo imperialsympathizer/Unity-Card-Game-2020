@@ -8,7 +8,7 @@ public abstract class Passive : StaticEffect {
 
     public readonly PassiveType passiveType;
 
-    public Passive(PassiveType passiveType, int effectCount, Dictionary<TriggerAction.Trigger, TriggerAction> triggerActions, int priority) : base(effectCount, triggerActions, priority) {
+    public Passive(PassiveType passiveType, int effectCount, List<Trigger> triggers, int priority) : base(effectCount, triggers, priority) {
         this.passiveType = passiveType;
     }
 
@@ -17,7 +17,13 @@ public abstract class Passive : StaticEffect {
         DISCARD
     }
 
-    protected override void RemoveEffect() {
-        StaticEffectController.SharedInstance.RemovePassive(this);
+    protected override void RemoveEffect(Trigger trigger) {
+        // Clear any triggers the effect was subscribed to
+        for (int i = 0; i < Triggers.Count; i++) {
+            Triggers[i].DeactivateTrigger();
+        }
+
+        // Then, remove the effect from the StaticEffectController
+        StaticEffectController.SharedInstance.RemovePassive(id);
     }
 }

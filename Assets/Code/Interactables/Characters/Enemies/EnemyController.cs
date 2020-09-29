@@ -29,7 +29,17 @@ public class EnemyController {
         enemyList.Add(newEnemy);
     }
 
-    public bool ResolveAttack(int damage) {
+    public void PerformAttacks() {
+        // Iterate from left to right
+        for (int i = 0; i < enemyList.Count; i++) {
+            Enemy attacker = enemyList[i];
+            if (attacker.AttackTimes > 0 && attacker.AttackValue > 0) {
+                attacker.PerformAttacks();
+            }
+        }
+    }
+
+    public bool ReceiveAttack(Attacker attacker) {
         // This function returns false if there are no enemies available to take damage from an attack
         // Otherwise, damage is dealt to the front enemy (at the beginning of the list)
         if (enemyList.Count < 1) {
@@ -50,7 +60,7 @@ public class EnemyController {
         }
 
         // Change the life total to reflect damage taken
-        enemy.UpdateLifeValue(-damage);
+        enemy.ReceiveAttack(attacker);
 
         // If damage exceeds the life remaining, the summon is defeated
         // Otherwise, update the life total and visuals
@@ -69,22 +79,6 @@ public class EnemyController {
         }
 
         return true;
-    }
-
-    public Queue<int> GetAttackQueue() {
-        // Returns a queue (FIFO) of attacks performed by summons
-        // Each summon will add its attackValue to a new entry in the queue as many times as their attackTimes is
-        Queue<int> attacks = new Queue<int>();
-        for (int i = 0; i < enemyList.Count; i++) {
-            Enemy enemy = enemyList[i];
-            if (enemy.AttackTimes > 0) {
-                for (int j = 0; j < enemy.AttackTimes; j++) {
-                    attacks.Enqueue(enemy.AttackValue);
-                }
-            }
-        }
-
-        return attacks;
     }
 
     public List<Enemy> GetEnemyList() {

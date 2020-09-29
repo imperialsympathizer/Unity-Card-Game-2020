@@ -1,5 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Player : Fighter {
     // Class that houses the data for players
@@ -93,14 +92,14 @@ public class Player : Fighter {
     }
 
     // Since the player's life is tied to their will, need to override the Fighter update method
-    public new void UpdateLifeValue(int val) {
+    public new void UpdateLifeValue(int val, bool triggerEvents = true) {
         int lifeResult = LifeValue + val;
         int willLoss = 0;
         while (lifeResult < 1) {
             lifeResult += 20;
             willLoss++;
         }
-        base.UpdateLifeValue(lifeResult - LifeValue);
+        base.UpdateLifeValue(lifeResult - LifeValue, triggerEvents);
         UpdateWillValue(-willLoss);
     }
 
@@ -113,6 +112,25 @@ public class Player : Fighter {
         if (WillValue > MaxWill) {
             // Will value cannot exceed max will
             WillValue = MaxWill;
+        }
+    }
+
+    public new void ReceiveAttack(Attacker attacker) {
+        // Invoke the OnAttack event before dealing damage
+        // Allows for buffs on attack triggers before damage is dealt
+        OnAttack?.Invoke(attacker, this);
+        UpdateLifeValue(attacker.AttackValue, false);
+        // Invoke damage from attack event
+        OnDamageAttack?.Invoke(attacker, this, attacker.AttackValue, LifeValue);
+    }
+
+    public override void PerformAttacks() {
+        // Resolve attacks on the front enemy until it is dead, then continue until all attacks are gone or the player is defeated
+        for (int i = 0; i < AttackTimes; i++) {
+            if (!EnemyController.SharedInstance.ReceiveAttack(this)) {
+                // If there are no enemies to resolve attacks on escape the loop
+                break;
+            }
         }
     }
 
