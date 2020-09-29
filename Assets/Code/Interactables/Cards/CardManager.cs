@@ -22,6 +22,10 @@ public class CardManager {
     private TextMeshProUGUI deckCount;
     private TextMeshProUGUI discardCount;
 
+    public static event Action<Card> OnCardDraw;
+    public static event Action<Card> OnCardPlay;
+    public static event Action<Card> OnDiscard;
+
     public void Initialize() {
         SharedInstance = this;
 
@@ -52,30 +56,23 @@ public class CardManager {
 
         // If there was a matching card in the hand, calculate resulting life and will (the player can kill themselves)
         // Then, clear the visuals and add the card to the discard
-        // Then, push any PlayEffects related to the card to the EffectController queue
+        // Then, push any DynamicEffects related to the card to the DynamicEffectController queue
         // Effects of the card in question are resolved in a FIFO order
         if (playedCard != null) {
-            // Calculate resulting life/will
-            PlayerController.SharedInstance.GetLife();
-            int lifeResult = PlayerController.SharedInstance.GetLife() - playedCard.lifeCost;
-            int willResult = PlayerController.SharedInstance.GetWill();
-            while (lifeResult < 1) {
-                lifeResult += 20;
-                willResult--;
-            }
-
             // Adjust life and will totals
-            PlayerController.SharedInstance.SetLife(lifeResult);
-            PlayerController.SharedInstance.SetWill(willResult);
+            PlayerController.SharedInstance.UpdateLife(-playedCard.lifeCost);
 
             // Move card to discard and disable visual
             playedCard.ClearVisual();
             discard.AddCard(playedCard);
-            EffectController.SharedInstance.AddEffects(playedCard.Effects);
+            DynamicEffectController.SharedInstance.AddEffects(playedCard.Effects);
 
             // Update visuals on screen
             PlayerController.SharedInstance.UpdateVisual();
             UpdateVisuals();
+
+            // Fire card played event
+            OnCardPlay?.Invoke(playedCard);
         }
     }
 
@@ -85,27 +82,34 @@ public class CardManager {
             // Check if the deck has cards in it
             if (deck.GetSize() < 1) {
                 // If the deck has 0 (or fewer?) cards in it, reshuffle the discard
-                deck.AddCards(discard.GetCards());
-                discard.ClearCards();
-                deck.Shuffle();
+                ReturnDiscardToDeck();
             }
 
             Card drawnCard = deck.DrawCard();
             hand.AddCard(drawnCard);
             drawnCard.CreateVisual();
             UpdateVisuals();
+
+            // Fire card drawn event
+            OnCardPlay?.Invoke(drawnCard);
         }
     }
 
     public void DiscardRandomCard() {
         // When no card or index is given, a card is discarded at random
-
+        // TODO
         UpdateVisuals();
+
+        // Fire card played event
+        // OnDiscard?.Invoke(discardedCard);
     }
 
     public void DiscardCard(int cardId) {
-
+        // TODO
         UpdateVisuals();
+
+        // Fire card played event
+        // OnDiscard?.Invoke(discardedCard);
     }
 
     public void DiscardHand() {
@@ -126,7 +130,9 @@ public class CardManager {
     }
 
     public void ReturnDiscardToDeck() {
-
+        deck.AddCards(discard.GetCards());
+        discard.ClearCards();
+        deck.Shuffle();
     }
 
     private void UpdateVisuals() {
