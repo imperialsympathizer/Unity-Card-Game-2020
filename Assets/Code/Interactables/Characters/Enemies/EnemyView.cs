@@ -1,5 +1,7 @@
-﻿using TMPro;
+﻿using System;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EnemyView {
     private GameObject visual;
@@ -9,7 +11,9 @@ public class EnemyView {
     private TextMeshProUGUI attackValue;
     private TextMeshProUGUI xText;
     private TextMeshProUGUI attackTimes;
+    private TextMeshProUGUI maxLife;
     private TextMeshProUGUI lifeValue;
+    private RectTransform healthBar;
 
     private SpriteRenderer sprite;
 
@@ -29,16 +33,25 @@ public class EnemyView {
         attackValue = visual.transform.GetChild(1).GetComponent<TextMeshProUGUI>();
         attackTimes = visual.transform.GetChild(2).GetComponent<TextMeshProUGUI>();
         xText = visual.transform.GetChild(3).GetComponent<TextMeshProUGUI>();
-        lifeValue = visual.transform.GetChild(4).GetComponent<TextMeshProUGUI>();
+        maxLife = visual.transform.GetChild(4).GetChild(2).GetComponent<TextMeshProUGUI>();
+        lifeValue = visual.transform.GetChild(4).GetChild(3).GetComponent<TextMeshProUGUI>();
+        healthBar = visual.transform.GetChild(4).GetChild(1).GetComponent<RectTransform>();
         visual.SetActive(true);
     }
 
     public void SetAttack(int val) {
-        this.attackValue.text = val.ToString();
+        NumberAnimator.SharedInstance.AnimateNumberChange(this.attackValue, val);
     }
 
-    public void SetLife(int val) {
-        this.lifeValue.text = val.ToString();
+    public void SetMaxLife(int val) {
+        NumberAnimator.SharedInstance.AnimateNumberChange(this.maxLife, val);
+    }
+
+    public void SetLife(int life, int maxLife) {
+        NumberAnimator.SharedInstance.AnimateNumberChange(this.lifeValue, life);
+        // Animate the healthbar
+        float healthBarSize = 410 * ((float)life / (float)maxLife);
+        LeanTween.size(healthBar, new Vector2(healthBarSize, healthBar.sizeDelta.y), 0.2f);
     }
 
     public void SetAttackTimes(int val) {

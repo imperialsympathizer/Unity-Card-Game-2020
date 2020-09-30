@@ -93,7 +93,7 @@ public class VisualController {
     }
 
     public void ParentToPlayerCanvas(Transform transform) {
-        transform.SetParent(players.transform);
+        transform.SetParent(players.transform, true);
     }
 
     public void ParentToSlotCanvas(Transform transform) {
@@ -101,7 +101,7 @@ public class VisualController {
     }
 
     public void ParentToEnemyCanvas(Transform transform) {
-        transform.SetParent(enemies.transform);
+        transform.SetParent(enemies.transform, true);
     }
 
     public void ParentToSummonCanvas(Transform transform) {

@@ -55,7 +55,8 @@ public class Enemy : Fighter {
         display.SetActive(false);
         display.SetAttack(AttackValue);
         display.SetAttackTimes(AttackTimes);
-        display.SetLife(LifeValue);
+        display.SetMaxLife(MaxLife);
+        display.SetLife(LifeValue, MaxLife);
         display.SetActive(true);
     }
 
