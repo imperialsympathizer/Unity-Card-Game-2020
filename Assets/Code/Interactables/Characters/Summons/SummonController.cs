@@ -1,25 +1,24 @@
 ﻿using System.Collections.Generic;
-using UnityEngine;
 
-public class SummonController {
-    public static SummonController SharedInstance;
-
+public static class SummonController {
     // Dictionary is used for searching for a specific summon by Id (when targeting, etc.)
     // List is used for resolving things like combat, where iteration is important
-    private Dictionary<int, Summon> summonDictionary = new Dictionary<int, Summon>();
-    private List<Summon> summonList = new List<Summon>();
+    private static Dictionary<int, Summon> summonDictionary = new Dictionary<int, Summon>();
+    private static List<Summon> summonList = new List<Summon>();
 
-    public void Initialize() {
-        SharedInstance = this;
+    // Cache the index of a summon whenever it is attacked
+    private static int index;
+
+    public static void Initialize() {
     }
 
-    public void CreateSummon(Summon.Summonable summonType) {
-        if (PlayerController.SharedInstance.GetSlotsValue() - summonList.Count > 0) {
+    public static void CreateSummon(Summon.Summonable summonType) {
+        if (PlayerController.GetSlotsValue() - summonList.Count > 0) {
             Summon newSummon;
             switch (summonType) {
                 case Summon.Summonable.ZOMBIE:
                     newSummon = new Summon("Zombie", VisualController.SharedInstance.GetPrefab("ZombiePrefab"), 1, 1, 1, 1);
-                    StaticEffectController.SharedInstance.AddStatus(new Infector(newSummon, 1));
+                    StaticEffectController.AddStatus(new Infector(newSummon, 1));
                     // TODO: add attack effect to the zombie so that any enemy hit by it takes infection
                     // TODO: add death effect to the zombie so that any enemy that kills it takes infection
                     break;
@@ -41,59 +40,55 @@ public class SummonController {
         }
     }
 
-    public void PerformAttacks() {
-        // Iterate from right to left
-        for (int i = summonList.Count - 1; i >= 0; i--) {
-            Summon attacker = summonList[i];
-            if (attacker.AttackTimes > 0 && attacker.AttackValue > 0) {
-                attacker.PerformAttacks();
-            }
-        }
+    public static List<Summon> GetSummonList() {
+        return summonList;
     }
 
-    public bool ReceiveAttack(Attacker attacker) {
-        // This function returns false if there are no summons available to take damage from an attack
-        // Otherwise, damage is dealt to the front summon (at the end of the list)
-        int summonIndex = summonList.Count - 1;
-        if (summonIndex < 0) {
-            return false;
+    public static Summon GetDefender() {
+        // This function returns null if there are no summons available to take damage from an attack
+        // Otherwise, the front summon is returned
+        index = summonList.Count - 1;
+        if (index < 0) {
+            return null;
         }
 
-        // Only attack the summon if it has life
-        // Otherwise, attack the next summon
-        Summon summon = summonList[summonIndex];
-        while (!summon.HasLife) {
-            summonIndex--;
-            if (summonIndex < 0) {
-                return false;
+        // Can only attack the summon if it has life
+        Summon defender = summonList[index];
+        while (!defender.HasLife) {
+            index--;
+            if (index < 0) {
+                return null;
             }
 
-            summon = summonList[summonIndex];
+            defender = summonList[index];
         }
 
+        return defender;
+    }
+
+    public static void CompleteAttack(int summonId, Attacker attacker) {
         // Change the life total to reflect damage taken
-        summon.ReceiveAttack(attacker);
+        Summon defender = summonDictionary[summonId];
+        defender.ReceiveAttack(attacker);
 
         // If damage exceeds the life remaining, the summon is defeated
         // Otherwise, update the life total and visuals
-        if (summon.LifeValue <= 0) {
+        if (defender.LifeValue <= 0) {
             // TODO: death animation
             // Clear the visual first to ensure proper removal
-            summon.ClearVisual();
-            summonList.RemoveAt(summonIndex);
-            summonDictionary.Remove(summon.id);
+            defender.ClearVisual();
+            summonList.RemoveAt(index);
+            summonDictionary.Remove(defender.id);
         }
         else {
-            summon.UpdateVisual();
+            defender.UpdateVisual();
             // Update the summon objects in the list and dictionary
-            summonList[summonIndex] = summon;
-            summonDictionary[summon.id] = summon;
+            summonList[index] = defender;
+            summonDictionary[defender.id] = defender;
         }
-
-        return true;
     }
 
-    private void UpdateVisual(int id) {
+    private static void UpdateVisual(int id) {
         // Updates any visuals that display player data
         Summon editSummon;
         if (summonDictionary.TryGetValue(id, out editSummon)) {

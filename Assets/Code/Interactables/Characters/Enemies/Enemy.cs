@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class Enemy : Fighter {
     // Class that houses the data for nemies
@@ -51,25 +52,16 @@ public class Enemy : Fighter {
         }
     }
 
-    public void UpdateVisual() {
-        display.SetActive(false);
-        display.SetAttack(AttackValue);
-        display.SetAttackTimes(AttackTimes);
-        display.SetLife(LifeValue);
-        display.SetActive(true);
+    public override void PerformAttack() {
+        display.AnimateAttack();
     }
 
-    public override void PerformAttacks() {
-        // Resolve attacks on the front summon or player until it is dead, then continue until all attacks are gone or the player is defeated
-        for (int i = 0; i < AttackTimes; i++) {
-            // If there is a summon available to be hit by an attack, attack it
-            if (!SummonController.SharedInstance.ReceiveAttack(this)) {
-                // Otherwise, attack the player
-                if (!PlayerController.SharedInstance.ReceiveAttack(this)) {
-                    // If there are no entities to resolve attacks on (they're dead) escape the loop
-                    break;
-                }
-            }
-        }
+    public override void UpdateVisual() {
+        display.SetActive(false);
+        display.SetAttack(AttackValue);
+        display.SetAttackTimes(AttackValue, AttackTimes);
+        display.SetMaxLife(MaxLife);
+        display.SetLife(HasLife, LifeValue, MaxLife);
+        display.SetActive(true);
     }
 }

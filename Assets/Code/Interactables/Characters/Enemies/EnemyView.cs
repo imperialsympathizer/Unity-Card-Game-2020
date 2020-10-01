@@ -9,6 +9,9 @@ public class EnemyView {
     private TextMeshProUGUI attackValue;
     private TextMeshProUGUI xText;
     private TextMeshProUGUI attackTimes;
+
+    private RectTransform healthBar;
+    private TextMeshProUGUI maxLife;
     private TextMeshProUGUI lifeValue;
 
     private SpriteRenderer sprite;
@@ -17,41 +20,51 @@ public class EnemyView {
         this.id = id;
         visual = enemy;
         visual.SetActive(false);
-        sprite = visual.transform.GetChild(0).GetComponent<SpriteRenderer>();
         VisualController.SharedInstance.ParentToEnemyCanvas(visual.transform);
-        // When parented to the enemy canvas, for some reason the sprite likes to size itself to an abritrarily large amount
-        // This ensures its scale is correct
         visual.transform.localScale = new Vector3(1, 1, 1);
-        visual.transform.localPosition = new Vector3(0, 0, -50);
-        // Set outline alpha of sprite to 0
-        sprite.material.SetColor("_OutlineColor", new Color(0, 0, 0, 0));
 
+        sprite = visual.transform.GetChild(0).GetComponent<SpriteRenderer>();
         attackValue = visual.transform.GetChild(1).GetComponent<TextMeshProUGUI>();
         attackTimes = visual.transform.GetChild(2).GetComponent<TextMeshProUGUI>();
         xText = visual.transform.GetChild(3).GetComponent<TextMeshProUGUI>();
-        lifeValue = visual.transform.GetChild(4).GetComponent<TextMeshProUGUI>();
+        healthBar = visual.transform.GetChild(4).GetChild(1).GetComponent<RectTransform>();
+        maxLife = visual.transform.GetChild(4).GetChild(3).GetComponent<TextMeshProUGUI>();
+        lifeValue = visual.transform.GetChild(4).GetChild(2).GetComponent<TextMeshProUGUI>();
         visual.SetActive(true);
     }
 
     public void SetAttack(int val) {
-        this.attackValue.text = val.ToString();
+        NumberAnimator.AnimateNumberChange(this.attackValue, val);
     }
 
-    public void SetLife(int val) {
-        this.lifeValue.text = val.ToString();
+    public void SetMaxLife(int val) {
+        NumberAnimator.AnimateNumberChange(this.maxLife, val);
     }
 
-    public void SetAttackTimes(int val) {
+    public void SetLife(bool hasLife, int life, int maxLife) {
+        if (hasLife) {
+            healthBar.transform.parent.gameObject.SetActive(true);
+            NumberAnimator.AnimateNumberChange(this.lifeValue, life);
+            // Animate the healthbar
+            float healthBarSize = 410 * ((float)life / (float)maxLife);
+            LeanTween.size(healthBar, new Vector2(healthBarSize, healthBar.sizeDelta.y), 0.2f);
+        }
+        else {
+            healthBar.transform.parent.gameObject.SetActive(false);
+        }
+    }
+
+    public void SetAttackTimes(int attackVal, int times) {
         // If the val is 1, disable the x and AttackTimes displays
         // If val is 0, disable all attack displays
-        if (val == 1) {
+        if (times == 1) {
             attackValue.gameObject.SetActive(false);
             attackTimes.gameObject.SetActive(false);
-            xText.text = attackValue.text;
+            xText.text = attackVal.ToString();
             // Use the xText display to display attack since it is the box centered over the character
             // it will be used as the attackValue display unless a character has attackTimes > 1
         }
-        else if (val == 0) {
+        else if (times == 0) {
             attackValue.gameObject.SetActive(false);
             attackTimes.gameObject.SetActive(false);
             xText.gameObject.SetActive(false);
@@ -63,7 +76,7 @@ public class EnemyView {
             attackTimes.gameObject.SetActive(true);
             xText.gameObject.SetActive(true);
         }
-        this.attackTimes.text = val.ToString();
+        this.attackTimes.text = times.ToString();
     }
 
     public void SetActive(bool active = true) {
@@ -72,5 +85,9 @@ public class EnemyView {
 
     public void Despawn() {
         ObjectPooler.Despawn(visual);
+    }
+
+    public void AnimateAttack() {
+        AttackAnimator.AnimateAttack(sprite.gameObject, AttackAnimator.AttackerType.ENEMY);
     }
 }

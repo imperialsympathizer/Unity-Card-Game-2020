@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class VisualController {
@@ -30,13 +29,6 @@ public class VisualController {
 
     // Prefabs must be loaded by the ResourceController and passed as arguments to the Initialize method
     private Dictionary<string, GameObject> prefabs;
-
-    //public GameObject cardPrefab;
-    //public GameObject necromancerPrefab;
-    //public GameObject slotPrefab;
-    //public GameObject zombiePrefab;
-    //public GameObject knightPrefab;
-
 
     public void Initialize(Dictionary<string, GameObject> prefabs) {
         SharedInstance = this;
@@ -81,31 +73,31 @@ public class VisualController {
     #region Parenting Functions
 
     public void RemoveFromVisual(Transform transform) {
-        transform.SetParent(gameController.transform);
+        transform.SetParent(gameController.transform, true);
     }
 
     public void ParentToDisplayCanvas(Transform transform) {
-        transform.SetParent(displayCanvas.transform);
+        transform.SetParent(displayCanvas.transform, true);
     }
 
     public void ParentToCharacterCanvas(Transform transform) {
-        transform.SetParent(characterCanvas.transform);
+        transform.SetParent(characterCanvas.transform, true);
     }
 
     public void ParentToPlayerCanvas(Transform transform) {
-        transform.SetParent(players.transform);
+        transform.SetParent(players.transform, true);
     }
 
     public void ParentToSlotCanvas(Transform transform) {
-        transform.SetParent(slots.transform);
+        transform.SetParent(slots.transform, true);
     }
 
     public void ParentToEnemyCanvas(Transform transform) {
-        transform.SetParent(enemies.transform);
+        transform.SetParent(enemies.transform, true);
     }
 
     public void ParentToSummonCanvas(Transform transform) {
-        transform.SetParent(summons.transform);
+        transform.SetParent(summons.transform, true);
     }
 
     // This is the bottom layer object (therefore is at the front of the screen)

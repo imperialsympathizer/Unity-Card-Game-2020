@@ -55,21 +55,16 @@ public class Summon : Fighter {
         }
     }
 
-    public void UpdateVisual() {
+    public override void UpdateVisual() {
         display.SetActive(false);
         display.SetAttack(AttackValue);
-        display.SetAttackTimes(AttackTimes);
-        display.SetLife(LifeValue);
+        display.SetAttackTimes(AttackValue, AttackTimes);
+        display.SetMaxLife(MaxLife);
+        display.SetLife(HasLife, LifeValue, MaxLife);
         display.SetActive(true);
     }
 
-    public override void PerformAttacks() {
-        // Resolve attacks on the front enemy until it is dead, then continue until all attacks are gone or the player is defeated
-        for (int i = 0; i < AttackTimes; i++) {
-            if (!EnemyController.SharedInstance.ReceiveAttack(this)) {
-                // If there are no enemies to resolve attacks on escape the loop
-                break;
-            }
-        }
+    public override void PerformAttack() {
+        display.AnimateAttack();
     }
 }

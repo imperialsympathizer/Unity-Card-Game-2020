@@ -27,6 +27,6 @@ public abstract class Modifier : AttachedStaticEffect {
         }
 
         // Then, remove the effect from the character and from the StaticEffectController
-        StaticEffectController.SharedInstance.RemoveModifier(id);
+        StaticEffectController.RemoveModifier(id);
     }
 }

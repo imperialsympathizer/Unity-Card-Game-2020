@@ -1,16 +1,12 @@
-﻿using System.Collections.Generic;
+﻿public static class PlayerController {
 
-public class PlayerController {
-    public static PlayerController SharedInstance;
+    private static Player player;
 
-    private Player player;
-
-    public void Initialize() {
-        SharedInstance = this;
+    public static void Initialize() {
         CreatePlayer(Player.PlayerCharacter.NECROMANCER);
     }
 
-    public void CreatePlayer(Player.PlayerCharacter character) {
+    public static void CreatePlayer(Player.PlayerCharacter character) {
         switch (character) {
             case Player.PlayerCharacter.NECROMANCER:
                 player = new Player("The Necromancer", VisualController.SharedInstance.GetPrefab("NecromancerPrefab"), 5, 1, 20, 20, 20, 20, true, 8, 3);
@@ -19,44 +15,44 @@ public class PlayerController {
         player.CreateVisual();
     }
 
-    public int GetSlotsValue() {
+    public static int GetSlotsValue() {
         return player.SlotsValue;
     }
 
-    public void AddSlot() {
+    public static void AddSlot() {
         player.AddSlot();
     }
 
-    public void RemoveSlot() {
+    public static void RemoveSlot() {
         player.RemoveSlot();
     }
 
-    public int GetLife() {
+    public static int GetLife() {
         return player.LifeValue;
     }
 
-    public int GetWill() {
+    public static int GetWill() {
         return player.WillValue;
     }
 
-    public void UpdateLife(int val) {
+    public static void UpdateLife(int val) {
         player.UpdateLifeValue(val);
     }
 
-    public void UpdateWill(int val) {
+    public static void UpdateWill(int val) {
         player.UpdateWillValue(val);
     }
 
-    public void UpdateVisual() {
+    public static void UpdateVisual() {
         // Updates any visuals that display player data
         player.UpdateVisual();
     }
 
-    public void PerformAttacks() {
-        player.PerformAttacks();
+    public static Player GetPlayer() {
+        return player;
     }
 
-    public bool ReceiveAttack(Attacker attacker) {
+    public static bool CompleteAttack(Attacker attacker) {
         // This function returns false if the player is already considered dead
         if (player.LifeValue < 1 && player.WillValue < 1) {
             return false;

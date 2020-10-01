@@ -11,7 +11,7 @@ public class CreateSummon : DynamicEffect {
     public override void ResolveEffect() {
         Debug.Log("Summoning " + effectCount.ToString() + " summons.");
         for (int i = 0; i < effectCount; i++) {
-            SummonController.SharedInstance.CreateSummon(summonType);
+            SummonController.CreateSummon(summonType);
         }
 
         // After resolving effects, remove event listener then fire OnEffectComplete

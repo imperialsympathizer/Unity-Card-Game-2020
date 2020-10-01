@@ -1,34 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using TMPro;
-using UnityEngine;
-using UnityEngine.UI;
 
-public class CardManager {
+public static class CardManager {
     // This class is for the management of cards through drawing/discarding and playing
     // It delegates responsiblities to the Deck, Hand, and Discard for moving objects between them
     // It also triggers visuals on cards (e.g. they appear on screen) when relevant
-    public static CardManager SharedInstance;
-
     // The library of cards that can be played with
-    private CardSource cardSource = new CardSource();
+    private static CardSource cardSource = new CardSource();
 
-    private Deck deck = new Deck();
-    private Hand hand = new Hand();
-    private Discard discard = new Discard();
+    private static Deck deck = new Deck();
+    private static Hand hand = new Hand();
+    private static Discard discard = new Discard();
 
-    private CurvedLayout handArea;
-    private TextMeshProUGUI deckCount;
-    private TextMeshProUGUI discardCount;
+    private static CurvedLayout handArea;
+    private static TextMeshProUGUI deckCount;
+    private static TextMeshProUGUI discardCount;
 
     public static event Action<Card> OnCardDraw;
     public static event Action<Card> OnCardPlay;
     public static event Action<Card> OnDiscard;
 
-    public void Initialize() {
-        SharedInstance = this;
-
+    public static void Initialize() {
         cardSource.InitializeCards();
         deck.Initialize(cardSource.allCards);
         discard.Initialize();
@@ -38,12 +31,13 @@ public class CardManager {
         discardCount = VisualController.SharedInstance.GetDiscardCount().GetComponent<TextMeshProUGUI>();
     }
 
-    public void PlayCard(int cardId) {
+    public static void PlayCard(int cardId) {
         // Update life and will from the card's cost through the PlayerController
         // Remove the card from hand
         Card playedCard = hand.RemoveCard(cardId);
 
         // Get all required targets for the card from the player
+        // TODO
         if (playedCard.SetTargets()) {
 
         }
@@ -60,7 +54,7 @@ public class CardManager {
         // Effects of the card in question are resolved in a FIFO order
         if (playedCard != null) {
             // Adjust life and will totals
-            PlayerController.SharedInstance.UpdateLife(-playedCard.lifeCost);
+            PlayerController.UpdateLife(-playedCard.lifeCost);
 
             // Move card to discard and disable visual
             playedCard.ClearVisual();
@@ -68,7 +62,7 @@ public class CardManager {
             DynamicEffectController.SharedInstance.AddEffects(playedCard.Effects);
 
             // Update visuals on screen
-            PlayerController.SharedInstance.UpdateVisual();
+            PlayerController.UpdateVisual();
             UpdateVisuals();
 
             // Fire card played event
@@ -76,7 +70,7 @@ public class CardManager {
         }
     }
 
-    public void DrawCard() {
+    public static void DrawCard() {
         // Check max hand size to see if a card can be drawn 
         if (hand.CanDraw()) {
             // Check if the deck has cards in it
@@ -95,7 +89,7 @@ public class CardManager {
         }
     }
 
-    public void DiscardRandomCard() {
+    public static void DiscardRandomCard() {
         // When no card or index is given, a card is discarded at random
         // TODO
         UpdateVisuals();
@@ -104,7 +98,7 @@ public class CardManager {
         // OnDiscard?.Invoke(discardedCard);
     }
 
-    public void DiscardCard(int cardId) {
+    public static void DiscardCard(int cardId) {
         // TODO
         UpdateVisuals();
 
@@ -112,7 +106,7 @@ public class CardManager {
         // OnDiscard?.Invoke(discardedCard);
     }
 
-    public void DiscardHand() {
+    public static void DiscardHand() {
         // This method is usually called at the end of the turn, but could be used in other circumstances
         List<Card> discarded = hand.GetCards();
         for (int i = 0; i <discarded.Count; i++) {
@@ -129,13 +123,13 @@ public class CardManager {
         UpdateVisuals();
     }
 
-    public void ReturnDiscardToDeck() {
+    public static void ReturnDiscardToDeck() {
         deck.AddCards(discard.GetCards());
         discard.ClearCards();
         deck.Shuffle();
     }
 
-    private void UpdateVisuals() {
+    private static void UpdateVisuals() {
         // Updates any visuals that display hand, deck, or discard values
         deckCount.text = deck.GetSize().ToString();
         discardCount.text = discard.GetSize().ToString();

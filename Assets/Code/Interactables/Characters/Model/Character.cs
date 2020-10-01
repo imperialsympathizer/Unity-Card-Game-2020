@@ -17,4 +17,6 @@ public abstract class Character {
         this.id = ResourceController.GenerateId();
         this.name = name;
     }
+
+    public abstract void UpdateVisual();
 }

@@ -65,7 +65,7 @@ public class Player : Fighter {
         }
     }
 
-    public void UpdateVisual() {
+    public override void UpdateVisual() {
         display.SetActive(false);
         display.SetAttack(AttackValue);
         display.SetAttackTimes(AttackTimes);
@@ -119,19 +119,13 @@ public class Player : Fighter {
         // Invoke the OnAttack event before dealing damage
         // Allows for buffs on attack triggers before damage is dealt
         OnAttack?.Invoke(attacker, this);
-        UpdateLifeValue(attacker.AttackValue, false);
+        UpdateLifeValue(-attacker.AttackValue, false);
         // Invoke damage from attack event
         OnDamageAttack?.Invoke(attacker, this, attacker.AttackValue, LifeValue);
     }
 
-    public override void PerformAttacks() {
-        // Resolve attacks on the front enemy until it is dead, then continue until all attacks are gone or the player is defeated
-        for (int i = 0; i < AttackTimes; i++) {
-            if (!EnemyController.SharedInstance.ReceiveAttack(this)) {
-                // If there are no enemies to resolve attacks on escape the loop
-                break;
-            }
-        }
+    public override void PerformAttack() {
+        display.AnimateAttack();
     }
 
     #endregion

@@ -24,5 +24,5 @@ public abstract class Attacker : Character {
         AttackTimes += valueChange;
     }
 
-    public abstract void PerformAttacks();
+    public abstract void PerformAttack();
 }
