@@ -30,9 +30,9 @@ public class PlayerView  {
         // When parented to the canvas, for some reason the sprite likes to size itself to an arbitrarily large amount
         // This ensures its scale is correct
         visual.transform.localScale = new Vector3(1, 1, 1);
-        visual.transform.localPosition = new Vector3(0, 0, -100);
+        // visual.transform.localPosition = new Vector3(0, 0, -100);
         // Set outline alpha of sprite to 0
-        sprite.material.SetColor("_OutlineColor", new Color(0, 0, 0, 0));
+        // sprite.material.SetColor("_OutlineColor", new Color(0, 0, 0, 0));
 
 
         attackValue = visual.transform.GetChild(2).GetComponent<TextMeshProUGUI>();
@@ -79,11 +79,11 @@ public class PlayerView  {
     }
 
     public void SetLife(int val) {
-        NumberAnimator.SharedInstance.AnimateNumberChange(this.lifeValue, val);
+        NumberAnimator.AnimateNumberChange(this.lifeValue, val);
     }
 
     public void SetWill(int val) {
-        NumberAnimator.SharedInstance.AnimateNumberChange(this.willValue, val);
+        NumberAnimator.AnimateNumberChange(this.willValue, val);
     }
 
     public void SetActive(bool active = true) {
@@ -110,5 +110,9 @@ public class PlayerView  {
         GameObject slot = slots[0];
         ObjectPooler.Despawn(slot);
         slots.RemoveAt(0);
+    }
+
+    public void AnimateAttack() {
+        AttackAnimator.AnimateAttack(visual, AttackAnimator.AttackerType.PLAYER);
     }
 }

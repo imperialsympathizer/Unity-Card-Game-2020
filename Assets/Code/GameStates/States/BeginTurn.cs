@@ -18,7 +18,7 @@ public class BeginTurn : State {
         CheckGameConditions();
 
         for (int i = 0; i < 5; i++) {
-            CardManager.SharedInstance.DrawCard();
+            CardManager.DrawCard();
         }
 
         CheckGameConditions();

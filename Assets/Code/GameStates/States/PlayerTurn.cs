@@ -42,6 +42,6 @@ public class PlayerTurn : State {
 
     private void ResolveCard() {
         cardPlayed = false;
-        CardManager.SharedInstance.PlayCard(cardId);
+        CardManager.PlayCard(cardId);
     }
 }

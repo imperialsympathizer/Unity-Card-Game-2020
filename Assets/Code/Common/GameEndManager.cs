@@ -1,19 +1,16 @@
 ﻿using TMPro;
 using UnityEngine;
 
-class GameEndManager {
-    public static GameEndManager SharedInstance;
+public static class GameEndManager {
 
-    private GameObject canvas;
+    private static GameObject canvas;
 
-    public void Initialize() {
-        SharedInstance = this;
-
+    public static void Initialize() {
         canvas = VisualController.SharedInstance.GetGameOver();
         canvas.SetActive(false);
     }
 
-    public void ShowGameEnd(bool win) {
+    public static void ShowGameEnd(bool win) {
         // Set initial alpha of sprites to 0
         LeanTween.alpha(canvas, 0, 0);
 

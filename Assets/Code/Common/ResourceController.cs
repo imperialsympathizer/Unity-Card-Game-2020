@@ -8,15 +8,7 @@ public class ResourceController : MonoBehaviour {
     // This class is also used for generating unique ids of objects instantiated in the game
 
     private VisualController visualController;
-    private PlayerController playerController;
-    private SummonController summonController;
-    private EnemyController enemyController;
-    private StaticEffectController staticEffectController;
-
-    private NumberAnimator numberAnimator;
     private TargetSelector targetSelector;
-    private CardManager cardManager;
-    private GameEndManager gameOverManager;
 
     private static int uniqueId = 0;
 
@@ -32,14 +24,6 @@ public class ResourceController : MonoBehaviour {
 
         // Create Controllers and Managers
         visualController = new VisualController(); // Dependencies - prefabs
-        cardManager = new CardManager(); // Dependencies - VisualController (prefabs)
-        playerController = new PlayerController(); // Dependencies - VisualController (prefabs), NumberAnimator, needs to know what player to spawn
-        summonController = new SummonController(); // Dependencies - VisualController
-        enemyController = new EnemyController();
-        staticEffectController = new StaticEffectController();
-
-        gameOverManager = new GameEndManager();
-        numberAnimator = new NumberAnimator();
         targetSelector = new TargetSelector();
 
         // Load requisite prefabs into a dictionary indexed by prefab name
@@ -52,14 +36,15 @@ public class ResourceController : MonoBehaviour {
 
         // Initialize Controllers
         visualController.Initialize(prefabDictionary);
-        numberAnimator.Initialize();
-        cardManager.Initialize();
-        playerController.Initialize();
-        summonController.Initialize();
-        enemyController.Initialize();
-        gameOverManager.Initialize();
+        NumberAnimator.Initialize();
+        CardManager.Initialize();
+        PlayerController.Initialize();
+        SummonController.Initialize();
+        EnemyController.Initialize();
+        GameEndManager.Initialize();
         targetSelector.Initialize();
-        staticEffectController.Initialize();
+        StaticEffectController.Initialize();
+        AttackAnimator.Initialize();
 
         // When resources are completely loaded, sets the field that tells the TurnSystem to begin the game
         Loaded = true;

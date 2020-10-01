@@ -1,19 +1,20 @@
 ﻿using System.Collections.Generic;
 
-public class EnemyController {
-    public static EnemyController SharedInstance;
+public static class EnemyController {
 
     // Dictionary is used for searching for a specific summon by Id (when targeting, etc.)
     // List is used for resolving things like combat, where iteration is important
-    private Dictionary<int, Enemy> enemyDictionary = new Dictionary<int, Enemy>();
-    private List<Enemy> enemyList = new List<Enemy>();
+    private static Dictionary<int, Enemy> enemyDictionary = new Dictionary<int, Enemy>();
+    private static List<Enemy> enemyList = new List<Enemy>();
 
-    public void Initialize() {
-        SharedInstance = this;
+    // Cache the index of an enemy whenever it is attacked
+    private static int index;
+
+    public static void Initialize() {
         CreateEnemy(Enemy.EnemyType.KNIGHT);
     }
 
-    public void CreateEnemy(Enemy.EnemyType enemyType) {
+    public static void CreateEnemy(Enemy.EnemyType enemyType) {
         Enemy newEnemy;
         switch (enemyType) {
             case Enemy.EnemyType.KNIGHT:
@@ -29,17 +30,28 @@ public class EnemyController {
         enemyList.Add(newEnemy);
     }
 
-    public void PerformAttacks() {
-        // Iterate from left to right
-        for (int i = 0; i < enemyList.Count; i++) {
-            Enemy attacker = enemyList[i];
-            if (attacker.AttackTimes > 0 && attacker.AttackValue > 0) {
-                attacker.PerformAttacks();
-            }
+    public static Enemy GetDefender() {
+        // This function returns null if there are no enemies available to take damage from an attack
+        index = 0;
+        if (enemyList.Count < 1) {
+            return null;
         }
+
+        // Only attack the enemy if it has life
+        Enemy defender = enemyList[index];
+        while (!defender.HasLife) {
+            index++;
+            if (index >= enemyList.Count) {
+                return null;
+            }
+
+            defender = enemyList[index];
+        }
+
+        return defender;
     }
 
-    public bool ReceiveAttack(Attacker attacker) {
+    public static bool CompleteAttack(Attacker attacker) {
         // This function returns false if there are no enemies available to take damage from an attack
         // Otherwise, damage is dealt to the front enemy (at the beginning of the list)
         if (enemyList.Count < 1) {
@@ -81,11 +93,11 @@ public class EnemyController {
         return true;
     }
 
-    public List<Enemy> GetEnemyList() {
+    public static List<Enemy> GetEnemyList() {
         return enemyList;
     }
 
-    private void UpdateVisual(int id) {
+    private static void UpdateVisual(int id) {
         // Updates any visuals that display enemy data
         Enemy editEnemy;
         if (enemyDictionary.TryGetValue(id, out editEnemy)) {

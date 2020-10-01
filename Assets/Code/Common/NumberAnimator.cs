@@ -1,21 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using TMPro;
-using UnityEngine;
 
-class NumberAnimator {
-    public static NumberAnimator SharedInstance;
-
-    private List<Tuple<TextMeshProUGUI, LTDescr>> currentUIAnimations = new List<Tuple<TextMeshProUGUI, LTDescr>>();
+public static class NumberAnimator {
+    private static List<Tuple<TextMeshProUGUI, LTDescr>> currentUIAnimations = new List<Tuple<TextMeshProUGUI, LTDescr>>();
 
     // TODO: add to global variable
-    private float timeConstant = 0.05f;
+    private static float timeConstant = 0.3f;
 
-    public void Initialize() {
-        SharedInstance = this;
+    public static void Initialize() {
     }
 
-    public void AnimateNumberChange(TextMeshProUGUI textUGUI, int finalNum) {
+    public static void AnimateNumberChange(TextMeshProUGUI textUGUI, int finalNum) {
         // Check to make sure no other animations are running
         // If so, cancel them
         for (int i = 0; i < currentUIAnimations.Count; i++) {
@@ -28,7 +24,7 @@ class NumberAnimator {
 
         float time = Math.Abs((finalNum - startNum) * timeConstant);
 
-        LTDescr description = LeanTween.value(startNum, finalNum, time).setOnUpdate((float val) =>
+        LTDescr description = LeanTween.value(startNum, finalNum, timeConstant).setOnUpdate((float val) =>
         {
             textUGUI.text = ((int)val).ToString();
         });
@@ -36,7 +32,7 @@ class NumberAnimator {
         currentUIAnimations.Add(new Tuple<TextMeshProUGUI, LTDescr>(textUGUI, description));
     }
 
-    public void AnimateNumberChange(TextMeshPro textTMP, int startNum, int finalNum) {
+    public static void AnimateNumberChange(TextMeshPro textTMP, int startNum, int finalNum) {
         float time = Math.Abs((finalNum - startNum) * timeConstant);
 
         LeanTween.value(startNum, finalNum, time).setOnUpdate((float val) => {

@@ -19,6 +19,8 @@ public abstract class Fighter : Attacker {
 
     public void UpdateMaxLife(int valueChange) {
         MaxLife += valueChange;
+        UpdateVisual();
+        TurnSystem.SharedInstance.CheckGameConditions();
     }
 
     public void UpdateLifeValue(int valueChange, bool triggerEvents = true) {
@@ -33,6 +35,8 @@ public abstract class Fighter : Attacker {
         else if (valueChange < 0 && triggerEvents) {
             OnDamageNonAttack?.Invoke(this, valueChange, LifeValue);
         }
+        UpdateVisual();
+        TurnSystem.SharedInstance.CheckGameConditions();
     }
 
     public void ReceiveAttack(Attacker attacker) {

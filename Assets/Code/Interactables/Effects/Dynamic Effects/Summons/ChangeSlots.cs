@@ -12,13 +12,13 @@ public class ChangeSlots : DynamicEffect {
         if (addSlots) {
             Debug.Log("Adding " + effectCount.ToString() + " slots.");
             for (int i = 0; i < effectCount; i++) {
-                PlayerController.SharedInstance.AddSlot();
+                PlayerController.AddSlot();
             }
         }
         else {
             Debug.Log("Removing " + effectCount.ToString() + " slots.");
             for (int i = 0; i < effectCount; i++) {
-                PlayerController.SharedInstance.RemoveSlot();
+                PlayerController.RemoveSlot();
             }
         }
 

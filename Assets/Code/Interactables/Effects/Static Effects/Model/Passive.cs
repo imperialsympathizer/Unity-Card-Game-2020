@@ -24,6 +24,6 @@ public abstract class Passive : StaticEffect {
         }
 
         // Then, remove the effect from the StaticEffectController
-        StaticEffectController.SharedInstance.RemovePassive(id);
+        StaticEffectController.RemovePassive(id);
     }
 }
