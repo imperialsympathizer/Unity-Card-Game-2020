@@ -27,13 +27,13 @@ public class IncrementValue : Modifier {
     protected override void ResolveEffect(Trigger trigger) {
         switch (modifierType) {
             case ModifierType.ATK_VALUE:
-                if (character is Attacker) {
-                    ((Attacker)character).UpdateAttackValue(incrementValue);
+                if (character is Fighter) {
+                    ((Fighter)character).UpdateAttackValue(incrementValue);
                 }
                 break;
             case ModifierType.ATK_TIMES:
-                if (character is Attacker) {
-                    ((Attacker)character).UpdateAttackTimes(incrementValue);
+                if (character is Fighter) {
+                    ((Fighter)character).UpdateAttackTimes(incrementValue);
                 }
                 break;
             case ModifierType.MAX_LIFE:

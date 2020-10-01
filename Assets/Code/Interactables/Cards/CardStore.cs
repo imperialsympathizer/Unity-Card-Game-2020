@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
 
-public class CardStore {
+public abstract class CardStore {
     // Generic class for handling cards that are not currently in the hand
     // Other locations where cards are kept (deck or discard for example) should inherit this class for simplified card management
+    protected List<Card> cards = new List<Card>();
 
-    public List<Card> cards = new List<Card>();
+    public CardStore() { }
 
-    public void Randomize() {
+    protected void Randomize() {
         System.Random rnd = new System.Random();
         int n = cards.Count;
         for (int i = 0; i < cards.Count - 1; i++) {
@@ -58,5 +59,9 @@ public class CardStore {
 
     public int GetSize() {
         return cards.Count;
+    }
+
+    public List<Card> GetCards() {
+        return cards;
     }
 }

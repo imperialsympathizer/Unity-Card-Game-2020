@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 
 public class Hand {
-
     // Dictionary of ids (key) and Cards (value)
     private List<Card> cards = new List<Card>();
 

@@ -2,37 +2,19 @@
 using TMPro;
 using UnityEngine;
 
-public class PlayerView  {
-    private GameObject visual;
-
-    private int id;
-
-    private TextMeshProUGUI attackValue;
-    private TextMeshProUGUI xText;
-    private TextMeshProUGUI attackTimes;
-    private TextMeshProUGUI lifeValue;
+public class PlayerView : FighterView {
     private TextMeshProUGUI willValue;
-
-    // Sprite Renderer of the player
-    private SpriteRenderer sprite;
 
     // Visual component of the slots
     private List<GameObject> slots = new List<GameObject>();
     private GameObject slotPrefab;
 
-    public void InitializeView(GameObject player, int id, GameObject slotPrefab, int startSlots) {
-        this.id = id;
-        visual = player;
+    public PlayerView(GameObject player, int id, GameObject slotPrefab, int startSlots) : base(player, id, Fighter.FighterType.PLAYER, 0) {
         this.slotPrefab = slotPrefab;
         visual.SetActive(false);
         sprite = visual.transform.GetChild(0).GetComponent<SpriteRenderer>();
         VisualController.SharedInstance.ParentToPlayerCanvas(visual.transform);
-        // When parented to the canvas, for some reason the sprite likes to size itself to an arbitrarily large amount
-        // This ensures its scale is correct
         visual.transform.localScale = new Vector3(1, 1, 1);
-        // visual.transform.localPosition = new Vector3(0, 0, -100);
-        // Set outline alpha of sprite to 0
-        // sprite.material.SetColor("_OutlineColor", new Color(0, 0, 0, 0));
 
 
         attackValue = visual.transform.GetChild(2).GetComponent<TextMeshProUGUI>();
@@ -49,52 +31,21 @@ public class PlayerView  {
         }
     }
 
-    public void SetAttack(int val) {
-        this.attackValue.text = val.ToString();
-    }
-
-    public void SetAttackTimes(int val) {
-        // If the val is 1, disable the x and AttackTimes displays
-        // If val is 0, disable all attack displays
-        if (val == 1) {
-            attackValue.gameObject.SetActive(false);
-            attackTimes.gameObject.SetActive(false);
-            xText.text = attackValue.text;
-            // Use the xtText display to display attack since it is the box centered over the character
-            // it will be used as the attackValue display unless a character has attackTimes > 1
-        }
-        else if (val == 0) {
-            attackValue.gameObject.SetActive(false);
-            attackTimes.gameObject.SetActive(false);
-            xText.gameObject.SetActive(false);
-        }
-        else {
-            // Make sure to reset the xText
-            xText.text = "x";
-            attackValue.gameObject.SetActive(true);
-            attackTimes.gameObject.SetActive(true);
-            xText.gameObject.SetActive(true);
-        }
-        this.attackTimes.text = val.ToString();
-    }
-
-    public void SetLife(int val) {
-        NumberAnimator.AnimateNumberChange(this.lifeValue, val);
+    public new void SetLife(bool nothing, int life, int maxLife) {
+        NumberAnimator.AnimateNumberChange(this.lifeValue, life);
     }
 
     public void SetWill(int val) {
         NumberAnimator.AnimateNumberChange(this.willValue, val);
     }
 
-    public void SetActive(bool active = true) {
+    public new void SetActive(bool active = true) {
         visual.SetActive(active);
         lifeValue.gameObject.SetActive(active);
         willValue.gameObject.SetActive(active);
     }
 
-    public void Despawn() {
-
-    }
+    public new void Despawn() {}
 
     public void AddSlot() {
         GameObject newSlot = ObjectPooler.Spawn(slotPrefab, new Vector3(0, 0, 0), Quaternion.identity);
@@ -110,9 +61,5 @@ public class PlayerView  {
         GameObject slot = slots[0];
         ObjectPooler.Despawn(slot);
         slots.RemoveAt(0);
-    }
-
-    public void AnimateAttack() {
-        AttackAnimator.AnimateAttack(visual, AttackAnimator.AttackerType.PLAYER);
     }
 }

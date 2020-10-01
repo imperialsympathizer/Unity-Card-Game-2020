@@ -9,9 +9,9 @@ public static class CardManager {
     // The library of cards that can be played with
     private static CardSource cardSource = new CardSource();
 
-    private static Deck deck = new Deck();
-    private static Hand hand = new Hand();
-    private static Discard discard = new Discard();
+    private static Deck deck;
+    private static Hand hand;
+    private static Discard discard;
 
     private static CurvedLayout handArea;
     private static TextMeshProUGUI deckCount;
@@ -23,8 +23,9 @@ public static class CardManager {
 
     public static void Initialize() {
         cardSource.InitializeCards();
-        deck.Initialize(cardSource.allCards);
-        discard.Initialize();
+        deck = new Deck(cardSource.allCards);
+        discard = new Discard();
+        hand = new Hand();
 
         handArea = VisualController.SharedInstance.GetHand().GetComponent<CurvedLayout>();
         deckCount = VisualController.SharedInstance.GetDeckCount().GetComponent<TextMeshProUGUI>();
@@ -85,7 +86,7 @@ public static class CardManager {
             UpdateVisuals();
 
             // Fire card drawn event
-            OnCardPlay?.Invoke(drawnCard);
+            OnCardDraw?.Invoke(drawnCard);
         }
     }
 
@@ -112,20 +113,18 @@ public static class CardManager {
         for (int i = 0; i <discarded.Count; i++) {
             Card card = discarded[i];
             if (card != null) {
+                OnDiscard?.Invoke(card);
                 card.ClearVisual();
-            }
-            else {
-                discarded.RemoveAt(i);
+                discard.AddCard(card);
             }
         }
-        discard.AddCards(discarded);
         hand.ClearHand();
         UpdateVisuals();
     }
 
     public static void ReturnDiscardToDeck() {
         deck.AddCards(discard.GetCards());
-        discard.ClearCards();
+        discard.RemoveAll();
         deck.Shuffle();
     }
 

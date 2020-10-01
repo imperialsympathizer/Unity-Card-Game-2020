@@ -1,28 +1,29 @@
-﻿using TMPro;
+﻿using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
-public class TargetSelector {
-    public static TargetSelector SharedInstance;
+public static class TargetSelector {
+    private static GameObject targetCanvas;
+    private static GameObject shadow;
+    private static TextMeshProUGUI targetDialogue;
 
-    private GameObject targetCanvas;
-    private GameObject shadow;
-    private TextMeshProUGUI targetDialogue;
-
-    public void Initialize() {
-        SharedInstance = this;
-
+    public static void Initialize() {
         targetCanvas = GameObject.Find("TargetingCanvas");
         targetCanvas.SetActive(false);
         shadow = targetCanvas.transform.GetChild(0).gameObject;
         targetDialogue = targetCanvas.transform.GetChild(1).GetComponent<TextMeshProUGUI>();
     }
 
-    public void EnableTargetCanvas(string dialogue = "SELECT A TARGET") {
+    public static void EnableTargeting(List<Target> validTargets, string dialogue = "SELECT A TARGET") {
         targetDialogue.text = dialogue.ToUpper();
         targetCanvas.SetActive(true);
+
+        for (int i = 0; i < validTargets.Count; i++) {
+            // for each valid type, enable glow around them
+        }
     }
 
-    public void DisableTargetCanvas() {
+    public static void DisableTargetCanvas() {
         targetCanvas.SetActive(false);
     }
 }

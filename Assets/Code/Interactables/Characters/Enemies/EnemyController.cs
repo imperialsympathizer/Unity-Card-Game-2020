@@ -51,43 +51,25 @@ public static class EnemyController {
         return defender;
     }
 
-    public static bool CompleteAttack(Attacker attacker) {
-        // This function returns false if there are no enemies available to take damage from an attack
-        // Otherwise, damage is dealt to the front enemy (at the beginning of the list)
-        if (enemyList.Count < 1) {
-            return false;
-        }
-        
-        // Only attack the enemy if it has life
-        // Otherwise, attack the next enemy
-        int enemyIndex = 0;
-        Enemy enemy = enemyList[enemyIndex];
-        while (!enemy.HasLife) {
-            enemyIndex++;
-            if (enemyIndex >= enemyList.Count) {
-                return false;
-            }
-
-            enemy = enemyList[enemyIndex];
-        }
-
+    public static bool CompleteAttack(int enemyId, Fighter attacker) {
         // Change the life total to reflect damage taken
-        enemy.ReceiveAttack(attacker);
+        Enemy defender = enemyDictionary[enemyId];
+        defender.ReceiveAttack(attacker);
 
         // If damage exceeds the life remaining, the summon is defeated
         // Otherwise, update the life total and visuals
-        if (enemy.LifeValue <= 0) {
+        if (defender.LifeValue <= 0) {
             // TODO: death animation
             // Clear the visual first to ensure proper removal
-            enemy.ClearVisual();
+            defender.ClearVisual();
             enemyList.RemoveAt(0);
-            enemyDictionary.Remove(enemy.id);
+            enemyDictionary.Remove(defender.id);
         }
         else {
-            enemy.UpdateVisual();
+            defender.UpdateVisual();
             // Update the enemy objects in the list and dictionary
-            enemyList[enemyIndex] = enemy;
-            enemyDictionary[enemy.id] = enemy;
+            enemyList[index] = defender;
+            enemyDictionary[defender.id] = defender;
         }
 
         return true;

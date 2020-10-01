@@ -37,7 +37,7 @@ public class Player : Fighter {
         int baseWillValue,
         bool hasSlots,
         int maxSlots = 0,
-        int slotsValue = 0) : base(name, baseAttack, baseAttackTimes, true, baseMaxLife, baseLife) {
+        int slotsValue = 0) : base(name, Fighter.FighterType.PLAYER, baseAttack, baseAttackTimes, true, baseMaxLife, baseLife) {
         this.prefab = prefab;
         slotPrefab = VisualController.SharedInstance.GetPrefab("SlotPrefab");
         MaxWill = baseMaxWill;
@@ -53,8 +53,7 @@ public class Player : Fighter {
         // Spawn an object to view the player on screen
         // Not using the ObjectPooler as there is only one player character
         GameObject playerVisual = GameObject.Instantiate(prefab, new Vector3(0, 0, -10), Quaternion.identity);
-        display = new PlayerView();
-        display.InitializeView(playerVisual, id, slotPrefab, SlotsValue);
+        display = new PlayerView(playerVisual, id, slotPrefab, SlotsValue);
         UpdateVisual();
     }
 
@@ -68,8 +67,8 @@ public class Player : Fighter {
     public override void UpdateVisual() {
         display.SetActive(false);
         display.SetAttack(AttackValue);
-        display.SetAttackTimes(AttackTimes);
-        display.SetLife(LifeValue);
+        display.SetAttackTimes(AttackValue, AttackTimes);
+        display.SetLife(true, LifeValue, MaxLife);
         display.SetWill(WillValue);
         display.SetActive(true);
     }
@@ -115,7 +114,7 @@ public class Player : Fighter {
         }
     }
 
-    public new void ReceiveAttack(Attacker attacker) {
+    public new void ReceiveAttack(Fighter attacker) {
         // Invoke the OnAttack event before dealing damage
         // Allows for buffs on attack triggers before damage is dealt
         OnAttack?.Invoke(attacker, this);

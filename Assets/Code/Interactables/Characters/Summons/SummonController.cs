@@ -66,7 +66,7 @@ public static class SummonController {
         return defender;
     }
 
-    public static void CompleteAttack(int summonId, Attacker attacker) {
+    public static void CompleteAttack(int summonId, Fighter attacker) {
         // Change the life total to reflect damage taken
         Summon defender = summonDictionary[summonId];
         defender.ReceiveAttack(attacker);

@@ -66,11 +66,11 @@ public class Card {
         for (int i = 0; i < Effects.Count; i++) {
             DynamicEffect effect = Effects[i];
             // if GetValidTargets returns null, the effect does not target
-            if (effect is TargetableDynamicEffect) {
+            if (effect is TargetableDynamicEffect targetable) {
                 // Set the card visual out of the way while targets are chosen
                 // TargetSelector will enable the targeting canvas and make targetable objects selectable
                 DisableVisual();
-                TargetSelector.SharedInstance.EnableTargetCanvas();
+                TargetSelector.EnableTargeting(targetable.validTargets);
 
                 // If this is the first effect
 

@@ -23,7 +23,7 @@ public class Enemy : Fighter {
         int baseAttack,
         int baseAttackTimes,
         int baseMaxLife,
-        int baseLife) : base(name, baseAttack, baseAttackTimes, true, baseMaxLife, baseLife) {
+        int baseLife) : base(name, FighterType.ENEMY, baseAttack, baseAttackTimes, true, baseMaxLife, baseLife) {
         this.prefab = prefab;
     }
 
@@ -31,7 +31,7 @@ public class Enemy : Fighter {
     public Enemy(string name,
         GameObject prefab,
         int baseAttack,
-        int baseAttackTimes) : base(name, baseAttack, baseAttackTimes) {
+        int baseAttackTimes) : base(name, FighterType.ENEMY, baseAttack, baseAttackTimes) {
         this.prefab = prefab;
     }
 
@@ -39,8 +39,7 @@ public class Enemy : Fighter {
         // Spawn an object to view the summon on screen
         // Not using the ObjectPooler as there is only one player character
         GameObject enemyVisual = ObjectPooler.Spawn(prefab, new Vector3(0, 0, -10), Quaternion.identity);
-        display = new EnemyView();
-        display.InitializeView(enemyVisual, id);
+        display = new EnemyView(enemyVisual, id, 410);
         UpdateVisual();
     }
 

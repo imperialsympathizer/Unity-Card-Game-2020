@@ -116,7 +116,7 @@ public class CombatStep : State {
                     }
 
                     // Change the life total to reflect damage taken
-                    EnemyController.CompleteAttack(attacker);
+                    EnemyController.CompleteAttack(defender.id, attacker);
 
                     // wait for health to decrease before the next attack
                     yield return new WaitForSeconds(0.3f);
@@ -155,7 +155,7 @@ public class CombatStep : State {
                 }
 
                 // Change the life total to reflect damage taken
-                EnemyController.CompleteAttack(player);
+                EnemyController.CompleteAttack(defender.id, player);
 
                 // wait for health to decrease before the next attack
                 yield return new WaitForSeconds(0.3f);
