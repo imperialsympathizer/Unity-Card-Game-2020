@@ -23,7 +23,7 @@ public class CurvedLayout : MonoBehaviour {
 
     private void Start() {
         // adjust yPadding as needed based on the location of the hand object
-        yPadding = mainCanvas.GetComponent<RectTransform>().sizeDelta.y * 0.1f;
+        yPadding = mainCanvas.GetComponent<RectTransform>().sizeDelta.y * 0.08f;
         UpdateCardPositions();
     }
 
