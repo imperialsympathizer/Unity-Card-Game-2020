@@ -5,7 +5,7 @@ public class DrawCard : DynamicEffect {
     }
 
     public override void ResolveEffect() {
-        Debug.Log("Drawing " + effectCount.ToString() + " cards.");
+        // Debug.Log("Drawing " + effectCount.ToString() + " cards.");
         for (int i = 0; i < effectCount; i++) {
             CardManager.DrawCard();
         }

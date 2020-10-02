@@ -10,7 +10,7 @@ public class EndTurn : State {
     public override IEnumerator Start() {
         // EndTurn removes player agency as EOT effects are resolved
         // Discard player hand -> CheckGameConditions -> Resolve end of turn effects -> CheckGameConditions -> CombatStep
-        Debug.Log("ending turn");
+        // Debug.Log("ending turn");
 
         EndTurnEffects();
         CheckGameConditions();

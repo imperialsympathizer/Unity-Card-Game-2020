@@ -6,8 +6,9 @@ public class Enemy : Fighter {
     // Contains references to EnemyView but does not directly control it in most instances
     // Accessed and instantiated through the EnemyController
 
-    // Visual component of the player, stored within its own View class
     private EnemyView display;
+
+    // Visual component of the player, stored within its own View class
     private GameObject prefab;
 
     public enum EnemyType {
@@ -41,6 +42,14 @@ public class Enemy : Fighter {
         GameObject enemyVisual = ObjectPooler.Spawn(prefab, new Vector3(0, 0, -10), Quaternion.identity);
         display = new EnemyView(enemyVisual, id, 410);
         UpdateVisual();
+    }
+
+    public override RectTransform getVisualRect() {
+        return display.getVisualRect();
+    }
+
+    public override void SetVisualOutline(Color color) {
+        display.SetVisualOutline(color);
     }
 
     // Function to call before moving object off the screen to another location (such as deck or discard)

@@ -25,7 +25,7 @@ public class DynamicEffectController : MonoBehaviour {
             effectInProgress = true;
             DynamicEffect effect = effects.Dequeue();
             if (effect != null) {
-                Debug.Log("Resolving effect.");
+                // Debug.Log("Resolving effect.");
                 effect.AddBeginListener();
                 OnEffectBegin.Invoke();
             }
@@ -36,7 +36,7 @@ public class DynamicEffectController : MonoBehaviour {
     }
 
     public void AddEffects(DynamicEffect[] newEffects) {
-        Debug.Log("Adding effects to effect queue.");
+        // Debug.Log("Adding effects to effect queue.");
         for (int i = 0; i < newEffects.Length; i++) {
             DynamicEffect effect = newEffects[i];
             if (effect != null && effect.IsValid()) {
@@ -46,7 +46,7 @@ public class DynamicEffectController : MonoBehaviour {
     }
 
     public void AddEffects(List<DynamicEffect> newEffects) {
-        Debug.Log("Adding effects to effect queue.");
+        // Debug.Log("Adding effects to effect queue.");
         for (int i = 0; i < newEffects.Count; i++) {
             DynamicEffect effect = newEffects[i];
             if (effect != null && effect.IsValid()) {
@@ -56,7 +56,7 @@ public class DynamicEffectController : MonoBehaviour {
     }
 
     private void OnEffectComplete() {
-        Debug.Log("Effect completed.");
+        // Debug.Log("Effect completed.");
         effectInProgress = false;
     }
 }

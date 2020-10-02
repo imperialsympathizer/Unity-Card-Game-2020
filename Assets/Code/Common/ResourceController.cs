@@ -8,6 +8,7 @@ public class ResourceController : MonoBehaviour {
     // This class is also used for generating unique ids of objects instantiated in the game
 
     private VisualController visualController;
+    // private TargetSelector targetSelector
 
     private static int uniqueId = 0;
 
@@ -19,7 +20,7 @@ public class ResourceController : MonoBehaviour {
     }
 
     private void InitializeResources() {
-        Debug.Log("Loading resources");
+        // Debug.Log("Loading resources");
 
         // Create Controllers and Managers
         visualController = new VisualController(); // Dependencies - prefabs
@@ -40,7 +41,7 @@ public class ResourceController : MonoBehaviour {
         SummonController.Initialize();
         EnemyController.Initialize();
         GameEndManager.Initialize();
-        TargetSelector.Initialize();
+        // TargetSelector.Initialize();
         StaticEffectController.Initialize();
         AttackAnimator.Initialize();
 

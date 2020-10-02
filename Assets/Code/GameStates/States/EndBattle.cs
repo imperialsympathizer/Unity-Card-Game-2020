@@ -11,7 +11,7 @@ public class EndBattle : State {
         // EndBattle is only triggered when all enemies are defeated, the player is defeated, or another trigger which would cause a win/loss
         // This state can only be reached by the CheckGameConditions state
         // PlayerTurn can theoretically loop to infinity, only breaking when the EndTurn button is clicked by the player
-        Debug.Log("ending battle");
+        // Debug.Log("ending battle");
 
         OnBattleEnd?.Invoke(TurnSystem.turnCount);
         // After completion, change state to EndTurn

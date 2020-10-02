@@ -11,6 +11,15 @@ public class Hand {
         cards.Add(card); 
     }
 
+    public void UpdateCard(Card card) {
+        for (int i = 0; i < cards.Count; i++) {
+            if (cards[i].Id == card.Id) {
+                cards[i] = card;
+                break;
+            }
+        }
+    }
+
     public Card RemoveCard(int cardId) {
         Card removed = null;
         for (int i = 0; i < cards.Count; i++) {
@@ -25,6 +34,16 @@ public class Hand {
         }
 
         return removed;
+    }
+
+    public Card GetCard(int cardId) {
+        for (int i = 0; i < cards.Count; i++) {
+            if (cards[i].Id == cardId) {
+                return cards[i];
+            }
+        }
+
+        return null;
     }
 
     public List<Card> GetCards() {

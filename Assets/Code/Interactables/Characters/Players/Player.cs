@@ -4,6 +4,8 @@ public class Player : Fighter {
     // Class that houses the data for players
     // Contains references to PlayerView but does not directly control it in most instances
     // Accessed and instantiated through the PlayerController
+    public PlayerView display;
+
     public int MaxWill { get; private set; }
     public int WillValue { get; private set; }
 
@@ -12,7 +14,6 @@ public class Player : Fighter {
     public int SlotsValue { get; private set; }
 
     // Visual component of the player, stored within its own View class
-    private PlayerView display;
     private GameObject prefab;
 
     // Visual component of the slots
@@ -57,6 +58,14 @@ public class Player : Fighter {
         UpdateVisual();
     }
 
+    public override RectTransform getVisualRect() {
+        return display.getVisualRect();
+    }
+
+    public override void SetVisualOutline(Color color) {
+        display.SetVisualOutline(color);
+    }
+
     public void ClearVisual() {
         if (display != null) {
             display.Despawn();
@@ -99,11 +108,13 @@ public class Player : Fighter {
             willLoss++;
         }
         base.UpdateLifeValue(lifeResult - LifeValue, triggerEvents);
+        UpdateVisual();
         UpdateWillValue(-willLoss);
     }
 
     public void UpdateMaxWill(int val) {
         MaxWill += val;
+        UpdateVisual();
     }
 
     public void UpdateWillValue(int val) {
@@ -112,6 +123,7 @@ public class Player : Fighter {
             // Will value cannot exceed max will
             WillValue = MaxWill;
         }
+        UpdateVisual();
     }
 
     public new void ReceiveAttack(Fighter attacker) {

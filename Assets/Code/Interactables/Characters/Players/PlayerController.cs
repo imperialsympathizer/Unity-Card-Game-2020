@@ -37,10 +37,12 @@
 
     public static void UpdateLife(int val) {
         player.UpdateLifeValue(val);
+        player.CheckDeath();
     }
 
     public static void UpdateWill(int val) {
         player.UpdateWillValue(val);
+        player.CheckDeath();
     }
 
     public static void UpdateVisual() {

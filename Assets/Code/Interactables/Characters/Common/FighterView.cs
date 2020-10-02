@@ -27,6 +27,14 @@ public abstract class FighterView {
         this.healthBarSize = healthBarSize;
     }
 
+    public RectTransform getVisualRect() {
+        return visual.GetComponent<RectTransform>();
+    }
+
+    public void SetVisualOutline(Color color) {
+        sprite.material.SetColor("_OutlineColor", color);
+    }
+
     public void SetAttack(int val) {
         NumberAnimator.AnimateNumberChange(this.attackValue, val);
     }

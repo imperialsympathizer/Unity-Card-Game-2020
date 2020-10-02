@@ -5,7 +5,7 @@ public class DiscardCard : DynamicEffect {
     }
 
     public override void ResolveEffect() {
-        Debug.Log("amount:" + effectCount.ToString());
+        // Debug.Log("amount:" + effectCount.ToString());
         for (int i = 0; i < effectCount; i++) {
             CardManager.DiscardRandomCard();
         }

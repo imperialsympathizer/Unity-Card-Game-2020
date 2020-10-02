@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 7378982214832554488}
   - component: {fileID: 7378982214832554487}
   - component: {fileID: 2284216336159992227}
-  - component: {fileID: 1974310639461048536}
+  - component: {fileID: 4277963631341193981}
   m_Layer: 11
-  m_Name: Card
+  m_Name: CardPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -85,7 +85,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d41d17614507d84e90b5624ab2a5f52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1974310639461048536
+--- !u!114 &4277963631341193981
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -94,10 +94,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 7378982214832554490}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ea0eb7c1c2d5c9340a1170057511e9a1, type: 3}
+  m_Script: {fileID: 11500000, guid: 68b85989f330e8a498c1e4aed80b7983, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inHand: 1
+  hand: {fileID: 0}
   cardId: 0
 --- !u!1 &7378982214887678271
 GameObject:

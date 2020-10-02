@@ -39,7 +39,7 @@ public class Infector : Status {
     }
 
     private void InfectCharacter(Character character) {
-        Debug.Log($"Infecting character: {character.name}");
+        // Debug.Log($"Infecting character: {character.name}");
         // If the character already has infection status, increase it by infectionValue
         // Otherwise, create a new infectionStatus equal to infectionValue\
 

@@ -11,7 +11,7 @@ public class BeginTurn : State {
         // At the start of every turn, resolve any over-time effects
         // Check for death states
         // Then draw 5 new cards
-        Debug.Log("beginning turn");
+        // Debug.Log("beginning turn");
 
         TurnSystem.turnCount++;
         OnBeginTurn?.Invoke(TurnSystem.turnCount);

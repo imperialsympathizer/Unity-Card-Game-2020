@@ -4,8 +4,9 @@ public class Summon : Fighter {
     // Class that houses the data for summons
     // Contains references to SummonView but does not directly control it in most instances
     // Accessed and instantiated through the SummonController
-    // Visual component of the player, stored within its own View class
     private SummonView display;
+
+    // Visual component of the player, stored within its own View class
     private GameObject prefab;
 
     public enum Summonable {
@@ -41,6 +42,14 @@ public class Summon : Fighter {
         GameObject summonVisual = ObjectPooler.Spawn(prefab, new Vector3(0, 0, -10), Quaternion.identity);
         display = new SummonView(summonVisual, id, 210);
         UpdateVisual();
+    }
+
+    public override RectTransform getVisualRect() {
+        return display.getVisualRect();
+    }
+
+    public override void SetVisualOutline(Color color) {
+        display.SetVisualOutline(color);
     }
 
     // Function to call before moving object off the screen to another location (such as deck or discard)

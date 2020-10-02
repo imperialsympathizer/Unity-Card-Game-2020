@@ -32,6 +32,14 @@ public static class CardManager {
         discardCount = VisualController.SharedInstance.GetDiscardCount().GetComponent<TextMeshProUGUI>();
     }
 
+    public static Card GetHandCard(int cardId) {
+        return hand.GetCard(cardId);
+    }
+
+    public static void UpdateHandCard(Card card) {
+        hand.UpdateCard(card);
+    }
+
     public static void PlayCard(int cardId) {
         // Update life and will from the card's cost through the PlayerController
         // Remove the card from hand
@@ -39,14 +47,14 @@ public static class CardManager {
 
         // Get all required targets for the card from the player
         // TODO
-        if (playedCard.SetTargets()) {
+        //if (playedCard.SetTargets()) {
 
-        }
-        else {
-            // If the player cancels the card while choosing targets/actions, return it to hand and do not play the card
-            hand.AddCard(playedCard);
-            UpdateVisuals();
-        }
+        //}
+        //else {
+        //    // If the player cancels the card while choosing targets/actions, return it to hand and do not play the card
+        //    hand.AddCard(playedCard);
+        //    UpdateVisuals();
+        //}
 
 
         // If there was a matching card in the hand, calculate resulting life and will (the player can kill themselves)

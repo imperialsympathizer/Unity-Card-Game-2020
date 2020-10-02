@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 
 public abstract class Fighter : Character {
     // abstract class defining a combatant that has both health and attack
@@ -23,6 +24,10 @@ public abstract class Fighter : Character {
         MaxLife = baseMaxLife;
         LifeValue = baseLife;
     }
+
+    public abstract RectTransform getVisualRect();
+
+    public abstract void SetVisualOutline(Color color);
 
     public void UpdateAttackValue(int valueChange) {
         // Add or subtract an value from the current
@@ -52,7 +57,14 @@ public abstract class Fighter : Character {
             OnDamageNonAttack?.Invoke(this, valueChange, LifeValue);
         }
         UpdateVisual();
-        TurnSystem.SharedInstance.CheckGameConditions();
+        CheckDeath();
+    }
+
+    public bool CheckDeath() {
+        if (HasLife && LifeValue < 1) {
+            return true;
+        }
+        return false;
     }
 
     public void ReceiveAttack(Fighter attacker) {

@@ -145,8 +145,9 @@ public class CardControl : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             hand.UpdateCardPositions();
         }
         else {
-            Debug.Log("Playing card.");
+            // Debug.Log("Playing card.");
             OnCardPlayed?.Invoke(cardId);
+            hand.UpdateCardPositions();
         }
         
     }

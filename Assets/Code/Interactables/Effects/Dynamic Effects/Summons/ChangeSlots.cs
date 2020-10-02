@@ -10,13 +10,13 @@ public class ChangeSlots : DynamicEffect {
 
     public override void ResolveEffect() {
         if (addSlots) {
-            Debug.Log("Adding " + effectCount.ToString() + " slots.");
+            // Debug.Log("Adding " + effectCount.ToString() + " slots.");
             for (int i = 0; i < effectCount; i++) {
                 PlayerController.AddSlot();
             }
         }
         else {
-            Debug.Log("Removing " + effectCount.ToString() + " slots.");
+            // Debug.Log("Removing " + effectCount.ToString() + " slots.");
             for (int i = 0; i < effectCount; i++) {
                 PlayerController.RemoveSlot();
             }

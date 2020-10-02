@@ -9,7 +9,7 @@ public class CreateSummon : DynamicEffect {
     }
 
     public override void ResolveEffect() {
-        Debug.Log("Summoning " + effectCount.ToString() + " summons.");
+        // Debug.Log("Summoning " + effectCount.ToString() + " summons.");
         for (int i = 0; i < effectCount; i++) {
             SummonController.CreateSummon(summonType);
         }

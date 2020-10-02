@@ -15,7 +15,7 @@ public class CombatStep : State {
     public override IEnumerator Start() {
         // Combat occurs between player turns, after EndTurn and before BeginTurn (except on turn 1)
         // Every CombatStep, Enemies attack -> CheckGameConditions -> Summons attack -> CheckGameConditions -> player attacks -> CheckGameConditions
-        Debug.Log("beginning combat");
+        // Debug.Log("beginning combat");
 
         OnBeginCombat?.Invoke(TurnSystem.turnCount);
         CheckGameConditions();
