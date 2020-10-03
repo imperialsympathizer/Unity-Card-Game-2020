@@ -52,6 +52,7 @@ public class Card {
     // Function to call before moving card off the screen to another location (such as deck or discard)
     public void ClearVisual() {
         if (display != null) {
+            // TODO: add a dissolve animation before despawning
             display.Despawn();
             display = null;
         }

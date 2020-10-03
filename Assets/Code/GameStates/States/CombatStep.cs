@@ -20,10 +20,11 @@ public class CombatStep : State {
         OnBeginCombat?.Invoke(TurnSystem.turnCount);
         CheckGameConditions();
 
+        // Initiate combat and wait for end
         combatOver = false;
-        // Perform attack/hit animation
         AttackAnimator.OnAnimateComplete += OnAnimateComplete;
         TurnSystem.StartCoroutine(EnemyAttacks());
+
         while (!combatOver) {
             yield return new WaitForSeconds(0.1f);
         }

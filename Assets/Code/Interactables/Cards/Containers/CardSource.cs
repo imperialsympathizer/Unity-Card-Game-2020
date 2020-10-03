@@ -27,7 +27,7 @@ public class CardSource {
         effects = new List<DynamicEffect>();
         effects.Add(drawEffect);
 
-        newCard = new Card("Got Enough Draw?", 0, "Draw 3 Cards", 10, effects);
+        newCard = new Card("Got Enough Draw?", 0, "Draw 3 Cards", 5, effects);
         allCards.Add(2, newCard);
 
         // card 4

@@ -41,21 +41,8 @@ public static class CardManager {
     }
 
     public static void PlayCard(int cardId) {
-        // Update life and will from the card's cost through the PlayerController
         // Remove the card from hand
         Card playedCard = hand.RemoveCard(cardId);
-
-        // Get all required targets for the card from the player
-        // TODO
-        //if (playedCard.SetTargets()) {
-
-        //}
-        //else {
-        //    // If the player cancels the card while choosing targets/actions, return it to hand and do not play the card
-        //    hand.AddCard(playedCard);
-        //    UpdateVisuals();
-        //}
-
 
         // If there was a matching card in the hand, calculate resulting life and will (the player can kill themselves)
         // Then, clear the visuals and add the card to the discard
