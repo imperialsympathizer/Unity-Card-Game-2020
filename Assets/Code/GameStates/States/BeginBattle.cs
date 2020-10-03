@@ -8,7 +8,7 @@ public class BeginBattle : State {
     public static event Action OnBeginBattle;
 
     public override IEnumerator Start() {
-        Debug.Log("beginning battle");
+        // Debug.Log("beginning battle");
 
         OnBeginBattle?.Invoke();
 

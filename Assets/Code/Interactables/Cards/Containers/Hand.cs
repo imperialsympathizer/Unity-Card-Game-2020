@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 
 public class Hand {
-
     // Dictionary of ids (key) and Cards (value)
     private List<Card> cards = new List<Card>();
 
@@ -10,6 +9,15 @@ public class Hand {
 
     public void AddCard(Card card) {
         cards.Add(card); 
+    }
+
+    public void UpdateCard(Card card) {
+        for (int i = 0; i < cards.Count; i++) {
+            if (cards[i].Id == card.Id) {
+                cards[i] = card;
+                break;
+            }
+        }
     }
 
     public Card RemoveCard(int cardId) {
@@ -26,6 +34,16 @@ public class Hand {
         }
 
         return removed;
+    }
+
+    public Card GetCard(int cardId) {
+        for (int i = 0; i < cards.Count; i++) {
+            if (cards[i].Id == cardId) {
+                return cards[i];
+            }
+        }
+
+        return null;
     }
 
     public List<Card> GetCards() {

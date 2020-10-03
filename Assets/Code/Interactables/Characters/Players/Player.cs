@@ -4,6 +4,8 @@ public class Player : Fighter {
     // Class that houses the data for players
     // Contains references to PlayerView but does not directly control it in most instances
     // Accessed and instantiated through the PlayerController
+    public PlayerView display;
+
     public int MaxWill { get; private set; }
     public int WillValue { get; private set; }
 
@@ -12,7 +14,6 @@ public class Player : Fighter {
     public int SlotsValue { get; private set; }
 
     // Visual component of the player, stored within its own View class
-    private PlayerView display;
     private GameObject prefab;
 
     // Visual component of the slots
@@ -37,7 +38,7 @@ public class Player : Fighter {
         int baseWillValue,
         bool hasSlots,
         int maxSlots = 0,
-        int slotsValue = 0) : base(name, baseAttack, baseAttackTimes, true, baseMaxLife, baseLife) {
+        int slotsValue = 0) : base(name, Fighter.FighterType.PLAYER, baseAttack, baseAttackTimes, true, baseMaxLife, baseLife) {
         this.prefab = prefab;
         slotPrefab = VisualController.SharedInstance.GetPrefab("SlotPrefab");
         MaxWill = baseMaxWill;
@@ -53,9 +54,16 @@ public class Player : Fighter {
         // Spawn an object to view the player on screen
         // Not using the ObjectPooler as there is only one player character
         GameObject playerVisual = GameObject.Instantiate(prefab, new Vector3(0, 0, -10), Quaternion.identity);
-        display = new PlayerView();
-        display.InitializeView(playerVisual, id, slotPrefab, SlotsValue);
+        display = new PlayerView(playerVisual, id, slotPrefab, SlotsValue);
         UpdateVisual();
+    }
+
+    public override RectTransform getVisualRect() {
+        return display.getVisualRect();
+    }
+
+    public override void SetVisualOutline(Color color) {
+        display.SetVisualOutline(color);
     }
 
     public void ClearVisual() {
@@ -68,8 +76,8 @@ public class Player : Fighter {
     public override void UpdateVisual() {
         display.SetActive(false);
         display.SetAttack(AttackValue);
-        display.SetAttackTimes(AttackTimes);
-        display.SetLife(LifeValue);
+        display.SetAttackTimes(AttackValue, AttackTimes);
+        display.SetLife(true, LifeValue, MaxLife);
         display.SetWill(WillValue);
         display.SetActive(true);
     }
@@ -100,11 +108,13 @@ public class Player : Fighter {
             willLoss++;
         }
         base.UpdateLifeValue(lifeResult - LifeValue, triggerEvents);
+        UpdateVisual();
         UpdateWillValue(-willLoss);
     }
 
     public void UpdateMaxWill(int val) {
         MaxWill += val;
+        UpdateVisual();
     }
 
     public void UpdateWillValue(int val) {
@@ -113,9 +123,10 @@ public class Player : Fighter {
             // Will value cannot exceed max will
             WillValue = MaxWill;
         }
+        UpdateVisual();
     }
 
-    public new void ReceiveAttack(Attacker attacker) {
+    public new void ReceiveAttack(Fighter attacker) {
         // Invoke the OnAttack event before dealing damage
         // Allows for buffs on attack triggers before damage is dealt
         OnAttack?.Invoke(attacker, this);

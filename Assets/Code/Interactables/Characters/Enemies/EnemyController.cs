@@ -5,7 +5,6 @@ public static class EnemyController {
     // Dictionary is used for searching for a specific summon by Id (when targeting, etc.)
     // List is used for resolving things like combat, where iteration is important
     private static Dictionary<int, Enemy> enemyDictionary = new Dictionary<int, Enemy>();
-    private static List<Enemy> enemyList = new List<Enemy>();
 
     // Cache the index of an enemy whenever it is attacked
     private static int index;
@@ -27,74 +26,73 @@ public static class EnemyController {
         }
         newEnemy.CreateVisual();
         enemyDictionary.Add(newEnemy.id, newEnemy);
-        enemyList.Add(newEnemy);
+    }
+
+    public static void UpdateLife(int enemyId, int val) {
+        Enemy enemy = enemyDictionary[enemyId];
+        if (enemy != null) {
+            enemy.UpdateLifeValue(val);
+            if (enemy.CheckDeath()) {
+                enemy.ClearVisual();
+                enemyDictionary.Remove(enemyId);
+            }
+            else {
+                enemyDictionary[enemyId] = enemy;
+            }
+        }
     }
 
     public static Enemy GetDefender() {
         // This function returns null if there are no enemies available to take damage from an attack
         index = 0;
-        if (enemyList.Count < 1) {
+        if (enemyDictionary.Count < 1) {
             return null;
         }
 
         // Only attack the enemy if it has life
-        Enemy defender = enemyList[index];
-        while (!defender.HasLife) {
-            index++;
-            if (index >= enemyList.Count) {
-                return null;
+        foreach (KeyValuePair<int, Enemy> enemyEntry in enemyDictionary) {
+            if (enemyEntry.Value.HasLife) {
+                return enemyEntry.Value;
             }
-
-            defender = enemyList[index];
         }
 
-        return defender;
+        return null;
     }
 
-    public static bool CompleteAttack(Attacker attacker) {
-        // This function returns false if there are no enemies available to take damage from an attack
-        // Otherwise, damage is dealt to the front enemy (at the beginning of the list)
-        if (enemyList.Count < 1) {
-            return false;
-        }
-        
-        // Only attack the enemy if it has life
-        // Otherwise, attack the next enemy
-        int enemyIndex = 0;
-        Enemy enemy = enemyList[enemyIndex];
-        while (!enemy.HasLife) {
-            enemyIndex++;
-            if (enemyIndex >= enemyList.Count) {
-                return false;
+    public static bool CompleteAttack(int enemyId, Fighter attacker) {
+        // Change the life total to reflect damage taken
+        Enemy defender = enemyDictionary[enemyId];
+        if (defender != null) {
+            defender.ReceiveAttack(attacker);
+
+            // If damage exceeds the life remaining, the summon is defeated
+            // Otherwise, update the life total and visuals
+            if (defender.LifeValue <= 0) {
+                // TODO: death animation
+                // Clear the visual first to ensure proper removal
+                defender.ClearVisual();
+                enemyDictionary.Remove(enemyId);
+            }
+            else {
+                defender.UpdateVisual();
+                // Update the enemy objects in the list and dictionary
+                enemyDictionary[defender.id] = defender;
             }
 
-            enemy = enemyList[enemyIndex];
+            return true;
         }
 
-        // Change the life total to reflect damage taken
-        enemy.ReceiveAttack(attacker);
-
-        // If damage exceeds the life remaining, the summon is defeated
-        // Otherwise, update the life total and visuals
-        if (enemy.LifeValue <= 0) {
-            // TODO: death animation
-            // Clear the visual first to ensure proper removal
-            enemy.ClearVisual();
-            enemyList.RemoveAt(0);
-            enemyDictionary.Remove(enemy.id);
-        }
-        else {
-            enemy.UpdateVisual();
-            // Update the enemy objects in the list and dictionary
-            enemyList[enemyIndex] = enemy;
-            enemyDictionary[enemy.id] = enemy;
-        }
-
-        return true;
+        return false;
     }
 
     public static List<Enemy> GetEnemyList() {
-        return enemyList;
+        List<Enemy> enemies = new List<Enemy>();
+        foreach (KeyValuePair<int, Enemy> enemyEntry in enemyDictionary) {
+            if (enemyEntry.Value != null) {
+                enemies.Add(enemyEntry.Value);
+            }
+        }
+        return enemies;
     }
 
     private static void UpdateVisual(int id) {

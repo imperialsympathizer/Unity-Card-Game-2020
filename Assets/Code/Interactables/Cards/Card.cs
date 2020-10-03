@@ -1,16 +1,14 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class Card {
     private string name;
     public int Id { get; private set; }
     private string description;
     public int lifeCost { get; private set; }
-    // this is the list of game effects to perform when a card is played
-    public List<DynamicEffect> Effects { get; private set; }
+    // This is the list of game effects to perform when a card is played
+    // Needs to be publicly accessible to update targets
+    public List<DynamicEffect> Effects;
 
     // Visual component of the card, stored within its own View class
     private CardView display;
@@ -54,6 +52,7 @@ public class Card {
     // Function to call before moving card off the screen to another location (such as deck or discard)
     public void ClearVisual() {
         if (display != null) {
+            // TODO: add a dissolve animation before despawning
             display.Despawn();
             display = null;
         }
@@ -66,11 +65,11 @@ public class Card {
         for (int i = 0; i < Effects.Count; i++) {
             DynamicEffect effect = Effects[i];
             // if GetValidTargets returns null, the effect does not target
-            if (effect is TargetableDynamicEffect) {
+            if (effect is TargetableDynamicEffect targetable) {
                 // Set the card visual out of the way while targets are chosen
                 // TargetSelector will enable the targeting canvas and make targetable objects selectable
                 DisableVisual();
-                TargetSelector.SharedInstance.EnableTargetCanvas();
+                TargetSelector.SharedInstance.EnableTargeting(targetable);
 
                 // If this is the first effect
 

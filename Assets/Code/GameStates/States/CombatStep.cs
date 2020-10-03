@@ -15,15 +15,16 @@ public class CombatStep : State {
     public override IEnumerator Start() {
         // Combat occurs between player turns, after EndTurn and before BeginTurn (except on turn 1)
         // Every CombatStep, Enemies attack -> CheckGameConditions -> Summons attack -> CheckGameConditions -> player attacks -> CheckGameConditions
-        Debug.Log("beginning combat");
+        // Debug.Log("beginning combat");
 
         OnBeginCombat?.Invoke(TurnSystem.turnCount);
         CheckGameConditions();
 
+        // Initiate combat and wait for end
         combatOver = false;
-        // Perform attack/hit animation
         AttackAnimator.OnAnimateComplete += OnAnimateComplete;
         TurnSystem.StartCoroutine(EnemyAttacks());
+
         while (!combatOver) {
             yield return new WaitForSeconds(0.1f);
         }
@@ -116,7 +117,7 @@ public class CombatStep : State {
                     }
 
                     // Change the life total to reflect damage taken
-                    EnemyController.CompleteAttack(attacker);
+                    EnemyController.CompleteAttack(defender.id, attacker);
 
                     // wait for health to decrease before the next attack
                     yield return new WaitForSeconds(0.3f);
@@ -155,7 +156,7 @@ public class CombatStep : State {
                 }
 
                 // Change the life total to reflect damage taken
-                EnemyController.CompleteAttack(player);
+                EnemyController.CompleteAttack(defender.id, player);
 
                 // wait for health to decrease before the next attack
                 yield return new WaitForSeconds(0.3f);

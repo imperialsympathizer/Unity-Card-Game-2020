@@ -9,7 +9,7 @@ public class CreatePassiveEffect : DynamicEffect {
 
     public override void ResolveEffect() {
         // TODO: implement effect properly
-        Debug.Log("amount:" + effectCount.ToString());
+        // Debug.Log("amount:" + effectCount.ToString());
         for (int i = 0; i < effectCount; i++) {
             CardManager.DrawCard();
         }

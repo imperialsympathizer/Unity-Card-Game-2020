@@ -17,12 +17,12 @@ public static class AttackAnimator {
         enemyCanvas = GameObject.Find("Enemies").GetComponent<HorizontalLayoutGroup>();
     }
 
-    public static void AnimateAttack(GameObject character, AttackerType type) {
+    public static void AnimateAttack(GameObject character, Fighter.FighterType type) {
         float moveAmount = 50f;
         float backTime = 0.2f;
         float forwardTime = 0.1f;
         float resetTime = 0.2f;
-        if (type == AttackerType.PLAYER || type == AttackerType.SUMMON) {
+        if (type == Fighter.FighterType.PLAYER || type == Fighter.FighterType.SUMMON) {
             moveAmount *= -1;
         }
         EnableCanvasGrid(type, false);
@@ -36,23 +36,17 @@ public static class AttackAnimator {
         });
     }
 
-    private static void EnableCanvasGrid(AttackerType type, bool enable) {
+    private static void EnableCanvasGrid(Fighter.FighterType type, bool enable) {
         switch (type) {
-            case AttackerType.PLAYER:
+            case Fighter.FighterType.PLAYER:
                 playerCanvas.enabled = enable;
                 break;
-            case AttackerType.SUMMON:
+            case Fighter.FighterType.SUMMON:
                 summonCanvas.enabled = enable;
                 break;
-            case AttackerType.ENEMY:
+            case Fighter.FighterType.ENEMY:
                 enemyCanvas.enabled = enable;
                 break;
         }
-    }
-
-    public enum AttackerType {
-        PLAYER,
-        SUMMON,
-        ENEMY
     }
 }

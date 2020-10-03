@@ -4,10 +4,9 @@ public class Summon : Fighter {
     // Class that houses the data for summons
     // Contains references to SummonView but does not directly control it in most instances
     // Accessed and instantiated through the SummonController
-    Attacker summon;
+    private SummonView display;
 
     // Visual component of the player, stored within its own View class
-    private SummonView display;
     private GameObject prefab;
 
     public enum Summonable {
@@ -15,7 +14,6 @@ public class Summon : Fighter {
         SKELETON,
         SPIRIT
     }
-
 
     // Constructor that creates the object, but does not instantiate visuals.
     // Those can be called as needed by the CreateVisual() function
@@ -26,7 +24,7 @@ public class Summon : Fighter {
         int baseAttack,
         int baseAttackTimes,
         int baseMaxLife,
-        int baseLife) : base(name, baseAttack, baseAttackTimes, true, baseMaxLife, baseLife) {
+        int baseLife) : base(name, FighterType.SUMMON, baseAttack, baseAttackTimes, true, baseMaxLife, baseLife) {
         this.prefab = prefab;
     }
 
@@ -34,7 +32,7 @@ public class Summon : Fighter {
     public Summon(string name,
         GameObject prefab,
         int baseAttack,
-        int baseAttackTimes) : base(name, baseAttack, baseAttackTimes) {
+        int baseAttackTimes) : base(name, FighterType.SUMMON, baseAttack, baseAttackTimes) {
         this.prefab = prefab;
     }
 
@@ -42,9 +40,16 @@ public class Summon : Fighter {
         // Spawn an object to view the summon on screen
         // Not using the ObjectPooler as there is only one player character
         GameObject summonVisual = ObjectPooler.Spawn(prefab, new Vector3(0, 0, -10), Quaternion.identity);
-        display = new SummonView();
-        display.InitializeView(summonVisual, id);
+        display = new SummonView(summonVisual, id, 210);
         UpdateVisual();
+    }
+
+    public override RectTransform getVisualRect() {
+        return display.getVisualRect();
+    }
+
+    public override void SetVisualOutline(Color color) {
+        display.SetVisualOutline(color);
     }
 
     // Function to call before moving object off the screen to another location (such as deck or discard)

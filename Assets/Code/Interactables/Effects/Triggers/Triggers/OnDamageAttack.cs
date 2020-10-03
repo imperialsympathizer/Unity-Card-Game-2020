@@ -9,7 +9,7 @@ public class OnDamageAttack : CombatTrigger {
         Fighter.OnDamageAttack -= OnEventTriggered;
     }
 
-    private void OnEventTriggered(Attacker attacker, Fighter defender, int damage, int lifeResult) {
+    private void OnEventTriggered(Fighter attacker, Fighter defender, int damage, int lifeResult) {
         // Data operations
         this.attacker = attacker;
         this.defender = defender;

@@ -32,13 +32,13 @@ public class TurnSystem : StateMachine {
 
         // If the player is dead, defeat
         if (PlayerController.GetLife() <= 0 || PlayerController.GetWill() <= 0) {
-            Debug.Log("You Lose.");
+            // Debug.Log("You Lose.");
             GameEndManager.ShowGameEnd(false);
         }
 
         // If all enemies are dead, win
         if (EnemyController.GetEnemyList().Count < 1) {
-            Debug.Log("You Win.");
+            // Debug.Log("You Win.");
             GameEndManager.ShowGameEnd(true);
         }
     }

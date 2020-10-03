@@ -27,7 +27,7 @@ public class CardSource {
         effects = new List<DynamicEffect>();
         effects.Add(drawEffect);
 
-        newCard = new Card("Got Enough Draw?", 0, "Draw 3 Cards", 10, effects);
+        newCard = new Card("Got Enough Draw?", 0, "Draw 3 Cards", 5, effects);
         allCards.Add(2, newCard);
 
         // card 4
@@ -69,5 +69,12 @@ public class CardSource {
 
         newCard = new Card("Spooky time", 0, "Summon a spirit", 6, effects);
         allCards.Add(7, newCard);
+
+        // card 9
+        DamageTarget damageEffect = new DamageTarget(1, new List<Target> {Target.SUMMON, Target.ENEMY}, "Select 1-2 targets", 1, 2, -5);
+        effects = new List<DynamicEffect> {damageEffect};
+
+        newCard = new Card("Damage test", 0, "Deal 5 damage to 1 or 2 targets", 3, effects);
+        allCards.Add(8, newCard);
     }
 }

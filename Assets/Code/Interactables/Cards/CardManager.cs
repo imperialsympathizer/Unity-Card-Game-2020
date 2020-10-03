@@ -9,9 +9,9 @@ public static class CardManager {
     // The library of cards that can be played with
     private static CardSource cardSource = new CardSource();
 
-    private static Deck deck = new Deck();
-    private static Hand hand = new Hand();
-    private static Discard discard = new Discard();
+    private static Deck deck;
+    private static Hand hand;
+    private static Discard discard;
 
     private static CurvedLayout handArea;
     private static TextMeshProUGUI deckCount;
@@ -23,30 +23,26 @@ public static class CardManager {
 
     public static void Initialize() {
         cardSource.InitializeCards();
-        deck.Initialize(cardSource.allCards);
-        discard.Initialize();
+        deck = new Deck(cardSource.allCards);
+        discard = new Discard();
+        hand = new Hand();
 
         handArea = VisualController.SharedInstance.GetHand().GetComponent<CurvedLayout>();
         deckCount = VisualController.SharedInstance.GetDeckCount().GetComponent<TextMeshProUGUI>();
         discardCount = VisualController.SharedInstance.GetDiscardCount().GetComponent<TextMeshProUGUI>();
     }
 
+    public static Card GetHandCard(int cardId) {
+        return hand.GetCard(cardId);
+    }
+
+    public static void UpdateHandCard(Card card) {
+        hand.UpdateCard(card);
+    }
+
     public static void PlayCard(int cardId) {
-        // Update life and will from the card's cost through the PlayerController
         // Remove the card from hand
         Card playedCard = hand.RemoveCard(cardId);
-
-        // Get all required targets for the card from the player
-        // TODO
-        if (playedCard.SetTargets()) {
-
-        }
-        else {
-            // If the player cancels the card while choosing targets/actions, return it to hand and do not play the card
-            hand.AddCard(playedCard);
-            UpdateVisuals();
-        }
-
 
         // If there was a matching card in the hand, calculate resulting life and will (the player can kill themselves)
         // Then, clear the visuals and add the card to the discard
@@ -85,7 +81,7 @@ public static class CardManager {
             UpdateVisuals();
 
             // Fire card drawn event
-            OnCardPlay?.Invoke(drawnCard);
+            OnCardDraw?.Invoke(drawnCard);
         }
     }
 
@@ -112,20 +108,18 @@ public static class CardManager {
         for (int i = 0; i <discarded.Count; i++) {
             Card card = discarded[i];
             if (card != null) {
+                OnDiscard?.Invoke(card);
                 card.ClearVisual();
-            }
-            else {
-                discarded.RemoveAt(i);
+                discard.AddCard(card);
             }
         }
-        discard.AddCards(discarded);
         hand.ClearHand();
         UpdateVisuals();
     }
 
     public static void ReturnDiscardToDeck() {
         deck.AddCards(discard.GetCards());
-        discard.ClearCards();
+        discard.RemoveAll();
         deck.Shuffle();
     }
 

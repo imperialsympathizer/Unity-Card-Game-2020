@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 public static class SummonController {
     // Dictionary is used for searching for a specific summon by Id (when targeting, etc.)
     // List is used for resolving things like combat, where iteration is important
     private static Dictionary<int, Summon> summonDictionary = new Dictionary<int, Summon>();
-    private static List<Summon> summonList = new List<Summon>();
 
     // Cache the index of a summon whenever it is attacked
     private static int index;
@@ -13,7 +13,7 @@ public static class SummonController {
     }
 
     public static void CreateSummon(Summon.Summonable summonType) {
-        if (PlayerController.GetSlotsValue() - summonList.Count > 0) {
+        if (PlayerController.GetSlotsValue() - summonDictionary.Count > 0) {
             Summon newSummon;
             switch (summonType) {
                 case Summon.Summonable.ZOMBIE:
@@ -36,55 +36,71 @@ public static class SummonController {
             }
             newSummon.CreateVisual();
             summonDictionary.Add(newSummon.id, newSummon);
-            summonList.Add(newSummon);
+        }
+    }
+
+    public static void UpdateLife(int summonId, int val) {
+        Summon summon = summonDictionary[summonId];
+        if (summon != null) {
+            summon.UpdateLifeValue(val);
+            summon.UpdateVisual();
+            if (summon.CheckDeath()) {
+                summon.ClearVisual();
+                summonDictionary.Remove(summonId);
+            }
+            else {
+                summonDictionary[summonId] = summon;
+            }
         }
     }
 
     public static List<Summon> GetSummonList() {
-        return summonList;
+        List<Summon> summons = new List<Summon>();
+        foreach (KeyValuePair<int, Summon> summonEntry in summonDictionary) {
+            if (summonEntry.Value != null) {
+                summons.Add(summonEntry.Value);
+            }
+        }
+        return summons;
     }
 
     public static Summon GetDefender() {
         // This function returns null if there are no summons available to take damage from an attack
         // Otherwise, the front summon is returned
-        index = summonList.Count - 1;
-        if (index < 0) {
+        index = 0;
+        if (summonDictionary.Count < 1) {
             return null;
         }
 
-        // Can only attack the summon if it has life
-        Summon defender = summonList[index];
-        while (!defender.HasLife) {
-            index--;
-            if (index < 0) {
-                return null;
+        // Only attack the summon if it has life
+        foreach (KeyValuePair<int, Summon> summonEntry in summonDictionary.Reverse()) {
+            if (summonEntry.Value.HasLife) {
+                return summonEntry.Value;
             }
-
-            defender = summonList[index];
         }
 
-        return defender;
+        return null;
     }
 
-    public static void CompleteAttack(int summonId, Attacker attacker) {
+    public static void CompleteAttack(int summonId, Fighter attacker) {
         // Change the life total to reflect damage taken
         Summon defender = summonDictionary[summonId];
-        defender.ReceiveAttack(attacker);
+        if (defender != null) {
+            defender.ReceiveAttack(attacker);
 
-        // If damage exceeds the life remaining, the summon is defeated
-        // Otherwise, update the life total and visuals
-        if (defender.LifeValue <= 0) {
-            // TODO: death animation
-            // Clear the visual first to ensure proper removal
-            defender.ClearVisual();
-            summonList.RemoveAt(index);
-            summonDictionary.Remove(defender.id);
-        }
-        else {
-            defender.UpdateVisual();
-            // Update the summon objects in the list and dictionary
-            summonList[index] = defender;
-            summonDictionary[defender.id] = defender;
+            // If damage exceeds the life remaining, the summon is defeated
+            // Otherwise, update the life total and visuals
+            if (defender.LifeValue <= 0) {
+                // TODO: death animation
+                // Clear the visual first to ensure proper removal
+                defender.ClearVisual();
+                summonDictionary.Remove(defender.id);
+            }
+            else {
+                defender.UpdateVisual();
+                // Update the summon objects in the list and dictionary
+                summonDictionary[defender.id] = defender;
+            }
         }
     }
 

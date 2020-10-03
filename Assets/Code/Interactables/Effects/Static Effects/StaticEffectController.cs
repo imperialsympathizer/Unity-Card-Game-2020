@@ -20,19 +20,19 @@ public static class StaticEffectController {
     // Creates a new modifier on a character
     // Adds the modifier as a dictionary entry for every trigger that it has
     public static void AddModifier(Modifier modifier) {
-        Debug.Log($"Adding modifier: {modifier.modifierType}");
+        // Debug.Log($"Adding modifier: {modifier.modifierType}");
         attachedEffects.Add(modifier.id, modifier);
         modifier.AttachEffectToCharacter();
     }
 
     public static void AddStatus(Status status) {
-        Debug.Log($"Adding status: {status.statusType}");
+        // Debug.Log($"Adding status: {status.statusType}");
         attachedEffects.Add(status.id, status);
         status.AttachEffectToCharacter();
     }
 
     public static void AddPassive(Passive passive) {
-        Debug.Log($"Adding passive: {passive.passiveType}");
+        // Debug.Log($"Adding passive: {passive.passiveType}");
         passiveEffects.Add(passive.id, passive);
     }
 

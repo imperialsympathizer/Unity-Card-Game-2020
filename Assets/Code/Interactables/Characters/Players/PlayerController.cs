@@ -37,10 +37,12 @@
 
     public static void UpdateLife(int val) {
         player.UpdateLifeValue(val);
+        player.CheckDeath();
     }
 
     public static void UpdateWill(int val) {
         player.UpdateWillValue(val);
+        player.CheckDeath();
     }
 
     public static void UpdateVisual() {
@@ -52,7 +54,7 @@
         return player;
     }
 
-    public static bool CompleteAttack(Attacker attacker) {
+    public static bool CompleteAttack(Fighter attacker) {
         // This function returns false if the player is already considered dead
         if (player.LifeValue < 1 && player.WillValue < 1) {
             return false;

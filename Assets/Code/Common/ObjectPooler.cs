@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 
 public static class ObjectPooler {
 
@@ -27,10 +26,6 @@ public static class ObjectPooler {
 
 		public Pool(GameObject prefab, int initialQty) {
 			this.prefab = prefab;
-
-			// If Stack uses a linked list internally, then this
-			// whole initialQty thing is a placebo that we could
-			// strip out for more minimal code. But it can't *hurt*.
 			inactive = new Stack<GameObject>(initialQty);
 		}
 
@@ -131,7 +126,7 @@ public static class ObjectPooler {
 	static public void Despawn(GameObject obj) {
 		PoolMember pm = obj.GetComponent<PoolMember>();
 		if (pm == null) {
-			Debug.Log("Object '" + obj.name + "' wasn't spawned from a pool. Destroying it instead.");
+			// Debug.Log("Object '" + obj.name + "' wasn't spawned from a pool. Destroying it instead.");
 			GameObject.Destroy(obj);
 		}
 		else {
