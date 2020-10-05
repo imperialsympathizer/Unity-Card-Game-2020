@@ -45,20 +45,27 @@ public class CardManager : MonoBehaviour {
         discardCount = VisualController.SharedInstance.GetDiscardCount().GetComponent<TextMeshProUGUI>();
     }
 
+    public List<Card> GetHandCards() {
+        return hand.GetCards();
+    }
+
     #region PlayCard
     public void BeginCardPlay(int cardId) {
         playedCard = hand.GetCard(cardId);
         if (playedCard != null) {
-            // Set the card visual out of the way temporarily
-            playedCard.EnableVisual(false);
+            // Only play the card if the player can afford the life cost
+            if (PlayerController.GetVigor() >= playedCard.lifeCost) {
+                // Set the card visual out of the way temporarily
+                playedCard.EnableVisual(false);
 
-            // Resolve card effects
-            StartCoroutine(ResolveCardEffects());
+                // Resolve card effects
+                StartCoroutine(ResolveCardEffects());
+            }
+            else {
+                playedCard.ReturnToHand();
+                UpdateVisuals();
+            }
         }
-    }
-
-    public List<Card> GetHandCards() {
-        return hand.GetCards();
     }
 
     private IEnumerator ResolveCardEffects() {
@@ -110,6 +117,7 @@ public class CardManager : MonoBehaviour {
             hand.RemoveCard(playedCard.id);
 
             // Calculate resulting life and will (the player can kill themselves)
+            PlayerController.UpdateVigor(-playedCard.lifeCost);
             PlayerController.UpdateLife(-playedCard.lifeCost);
 
             // Move card to discard and disable visual

@@ -30,8 +30,6 @@ public class CardTargetSelector : MonoBehaviour, IPointerClickHandler {
         SharedInstance = this;
         selecting = false;
         targetCanvas = GameObject.Find("TargetingCanvas");
-        targetCanvas.SetActive(false);
-        TargetsSelectedButton.OnTargetsSelectedClicked += OnTargetingDone;
         shadow = targetCanvas.transform.GetChild(0).gameObject;
         targetDialogue = targetCanvas.transform.GetChild(1).GetComponent<TextMeshProUGUI>();
     }
@@ -43,6 +41,8 @@ public class CardTargetSelector : MonoBehaviour, IPointerClickHandler {
         selectableTargets.Clear();
         targetDialogue.text = effect.targetingDialogue.ToUpper();
         targetCanvas.SetActive(true);
+
+        TargetsSelectedButton.OnTargetsSelectedClicked += OnTargetingDone;
 
         // Enable cards in hand to be selected
         selectableTargets = CardManager.SharedInstance.GetHandCards();
@@ -90,6 +90,7 @@ public class CardTargetSelector : MonoBehaviour, IPointerClickHandler {
             if ((minTargets > 0 && selectedTargets.Count >= minTargets) || minTargets == 0) {
                 selecting = false;
                 DisableTargeting();
+                TargetsSelectedButton.OnTargetsSelectedClicked -= OnTargetingDone;
                 OnTargetingComplete?.Invoke(selectedTargets);
             }
         }

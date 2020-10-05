@@ -21,7 +21,8 @@ public class BeginTurn : State {
         CheckGameConditions();
 
         OnBeginTurn?.Invoke(TurnSystem.turnCount);
-        PlayerController.LifeWillAdjust();
+        // Reset available life to spend
+        PlayerController.ResetVigor();
 
         CheckGameConditions();
 

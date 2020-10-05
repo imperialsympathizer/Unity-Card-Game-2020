@@ -9,6 +9,7 @@ public class Player : Fighter {
 
     public int MaxWill { get; private set; }
     public int WillValue { get; private set; }
+    public int VigorValue { get; private set; }
 
     public bool HasSlots { get; private set; }
     public int MaxSlots { get; private set; }
@@ -19,19 +20,6 @@ public class Player : Fighter {
 
     // Visual component of the slots
     private GameObject slotPrefab;
-
-    public void LifeWillAdjust() {
-        // Lose 1 will for each max life required to get LifeValue back to positive
-        while (LifeValue < 1) {
-            UpdateWillValue(-1);
-            UpdateLifeValue(MaxLife, false);
-        }
-        // Once LifeValue is positive, reset it to MaxLife to guarantee that the player will have same mana to work with every turn
-        // This gives the player the ability to generate "phantom" life and can create interesting decisions regarding life thresholds
-        if (LifeValue != MaxLife) {
-            UpdateLifeValue(MaxLife - LifeValue, false);
-        }
-    }
 
     // Since there probably won't be many player characters, we'll use an enum for setup
     public enum PlayerCharacter {
@@ -92,7 +80,8 @@ public class Player : Fighter {
         display.SetAttack(AttackValue);
         display.SetAttackTimes(AttackValue, AttackTimes);
         display.SetLife(true, LifeValue, MaxLife);
-        display.SetWill(WillValue);
+        display.SetWill(WillValue, MaxWill);
+        display.SetVigor(VigorValue, MaxLife);
         display.SetActive(true);
     }
 
@@ -111,6 +100,24 @@ public class Player : Fighter {
             SlotsValue--;
             display.RemoveSlot();
         }
+    }
+
+    public void UpdateVigorValue(int val) {
+        VigorValue += val;
+        UpdateVisual();
+    }
+
+    public new void UpdateLifeValue(int val, bool triggers = false) {
+        // Lose 1 will for each max life required to get LifeValue back to positive
+        int lifeResult = LifeValue + val;
+        int willResult = WillValue;
+        while (lifeResult < 1) {
+            willResult--;
+            lifeResult += MaxLife;
+        }
+
+        UpdateWillValue(willResult - WillValue);
+        base.UpdateLifeValue(lifeResult - LifeValue, triggers);
     }
 
     public void UpdateMaxWill(int val) {

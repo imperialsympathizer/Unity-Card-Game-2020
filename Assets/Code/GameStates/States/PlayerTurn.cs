@@ -22,14 +22,9 @@ public class PlayerTurn : State {
 
         // Currently the only effect that players can resolve is card plays
         while (!endTurn) {
-            // The player will be unable to play cards once their life becomes negative
-            if (cardPlayed && PlayerController.GetLife() > 0) {
+            if (cardPlayed) {
                 // Call CardManager to resolve the card
                 CardManager.SharedInstance.BeginCardPlay(cardId);
-                cardPlayed = false;
-            }
-            else if (cardPlayed) {
-                CardManager.SharedInstance.ReturnCardToHand(cardId);
                 cardPlayed = false;
             }
             yield return new WaitForEndOfFrame();

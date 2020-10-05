@@ -21,10 +21,6 @@ public static class PlayerController {
         return player.SlotsValue;
     }
 
-    public static void LifeWillAdjust() {
-        player.LifeWillAdjust();
-    }
-
     public static void AddSlot() {
         player.AddSlot();
     }
@@ -41,6 +37,10 @@ public static class PlayerController {
         return player.WillValue;
     }
 
+    public static int GetVigor() {
+        return player.VigorValue;
+    }
+
     public static void UpdateLife(int val) {
         player.UpdateLifeValue(val);
         player.CheckDeath();
@@ -49,6 +49,14 @@ public static class PlayerController {
     public static void UpdateWill(int val) {
         player.UpdateWillValue(val);
         player.CheckDeath();
+    }
+
+    public static void UpdateVigor(int val) {
+        player.UpdateVigorValue(val);
+    }
+
+    public static void ResetVigor() {
+        player.UpdateVigorValue(player.MaxLife - player.VigorValue);
     }
 
     public static void UpdateVisual() {

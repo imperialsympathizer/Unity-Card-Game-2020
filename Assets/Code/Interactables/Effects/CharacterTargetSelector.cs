@@ -30,7 +30,6 @@ public class CharacterTargetSelector : MonoBehaviour, IPointerClickHandler {
         selecting = false;
         targetCanvas = GameObject.Find("TargetingCanvas");
         targetCanvas.SetActive(false);
-        TargetsSelectedButton.OnTargetsSelectedClicked += OnTargetingDone;
         shadow = targetCanvas.transform.GetChild(0).gameObject;
         targetDialogue = targetCanvas.transform.GetChild(1).GetComponent<TextMeshProUGUI>();
     }
@@ -42,6 +41,8 @@ public class CharacterTargetSelector : MonoBehaviour, IPointerClickHandler {
         selectableTargets.Clear();
         targetDialogue.text = effect.targetingDialogue.ToUpper();
         targetCanvas.SetActive(true);
+
+        TargetsSelectedButton.OnTargetsSelectedClicked += OnTargetingDone;
 
         // Enable targetable characters to be selected
         for (int i = 0; i < effect.validTargets.Count; i++) {
@@ -114,6 +115,7 @@ public class CharacterTargetSelector : MonoBehaviour, IPointerClickHandler {
             if ((minTargets > 0 && selectedTargets.Count >= minTargets) || minTargets == 0) {
                 selecting = false;
                 DisableTargeting();
+                TargetsSelectedButton.OnTargetsSelectedClicked -= OnTargetingDone;
                 OnTargetingComplete?.Invoke(selectedTargets);
             }
         }

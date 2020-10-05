@@ -13,6 +13,7 @@ public class VisualController {
     private GameObject interactableCanvas;
 
     // The "smaller" canvases that require frequent parenting
+    private GameObject icons;
     private GameObject players;
     private GameObject slots;
     private GameObject summons;
@@ -49,6 +50,7 @@ public class VisualController {
 
         // Background canvas
         backgroundCanvas = displayCanvas.transform.GetChild(0).gameObject;
+        icons = backgroundCanvas.transform.GetChild(4).gameObject;
 
         // Interactable canvas
         interactableCanvas = displayCanvas.transform.GetChild(2).gameObject;
@@ -132,18 +134,22 @@ public class VisualController {
     }
 
     public GameObject GetDeckCount() {
-        return backgroundCanvas.transform.GetChild(3).GetChild(1).GetChild(2).gameObject;
+        return icons.transform.GetChild(0).GetChild(1).gameObject;
     }
 
     public GameObject GetDiscardCount() {
-        return backgroundCanvas.transform.GetChild(3).GetChild(2).GetChild(2).gameObject;
+        return icons.transform.GetChild(1).GetChild(1).gameObject;
     }
 
-    public GameObject GetLifeValue() {
-        return backgroundCanvas.transform.GetChild(3).GetChild(3).GetChild(0).gameObject;
+    public GameObject GetWillIcon() {
+        return icons.transform.GetChild(2).gameObject;
     }
 
-    public GameObject GetWillValue() {
-        return backgroundCanvas.transform.GetChild(3).GetChild(4).GetChild(0).gameObject;
+    public GameObject GetLifeIcon() {
+        return icons.transform.GetChild(3).gameObject;
+    }
+
+    public GameObject GetVigorIcon() {
+        return icons.transform.GetChild(4).gameObject;
     }
 }
