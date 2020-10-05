@@ -11,7 +11,7 @@ public class CreatePassiveEffect : DynamicEffect {
         // TODO: implement effect properly
         // Debug.Log("amount:" + effectCount.ToString());
         for (int i = 0; i < effectCount; i++) {
-            CardManager.DrawCard();
+            CardManager.SharedInstance.DrawCard();
         }
 
         // After resolving effects, remove event listener then fire OnEffectComplete

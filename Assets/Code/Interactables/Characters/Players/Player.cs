@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class Player : Fighter {
     // Class that houses the data for players
@@ -18,6 +19,19 @@ public class Player : Fighter {
 
     // Visual component of the slots
     private GameObject slotPrefab;
+
+    public void LifeWillAdjust() {
+        // Lose 1 will for each max life required to get LifeValue back to positive
+        while (LifeValue < 1) {
+            UpdateWillValue(-1);
+            UpdateLifeValue(MaxLife, false);
+        }
+        // Once LifeValue is positive, reset it to MaxLife to guarantee that the player will have same mana to work with every turn
+        // This gives the player the ability to generate "phantom" life and can create interesting decisions regarding life thresholds
+        if (LifeValue != MaxLife) {
+            UpdateLifeValue(MaxLife - LifeValue, false);
+        }
+    }
 
     // Since there probably won't be many player characters, we'll use an enum for setup
     public enum PlayerCharacter {
@@ -58,7 +72,7 @@ public class Player : Fighter {
         UpdateVisual();
     }
 
-    public override RectTransform getVisualRect() {
+    public override RectTransform GetVisualRect() {
         return display.getVisualRect();
     }
 
@@ -97,19 +111,6 @@ public class Player : Fighter {
             SlotsValue--;
             display.RemoveSlot();
         }
-    }
-
-    // Since the player's life is tied to their will, need to override the Fighter update method
-    public new void UpdateLifeValue(int val, bool triggerEvents = true) {
-        int lifeResult = LifeValue + val;
-        int willLoss = 0;
-        while (lifeResult < 1) {
-            lifeResult += 20;
-            willLoss++;
-        }
-        base.UpdateLifeValue(lifeResult - LifeValue, triggerEvents);
-        UpdateVisual();
-        UpdateWillValue(-willLoss);
     }
 
     public void UpdateMaxWill(int val) {

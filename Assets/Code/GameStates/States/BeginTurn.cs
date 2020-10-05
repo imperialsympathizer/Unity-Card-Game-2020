@@ -8,18 +8,20 @@ public class BeginTurn : State {
     public static event Action<int> OnBeginTurn;
 
     public override IEnumerator Start() {
-        // At the start of every turn, resolve any over-time effects
-        // Check for death states
-        // Then draw 5 new cards
+        // At the start of every turn, draw 5 cards
+        // Then, resolve any over-time effects
+        // Then, reset the player's life to max and lose will accordingly
+        // Check for death statess
         // Debug.Log("beginning turn");
 
         TurnSystem.turnCount++;
-        OnBeginTurn?.Invoke(TurnSystem.turnCount);
+        for (int i = 0; i < 5; i++) {
+            CardManager.SharedInstance.DrawCard();
+        }
         CheckGameConditions();
 
-        for (int i = 0; i < 5; i++) {
-            CardManager.DrawCard();
-        }
+        OnBeginTurn?.Invoke(TurnSystem.turnCount);
+        PlayerController.LifeWillAdjust();
 
         CheckGameConditions();
 

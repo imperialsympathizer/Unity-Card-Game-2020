@@ -15,7 +15,7 @@ public class PlayerView : FighterView {
         sprite = visual.transform.GetChild(0).GetComponent<SpriteRenderer>();
         VisualController.SharedInstance.ParentToPlayerCanvas(visual.transform);
         visual.transform.localScale = new Vector3(1, 1, 1);
-
+        visual.transform.localPosition = new Vector3(visual.transform.localPosition.x, visual.transform.localPosition.y, -20);
 
         attackValue = visual.transform.GetChild(2).GetComponent<TextMeshProUGUI>();
         attackTimes = visual.transform.GetChild(3).GetComponent<TextMeshProUGUI>();

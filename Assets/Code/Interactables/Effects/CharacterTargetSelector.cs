@@ -4,8 +4,8 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class TargetSelector : MonoBehaviour, IPointerClickHandler {
-    public static TargetSelector SharedInstance;
+public class CharacterTargetSelector : MonoBehaviour, IPointerClickHandler {
+    public static CharacterTargetSelector SharedInstance;
 
     private GameObject targetCanvas;
     private GameObject shadow;
@@ -23,14 +23,14 @@ public class TargetSelector : MonoBehaviour, IPointerClickHandler {
     Color unselectedColor = new Color(0.25f, 0.7f, 0.7f, 1);
     Color selectedColor = new Color(0, 1.6f, 0, 1);
 
-    public static event Action<List<Tuple<int, Target>>> OnTargetsSelected;
+    public static event Action<List<Tuple<int, Target>>> OnTargetingComplete;
 
     private void Awake() {
         SharedInstance = this;
         selecting = false;
         targetCanvas = GameObject.Find("TargetingCanvas");
         targetCanvas.SetActive(false);
-        TargetsSelectedButton.OnTargetsSelectedClicked += OnDone;
+        TargetsSelectedButton.OnTargetsSelectedClicked += OnTargetingDone;
         shadow = targetCanvas.transform.GetChild(0).gameObject;
         targetDialogue = targetCanvas.transform.GetChild(1).GetComponent<TextMeshProUGUI>();
     }
@@ -87,7 +87,7 @@ public class TargetSelector : MonoBehaviour, IPointerClickHandler {
             Vector3 mousePos = VisualController.SharedInstance.mainCamera.ScreenToWorldPoint(Input.mousePosition);
             for (int i = 0; i < selectableTargets.Count; i++) {
                 Fighter selectable = selectableTargets[i].Item1;
-                RectTransform selectableArea = selectable.getVisualRect();
+                RectTransform selectableArea = selectable.GetVisualRect();
                 float halfWidth = selectableArea.sizeDelta.x / 2;
                 float halfHeight = selectableArea.sizeDelta.y / 2;
                 Vector3 relativePos = selectableArea.transform.InverseTransformPoint(mousePos);
@@ -96,7 +96,6 @@ public class TargetSelector : MonoBehaviour, IPointerClickHandler {
                     Tuple<int, Target> selectedItem = new Tuple<int, Target>(selectable.id, selectableTargets[i].Item2);
                     // If the object was already selected, deselect it
                     if (selectedTargets.Contains(selectedItem)) {
-
                         selectable.SetVisualOutline(unselectedColor);
                         selectedTargets.Remove(selectedItem);
                     }
@@ -110,17 +109,12 @@ public class TargetSelector : MonoBehaviour, IPointerClickHandler {
         }
     }
 
-    private void OnDone() {
+    private void OnTargetingDone() {
         if (selecting) {
-            if (minTargets > 0 && selectedTargets.Count >= minTargets) {
+            if ((minTargets > 0 && selectedTargets.Count >= minTargets) || minTargets == 0) {
                 selecting = false;
                 DisableTargeting();
-                OnTargetsSelected?.Invoke(selectedTargets);
-            }
-            else if (minTargets == 0) {
-                selecting = false;
-                DisableTargeting();
-                OnTargetsSelected?.Invoke(selectedTargets);
+                OnTargetingComplete?.Invoke(selectedTargets);
             }
         }
     }

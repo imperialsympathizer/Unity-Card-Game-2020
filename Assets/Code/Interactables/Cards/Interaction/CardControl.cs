@@ -119,21 +119,24 @@ public class CardControl : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     }
 
     public void OnPointerDown(PointerEventData eventData) {
-        if (!dragging) {
-            zooming = false;
-            dragging = true;
-            interpolation = 0;
-            LeanTween.cancel(this.gameObject);
-            // scale the card being dragged back down
-            LeanTween.scale(this.gameObject, new Vector3(1f, 1f, 1f), 0.2f);
-        }
-       
-        // Get the current hand index
-        handIndex = this.transform.GetSiblingIndex();
+        // Cannot drag a card when selecting cards for effects
+        if (!CardTargetSelector.SharedInstance.selecting) {
+            if (!dragging) {
+                zooming = false;
+                dragging = true;
+                interpolation = 0;
+                LeanTween.cancel(this.gameObject);
+                // scale the card being dragged back down
+                LeanTween.scale(this.gameObject, new Vector3(1f, 1f, 1f), 0.2f);
+            }
 
-        // Move the object being dragged to the game canvas layer so it is visible above everything else
-        VisualController.SharedInstance.ParentToInteractableCanvas(this.transform);
-        hand.UpdatePositionsFromDrag(handIndex);
+            // Get the current hand index
+            handIndex = this.transform.GetSiblingIndex();
+
+            // Move the object being dragged to the game canvas layer so it is visible above everything else
+            VisualController.SharedInstance.ParentToInteractableCanvas(this.transform);
+            hand.UpdatePositionsFromDrag(handIndex);
+        }
     }
 
     public void OnPointerUp(PointerEventData eventData) {
@@ -145,7 +148,11 @@ public class CardControl : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             hand.UpdateCardPositions();
         }
         else {
-            // Debug.Log("Playing card.");
+            // Reset parameters in case card play is cancelled
+            inHand = true;
+            dragging = false;
+            zooming = false;
+            interpolation = 0;
             OnCardPlayed?.Invoke(cardId);
             hand.UpdateCardPositions();
         }

@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Card {
-    private string name;
-    public int Id { get; private set; }
-    private string description;
+    private readonly string name;
+    public readonly int id;
+    private readonly string description;
     public int lifeCost { get; private set; }
     // This is the list of game effects to perform when a card is played
     // Needs to be publicly accessible to update targets
@@ -18,7 +19,7 @@ public class Card {
     // Those can be called as needed by the CreateVisual() function
     public Card(string name, int id, string description, int cost, List<DynamicEffect> effects) {
         this.name = name;
-        this.Id = id;
+        this.id = id;
         this.description = description;
         this.lifeCost = cost;
         this.Effects = effects;
@@ -27,7 +28,7 @@ public class Card {
     // Creates a Card with a new id (for copying cards and such)
     public Card(Card cardSource, int id) {
         this.name = cardSource.name;
-        this.Id = id;
+        this.id = id;
         this.description = cardSource.description;
         this.lifeCost = cardSource.lifeCost;
         this.Effects = cardSource.Effects;
@@ -37,7 +38,11 @@ public class Card {
         // Spawn an object to view the card on screen
         prefab = VisualController.SharedInstance.GetPrefab("CardPrefab");
         display = ObjectPooler.Spawn(prefab, new Vector3(0, 0, 0), Quaternion.identity).GetComponent<CardView>();
-        display.InitializeView(Id, prefab);
+        display.InitializeView(id, prefab);
+        UpdateVisual();
+    }
+
+    public void UpdateVisual() {
         display.SetActive(false);
         display.SetName(name);
         display.SetCost(lifeCost);
@@ -45,8 +50,16 @@ public class Card {
         display.SetActive(true);
     }
 
-    public void DisableVisual() {
-        display.SetActive(false);
+    public void EnableVisual(bool enable) {
+        display.SetActive(enable);
+    }
+
+    public RectTransform GetVisualRect() {
+        return display.GetVisualRect();
+    }
+
+    public void SetVisualOutline(Color color) {
+        display.SetVisualOutline(color);
     }
 
     // Function to call before moving card off the screen to another location (such as deck or discard)
@@ -58,26 +71,8 @@ public class Card {
         }
     }
 
-    // When a card is played, for each DynamicEffect that requires targets, request the player to pick them
-    // Returns whether all targets were chosen (if there were no targets, will return true)
-    public bool SetTargets() {
-        bool targetsChosen = true;
-        for (int i = 0; i < Effects.Count; i++) {
-            DynamicEffect effect = Effects[i];
-            // if GetValidTargets returns null, the effect does not target
-            if (effect is TargetableDynamicEffect targetable) {
-                // Set the card visual out of the way while targets are chosen
-                // TargetSelector will enable the targeting canvas and make targetable objects selectable
-                DisableVisual();
-                TargetSelector.SharedInstance.EnableTargeting(targetable);
-
-                // If this is the first effect
-
-                // Should make a call to TargetSelector for target selection
-                targetsChosen = false;
-            }
-        }
-
-        return targetsChosen;
+    public void ReturnToHand() {
+        UpdateVisual();
+        display.MoveToHand();
     }
 }

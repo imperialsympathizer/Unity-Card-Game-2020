@@ -30,8 +30,8 @@ public class TurnSystem : StateMachine {
         // If one is reached, sets the state to EndBattle
         // Otherwise, nothing happens
 
-        // If the player is dead, defeat
-        if (PlayerController.GetLife() <= 0 || PlayerController.GetWill() <= 0) {
+        // If the player has no will left, defeat
+        if (PlayerController.GetWill() <= 0) {
             // Debug.Log("You Lose.");
             GameEndManager.ShowGameEnd(false);
         }

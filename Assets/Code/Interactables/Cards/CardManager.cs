@@ -1,27 +1,40 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UnityEngine;
 
-public static class CardManager {
+public class CardManager : MonoBehaviour {
     // This class is for the management of cards through drawing/discarding and playing
     // It delegates responsiblities to the Deck, Hand, and Discard for moving objects between them
     // It also triggers visuals on cards (e.g. they appear on screen) when relevant
-    // The library of cards that can be played with
-    private static CardSource cardSource = new CardSource();
-
-    private static Deck deck;
-    private static Hand hand;
-    private static Discard discard;
-
-    private static CurvedLayout handArea;
-    private static TextMeshProUGUI deckCount;
-    private static TextMeshProUGUI discardCount;
+    public static CardManager SharedInstance;
 
     public static event Action<Card> OnCardDraw;
     public static event Action<Card> OnCardPlay;
     public static event Action<Card> OnDiscard;
 
-    public static void Initialize() {
+    // The library of cards that can be played with
+    private CardSource cardSource = new CardSource();
+
+    private Deck deck;
+    private Hand hand;
+    private Discard discard;
+
+    private CurvedLayout handArea;
+    private TextMeshProUGUI deckCount;
+    private TextMeshProUGUI discardCount;
+
+    // Variables for managing card plays/targeting since they involve asynchronous tasks
+    private Card playedCard;
+    private bool targetSelected;
+    private List<Tuple<int, Target>> effectTargets = new List<Tuple<int, Target>>();
+
+    private void Awake() {
+        SharedInstance = this;
+    }
+
+    public void Initialize() {
         cardSource.InitializeCards();
         deck = new Deck(cardSource.allCards);
         discard = new Discard();
@@ -32,29 +45,78 @@ public static class CardManager {
         discardCount = VisualController.SharedInstance.GetDiscardCount().GetComponent<TextMeshProUGUI>();
     }
 
-    public static Card GetHandCard(int cardId) {
-        return hand.GetCard(cardId);
-    }
-
-    public static void UpdateHandCard(Card card) {
-        hand.UpdateCard(card);
-    }
-
-    public static void PlayCard(int cardId) {
-        // Remove the card from hand
-        Card playedCard = hand.RemoveCard(cardId);
-
-        // If there was a matching card in the hand, calculate resulting life and will (the player can kill themselves)
-        // Then, clear the visuals and add the card to the discard
-        // Then, push any DynamicEffects related to the card to the DynamicEffectController queue
-        // Effects of the card in question are resolved in a FIFO order
+    #region PlayCard
+    public void BeginCardPlay(int cardId) {
+        playedCard = hand.GetCard(cardId);
         if (playedCard != null) {
-            // Adjust life and will totals
+            // Set the card visual out of the way temporarily
+            playedCard.EnableVisual(false);
+
+            // Resolve card effects
+            StartCoroutine(ResolveCardEffects());
+        }
+    }
+
+    public List<Card> GetHandCards() {
+        return hand.GetCards();
+    }
+
+    private IEnumerator ResolveCardEffects() {
+        // Loop through all card effects and resolve them
+        List<DynamicEffect> effects = playedCard.Effects;
+        bool cardPlayed = true;
+        for (int i = 0; i < effects.Count; i++) {
+            DynamicEffect effect = effects[i];
+            // Request target selection from the player based on available targets (if effect targets)
+            if (effect is TargetableDynamicEffect targetable) {
+                // CharacterTargetSelector will enable the targeting canvas and make targetable objects selectable
+                targetSelected = false;
+                CharacterTargetSelector.OnTargetingComplete += OnTargetingComplete;
+                CharacterTargetSelector.SharedInstance.EnableTargeting(targetable);
+                while (!targetSelected) {
+                    yield return new WaitForSeconds(0.1f);
+                }
+                // Update effects with targets
+                // If effectTargets is null, target selection was cancelled -> cancel card play
+                if (effectTargets != null) {
+                    targetable.selectedTargets = effectTargets;
+                    effects[i] = targetable;
+                }
+                else {
+                    cardPlayed = false;
+                    break;
+                }
+
+                // Unsubscribe from TargetingComplete
+                CharacterTargetSelector.OnTargetingComplete -= OnTargetingComplete;
+            }
+        }
+
+        // Update the card in hand with the targets, then play it
+        playedCard.Effects = effects;
+        FinishCardPlay(cardPlayed);
+        yield break;
+    }
+
+    private void OnTargetingComplete(List<Tuple<int, Target>> effectTargets) {
+        targetSelected = true;
+        this.effectTargets = effectTargets;
+    }
+
+    private void FinishCardPlay(bool cardPlayed) {
+        // If all targets and options were successfully chosen by the player, finish playing the card
+        if (cardPlayed) {
+            // Remove the card from hand
+            hand.RemoveCard(playedCard.id);
+
+            // Calculate resulting life and will (the player can kill themselves)
             PlayerController.UpdateLife(-playedCard.lifeCost);
 
             // Move card to discard and disable visual
             playedCard.ClearVisual();
             discard.AddCard(playedCard);
+
+            // Push all DynamicEffects related to the card to the DynamicEffectController queue
             DynamicEffectController.SharedInstance.AddEffects(playedCard.Effects);
 
             // Update visuals on screen
@@ -64,9 +126,16 @@ public static class CardManager {
             // Fire card played event
             OnCardPlay?.Invoke(playedCard);
         }
+        else {
+            // If the card play was canceled while player was choosing effects, return the card to hand
+            playedCard.ReturnToHand();
+            UpdateVisuals();
+        }
     }
+    #endregion
 
-    public static void DrawCard() {
+    #region DrawCard
+    public void DrawCard() {
         // Check max hand size to see if a card can be drawn 
         if (hand.CanDraw()) {
             // Check if the deck has cards in it
@@ -84,8 +153,10 @@ public static class CardManager {
             OnCardDraw?.Invoke(drawnCard);
         }
     }
+    #endregion
 
-    public static void DiscardRandomCard() {
+    #region DiscardCard
+    public void DiscardRandomCard() {
         // When no card or index is given, a card is discarded at random
         // TODO
         UpdateVisuals();
@@ -94,7 +165,7 @@ public static class CardManager {
         // OnDiscard?.Invoke(discardedCard);
     }
 
-    public static void DiscardCard(int cardId) {
+    public void DiscardCard(int cardId) {
         // TODO
         UpdateVisuals();
 
@@ -102,7 +173,7 @@ public static class CardManager {
         // OnDiscard?.Invoke(discardedCard);
     }
 
-    public static void DiscardHand() {
+    public void DiscardHand() {
         // This method is usually called at the end of the turn, but could be used in other circumstances
         List<Card> discarded = hand.GetCards();
         for (int i = 0; i <discarded.Count; i++) {
@@ -116,14 +187,21 @@ public static class CardManager {
         hand.ClearHand();
         UpdateVisuals();
     }
+    #endregion
 
-    public static void ReturnDiscardToDeck() {
+    public void ReturnDiscardToDeck() {
         deck.AddCards(discard.GetCards());
         discard.RemoveAll();
         deck.Shuffle();
     }
 
-    private static void UpdateVisuals() {
+    // Returns a played card visual to the hand if it is cancelled or can't be played
+    public void ReturnCardToHand(int cardId) {
+        hand.GetCard(cardId).ReturnToHand();
+        UpdateVisuals();
+    }
+
+    private void UpdateVisuals() {
         // Updates any visuals that display hand, deck, or discard values
         deckCount.text = deck.GetSize().ToString();
         discardCount.text = discard.GetSize().ToString();

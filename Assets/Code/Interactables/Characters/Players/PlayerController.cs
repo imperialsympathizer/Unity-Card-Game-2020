@@ -1,4 +1,6 @@
-﻿public static class PlayerController {
+﻿using System;
+
+public static class PlayerController {
 
     private static Player player;
 
@@ -17,6 +19,10 @@
 
     public static int GetSlotsValue() {
         return player.SlotsValue;
+    }
+
+    public static void LifeWillAdjust() {
+        player.LifeWillAdjust();
     }
 
     public static void AddSlot() {

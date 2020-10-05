@@ -44,7 +44,7 @@ public class Summon : Fighter {
         UpdateVisual();
     }
 
-    public override RectTransform getVisualRect() {
+    public override RectTransform GetVisualRect() {
         return display.getVisualRect();
     }
 

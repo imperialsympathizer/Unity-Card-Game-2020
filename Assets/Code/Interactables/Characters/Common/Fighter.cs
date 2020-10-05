@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.Remoting.Messaging;
 using UnityEngine;
 
 public abstract class Fighter : Character {
@@ -25,7 +26,7 @@ public abstract class Fighter : Character {
         LifeValue = baseLife;
     }
 
-    public abstract RectTransform getVisualRect();
+    public abstract RectTransform GetVisualRect();
 
     public abstract void SetVisualOutline(Color color);
 
@@ -44,7 +45,8 @@ public abstract class Fighter : Character {
         TurnSystem.SharedInstance.CheckGameConditions();
     }
 
-    public void UpdateLifeValue(int valueChange, bool triggerEvents = true) {
+    // Updates life value and returns if the character is considered dead
+    public bool UpdateLifeValue(int valueChange, bool triggerEvents = true) {
         LifeValue += valueChange;
         if (LifeValue > MaxLife) {
             // Life value cannot exceed max life
@@ -57,7 +59,7 @@ public abstract class Fighter : Character {
             OnDamageNonAttack?.Invoke(this, valueChange, LifeValue);
         }
         UpdateVisual();
-        CheckDeath();
+        return CheckDeath();
     }
 
     public bool CheckDeath() {
