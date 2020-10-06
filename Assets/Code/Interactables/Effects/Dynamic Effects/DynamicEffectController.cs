@@ -35,6 +35,12 @@ public class DynamicEffectController : MonoBehaviour {
         }
     }
 
+    public void AddEffect(DynamicEffect newEffect) {
+        if (newEffect != null && newEffect.IsValid()) {
+            effects.Enqueue(newEffect);
+        }
+    }
+
     public void AddEffects(DynamicEffect[] newEffects) {
         // Debug.Log("Adding effects to effect queue.");
         for (int i = 0; i < newEffects.Length; i++) {

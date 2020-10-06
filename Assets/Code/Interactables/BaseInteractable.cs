@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 public abstract class BaseInteractable {
-    protected readonly string name;
+    public readonly string name;
     public readonly int id;
     protected readonly string description;
 

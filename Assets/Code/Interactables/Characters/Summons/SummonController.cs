@@ -27,7 +27,7 @@ public static class SummonController {
                     break;
                 case Summon.Summonable.SPIRIT:
                     newSummon = new Summon("Spirit", VisualController.SharedInstance.GetPrefab("SpiritPrefab"), 0, 0);
-                    // TODO: add effect to the spirit that reduces all enemy attack values
+                    StaticEffectController.AddStatus(new CostReducer(newSummon, -5));
                     break;
                 default:
                     newSummon = new Summon("Zombie", VisualController.SharedInstance.GetPrefab("ZombiePrefab"), 1, 1, 1, 1);

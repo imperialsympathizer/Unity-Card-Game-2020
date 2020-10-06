@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using UnityEngine;
 
 public class Infector : Status {
     // This status goes on characters that deal infection when they attack

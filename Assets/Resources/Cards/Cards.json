@@ -1,0 +1,9 @@
+[
+    {
+        name: "Dark Pact",
+        description: "Draw 2 cards",
+        LifeCost: 4,      
+    }
+
+
+]

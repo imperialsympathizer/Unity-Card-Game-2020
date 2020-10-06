@@ -8,15 +8,21 @@ public class ReduceCardCost : TargetableDynamicEffect {
     private int reduceAmount;
     private bool random;
 
-    public ReduceCardCost(int effectCount, List<Target> validTargets, string targetingDialogue, int minTargets, int maxTargets, int reduceAmount, bool random = true) : base(effectCount, validTargets, targetingDialogue, minTargets, maxTargets) {
+    public ReduceCardCost(int effectCount,
+        string targetingDialogue,
+        int minTargets,
+        int maxTargets,
+        int reduceAmount)
+        : base(effectCount, new List<Target> { Target.CARD }, targetingDialogue, minTargets, maxTargets) {
         this.reduceAmount = reduceAmount;
-        this.random = random;
     }
 
     public override void ResolveEffect() {
         // Debug.Log("Drawing " + effectCount.ToString() + " cards.");
         for (int i = 0; i < effectCount; i++) {
-            CardManager.SharedInstance.DrawCard();
+            for (int j = 0; j < selectedTargets.Count; j++) {
+
+            }
         }
 
         // After resolving effects, remove event listener then fire OnEffectComplete
