@@ -6,6 +6,7 @@ public class EnemyView : FighterView {
         visual.SetActive(false);
         VisualController.SharedInstance.ParentToEnemyCanvas(visual.transform);
         visual.transform.localScale = new Vector3(1, 1, 1);
+        visual.transform.localPosition = new Vector3(visual.transform.localPosition.x, visual.transform.localPosition.y, -20);
 
         sprite = visual.transform.GetChild(0).GetComponent<SpriteRenderer>();
         attackValue = visual.transform.GetChild(1).GetComponent<TextMeshProUGUI>();

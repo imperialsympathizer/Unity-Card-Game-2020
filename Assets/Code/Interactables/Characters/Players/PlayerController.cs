@@ -1,4 +1,6 @@
-﻿public static class PlayerController {
+﻿using System;
+
+public static class PlayerController {
 
     private static Player player;
 
@@ -35,6 +37,10 @@
         return player.WillValue;
     }
 
+    public static int GetVigor() {
+        return player.VigorValue;
+    }
+
     public static void UpdateLife(int val) {
         player.UpdateLifeValue(val);
         player.CheckDeath();
@@ -43,6 +49,14 @@
     public static void UpdateWill(int val) {
         player.UpdateWillValue(val);
         player.CheckDeath();
+    }
+
+    public static void UpdateVigor(int val) {
+        player.UpdateVigorValue(val);
+    }
+
+    public static void ResetVigor() {
+        player.UpdateVigorValue(player.MaxLife - player.VigorValue);
     }
 
     public static void UpdateVisual() {

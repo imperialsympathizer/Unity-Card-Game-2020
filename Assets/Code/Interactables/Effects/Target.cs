@@ -2,5 +2,6 @@
 public enum Target {
     PLAYER,
     SUMMON,
-    ENEMY
+    ENEMY,
+    CARD
 }

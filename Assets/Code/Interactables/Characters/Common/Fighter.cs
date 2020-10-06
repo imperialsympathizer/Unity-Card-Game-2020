@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.Remoting.Messaging;
 using UnityEngine;
 
 public abstract class Fighter : Character {
@@ -16,7 +17,7 @@ public abstract class Fighter : Character {
     public static Action<Fighter, int, int> OnDamageNonAttack;
     public static Action<Fighter, int, int> OnHeal;
 
-    public Fighter(string name, FighterType fighterType, int baseAttack, int baseAttackTimes, bool hasLife = false, int baseMaxLife = 0, int baseLife = 0) : base(name) {
+    public Fighter(string name, FighterType fighterType, int baseAttack, int baseAttackTimes, bool hasLife = false, int baseMaxLife = 0, int baseLife = 0) : base(name, "") {
         this.fighterType = fighterType;
         AttackValue = baseAttack;
         AttackTimes = baseAttackTimes;
@@ -24,10 +25,6 @@ public abstract class Fighter : Character {
         MaxLife = baseMaxLife;
         LifeValue = baseLife;
     }
-
-    public abstract RectTransform getVisualRect();
-
-    public abstract void SetVisualOutline(Color color);
 
     public void UpdateAttackValue(int valueChange) {
         // Add or subtract an value from the current
@@ -44,7 +41,8 @@ public abstract class Fighter : Character {
         TurnSystem.SharedInstance.CheckGameConditions();
     }
 
-    public void UpdateLifeValue(int valueChange, bool triggerEvents = true) {
+    // Updates life value and returns if the character is considered dead
+    public bool UpdateLifeValue(int valueChange, bool triggerEvents = true) {
         LifeValue += valueChange;
         if (LifeValue > MaxLife) {
             // Life value cannot exceed max life
@@ -57,7 +55,7 @@ public abstract class Fighter : Character {
             OnDamageNonAttack?.Invoke(this, valueChange, LifeValue);
         }
         UpdateVisual();
-        CheckDeath();
+        return CheckDeath();
     }
 
     public bool CheckDeath() {

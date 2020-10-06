@@ -21,5 +21,8 @@ public abstract class TargetableDynamicEffect : DynamicEffect {
         this.minTargets = minTargets;
         this.maxTargets = maxTargets;
     }
-    public abstract List<Target> GetValidTargets();
+
+    public List<Target> GetValidTargets() {
+        return validTargets;
+    }
 }

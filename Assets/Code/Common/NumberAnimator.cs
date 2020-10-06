@@ -6,7 +6,7 @@ public static class NumberAnimator {
     private static List<Tuple<TextMeshProUGUI, LTDescr>> currentUIAnimations = new List<Tuple<TextMeshProUGUI, LTDescr>>();
 
     // TODO: add to global variable
-    private static float timeConstant = 0.3f;
+    private static float timeConstant = 0.5f;
 
     public static void Initialize() {
     }

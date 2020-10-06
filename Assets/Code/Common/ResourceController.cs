@@ -8,7 +8,6 @@ public class ResourceController : MonoBehaviour {
     // This class is also used for generating unique ids of objects instantiated in the game
 
     private VisualController visualController;
-    // private TargetSelector targetSelector
 
     private static int uniqueId = 0;
 
@@ -36,7 +35,7 @@ public class ResourceController : MonoBehaviour {
         // Initialize Controllers
         visualController.Initialize(prefabDictionary);
         NumberAnimator.Initialize();
-        CardManager.Initialize();
+        CardManager.SharedInstance.Initialize();
         PlayerController.Initialize();
         SummonController.Initialize();
         EnemyController.Initialize();

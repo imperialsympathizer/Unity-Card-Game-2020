@@ -1,10 +1,10 @@
 ﻿using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class CardView : MonoBehaviour {
-    private GameObject visual;
-
-    private int Id;
+public class CardView : BaseView {
+    // image of the whole card (not just art)
+    private Image cardImage;
 
     // TODO: add an object to the card that can take images for card art
 
@@ -12,18 +12,16 @@ public class CardView : MonoBehaviour {
     private TextMeshProUGUI cost;
     private TextMeshProUGUI description;
 
-    public void InitializeView(int id, GameObject prefab) {
-        this.Id = id;
-        visual = this.gameObject;
-
+    public CardView(GameObject visual, int id) : base(visual, id) {
         // Deactivate the visual while linking the UI components
         visual.SetActive(false);
-        cardName = visual.transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>();
-        cost = visual.transform.GetChild(1).GetChild(1).GetComponent<TextMeshProUGUI>();
-        description = visual.transform.GetChild(1).GetChild(2).GetComponent<TextMeshProUGUI>();
+        cardImage = visual.transform.GetChild(0).GetComponent<Image>();
+        cardName = visual.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>();
+        cost = visual.transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>();
+        description = visual.transform.GetChild(0).GetChild(2).GetComponent<TextMeshProUGUI>();
 
         // Move the card to hand
-        VisualController.SharedInstance.ParentToHand(visual.transform);
+        MoveToHand();
 
         // Ensure the real card doesn't have lingering effects from an old card
         visual.transform.localScale = new Vector3(1, 1, 1);
@@ -38,13 +36,16 @@ public class CardView : MonoBehaviour {
         visual.SetActive(true);
     }
 
-    // Function to call for a card that has choices needing resolution before the card can be played
-    public void StageCard() {
-        visual.SetActive(false);
-        // Move the card to the "Staging Area position" if it isn't already there
-        VisualController.SharedInstance.ParentToDisplayCanvas(visual.transform);
-        visual.SetActive(true);
-        LeanTween.moveLocal(visual, new Vector3(0, -200, 0), 0.2f);
+    public void MoveToHand() {
+        VisualController.SharedInstance.ParentToHand(visual.transform);
+    }
+
+    public RectTransform GetVisualRect() {
+        return visual.GetComponent<RectTransform>();
+    }
+
+    public void SetVisualOutline(Color color) {
+        cardImage.material.SetColor("_OutlineColor", color);
     }
 
     public void SetName(string name) {

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class Player : Fighter {
     // Class that houses the data for players
@@ -8,6 +9,7 @@ public class Player : Fighter {
 
     public int MaxWill { get; private set; }
     public int WillValue { get; private set; }
+    public int VigorValue { get; private set; }
 
     public bool HasSlots { get; private set; }
     public int MaxSlots { get; private set; }
@@ -50,7 +52,7 @@ public class Player : Fighter {
 
     #region Visual Methods
 
-    public void CreateVisual() {
+    public override void CreateVisual() {
         // Spawn an object to view the player on screen
         // Not using the ObjectPooler as there is only one player character
         GameObject playerVisual = GameObject.Instantiate(prefab, new Vector3(0, 0, -10), Quaternion.identity);
@@ -58,7 +60,7 @@ public class Player : Fighter {
         UpdateVisual();
     }
 
-    public override RectTransform getVisualRect() {
+    public override RectTransform GetVisualRect() {
         return display.getVisualRect();
     }
 
@@ -66,7 +68,7 @@ public class Player : Fighter {
         display.SetVisualOutline(color);
     }
 
-    public void ClearVisual() {
+    public override void ClearVisual() {
         if (display != null) {
             display.Despawn();
             display = null;
@@ -78,7 +80,8 @@ public class Player : Fighter {
         display.SetAttack(AttackValue);
         display.SetAttackTimes(AttackValue, AttackTimes);
         display.SetLife(true, LifeValue, MaxLife);
-        display.SetWill(WillValue);
+        display.SetWill(WillValue, MaxWill);
+        display.SetVigor(VigorValue, MaxLife);
         display.SetActive(true);
     }
 
@@ -99,17 +102,22 @@ public class Player : Fighter {
         }
     }
 
-    // Since the player's life is tied to their will, need to override the Fighter update method
-    public new void UpdateLifeValue(int val, bool triggerEvents = true) {
-        int lifeResult = LifeValue + val;
-        int willLoss = 0;
-        while (lifeResult < 1) {
-            lifeResult += 20;
-            willLoss++;
-        }
-        base.UpdateLifeValue(lifeResult - LifeValue, triggerEvents);
+    public void UpdateVigorValue(int val) {
+        VigorValue += val;
         UpdateVisual();
-        UpdateWillValue(-willLoss);
+    }
+
+    public new void UpdateLifeValue(int val, bool triggers = false) {
+        // Lose 1 will for each max life required to get LifeValue back to positive
+        int lifeResult = LifeValue + val;
+        int willResult = WillValue;
+        while (lifeResult < 1) {
+            willResult--;
+            lifeResult += MaxLife;
+        }
+
+        UpdateWillValue(willResult - WillValue);
+        base.UpdateLifeValue(lifeResult - LifeValue, triggers);
     }
 
     public void UpdateMaxWill(int val) {
@@ -137,6 +145,10 @@ public class Player : Fighter {
 
     public override void PerformAttack() {
         display.AnimateAttack();
+    }
+
+    public override void EnableVisual(bool enable) {
+        throw new NotImplementedException();
     }
 
     #endregion
