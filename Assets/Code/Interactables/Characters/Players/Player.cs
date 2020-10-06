@@ -52,7 +52,7 @@ public class Player : Fighter {
 
     #region Visual Methods
 
-    public void CreateVisual() {
+    public override void CreateVisual() {
         // Spawn an object to view the player on screen
         // Not using the ObjectPooler as there is only one player character
         GameObject playerVisual = GameObject.Instantiate(prefab, new Vector3(0, 0, -10), Quaternion.identity);
@@ -68,7 +68,7 @@ public class Player : Fighter {
         display.SetVisualOutline(color);
     }
 
-    public void ClearVisual() {
+    public override void ClearVisual() {
         if (display != null) {
             display.Despawn();
             display = null;
@@ -145,6 +145,10 @@ public class Player : Fighter {
 
     public override void PerformAttack() {
         display.AnimateAttack();
+    }
+
+    public override void EnableVisual(bool enable) {
+        throw new NotImplementedException();
     }
 
     #endregion

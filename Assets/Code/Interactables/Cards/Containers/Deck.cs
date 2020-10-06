@@ -6,7 +6,7 @@ public class Deck : CardStore {
         for (int i = 0; i < cardSource.Count; i++) {
             for (int j = 0; j < 5; j++) {
                 Card source = cardSource[i];
-                Card newCard = new Card(source, ResourceController.GenerateId());
+                Card newCard = new Card(source);
                 AddCard(newCard);
             }
         }

@@ -76,10 +76,10 @@ public class CardManager : MonoBehaviour {
             DynamicEffect effect = effects[i];
             // Request target selection from the player based on available targets (if effect targets)
             if (effect is TargetableDynamicEffect targetable) {
-                // CharacterTargetSelector will enable the targeting canvas and make targetable objects selectable
+                // TargetSelector will enable the targeting canvas and make targetable objects selectable
                 targetSelected = false;
-                CharacterTargetSelector.OnTargetingComplete += OnTargetingComplete;
-                CharacterTargetSelector.SharedInstance.EnableTargeting(targetable);
+                TargetSelector.OnTargetingComplete += OnTargetingComplete;
+                TargetSelector.SharedInstance.EnableTargeting(targetable);
                 while (!targetSelected) {
                     yield return new WaitForSeconds(0.1f);
                 }
@@ -95,7 +95,7 @@ public class CardManager : MonoBehaviour {
                 }
 
                 // Unsubscribe from TargetingComplete
-                CharacterTargetSelector.OnTargetingComplete -= OnTargetingComplete;
+                TargetSelector.OnTargetingComplete -= OnTargetingComplete;
             }
         }
 

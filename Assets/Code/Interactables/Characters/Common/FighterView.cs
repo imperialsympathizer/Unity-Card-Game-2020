@@ -1,12 +1,8 @@
 ﻿using TMPro;
 using UnityEngine;
 
-public abstract class FighterView {
+public abstract class FighterView : BaseView {
     public readonly Fighter.FighterType fighterType;
-
-    protected GameObject visual;
-
-    protected int id;
 
     protected TextMeshProUGUI attackValue;
     protected TextMeshProUGUI xText;
@@ -20,9 +16,7 @@ public abstract class FighterView {
 
     protected int healthBarSize;
 
-    public FighterView(GameObject view, int id, Fighter.FighterType fighterType, int healthBarSize) {
-        this.visual = view;
-        this.id = id;
+    public FighterView(GameObject visual, int id, Fighter.FighterType fighterType, int healthBarSize) : base(visual, id) {
         this.fighterType = fighterType;
         this.healthBarSize = healthBarSize;
     }

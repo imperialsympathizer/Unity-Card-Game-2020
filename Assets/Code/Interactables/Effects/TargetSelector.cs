@@ -4,8 +4,8 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class CharacterTargetSelector : MonoBehaviour, IPointerClickHandler {
-    public static CharacterTargetSelector SharedInstance;
+public class TargetSelector : MonoBehaviour, IPointerClickHandler {
+    public static TargetSelector SharedInstance;
 
     private GameObject targetCanvas;
     private GameObject shadow;
@@ -13,9 +13,9 @@ public class CharacterTargetSelector : MonoBehaviour, IPointerClickHandler {
 
     // List with pairs of target ids and targetTypes
     private List<Tuple<int, Target>> selectedTargets = new List<Tuple<int, Target>>();
-    private List<Tuple<Fighter, Target>> selectableTargets = new List<Tuple<Fighter, Target>>();
+    private List<Tuple<BaseInteractable, Target>> selectableTargets = new List<Tuple<BaseInteractable, Target>>();
 
-    private bool selecting;
+    public bool Selecting { get; private set; }
     private int minTargets;
     private int maxTargets;
 
@@ -27,7 +27,7 @@ public class CharacterTargetSelector : MonoBehaviour, IPointerClickHandler {
 
     private void Awake() {
         SharedInstance = this;
-        selecting = false;
+        Selecting = false;
         targetCanvas = GameObject.Find("TargetingCanvas");
         targetCanvas.SetActive(false);
         shadow = targetCanvas.transform.GetChild(0).gameObject;
@@ -53,7 +53,7 @@ public class CharacterTargetSelector : MonoBehaviour, IPointerClickHandler {
                 for (int j = 0; j < enemies.Count; j++) {
                     Enemy enemy = enemies[j];
                     enemy.SetVisualOutline(unselectedColor);
-                    selectableTargets.Add(new Tuple<Fighter, Target>(enemy, Target.ENEMY));
+                    selectableTargets.Add(new Tuple<BaseInteractable, Target>(enemy, Target.ENEMY));
                 }
             }
             if (targetType == Target.SUMMON) {
@@ -61,22 +61,30 @@ public class CharacterTargetSelector : MonoBehaviour, IPointerClickHandler {
                 for (int j = 0; j < summons.Count; j++) {
                     Summon summon = summons[j];
                     summon.SetVisualOutline(unselectedColor);
-                    selectableTargets.Add(new Tuple<Fighter, Target>(summon, Target.SUMMON));
+                    selectableTargets.Add(new Tuple<BaseInteractable, Target>(summon, Target.SUMMON));
                 }
             }
             if (targetType == Target.PLAYER) {
                 Player player = PlayerController.GetPlayer();
                 player.SetVisualOutline(unselectedColor);
-                selectableTargets.Add(new Tuple<Fighter, Target>(player, Target.PLAYER));
+                selectableTargets.Add(new Tuple<BaseInteractable, Target>(player, Target.PLAYER));
+            }
+            if (targetType == Target.CARD) {
+                List<Card> cards = CardManager.SharedInstance.GetHandCards();
+                for (int j = 0; j < cards.Count; j++) {
+                    Card card = cards[j];
+                    card.SetVisualOutline(unselectedColor);
+                    selectableTargets.Add(new Tuple<BaseInteractable, Target>(card, Target.SUMMON));
+                }
             }
         }
 
         // Start the target selection
-        selecting = true;
+        Selecting = true;
     }
 
     public void DisableTargeting() {
-        foreach(Tuple<Fighter, Target> target in selectableTargets) {
+        foreach(Tuple<BaseInteractable, Target> target in selectableTargets) {
             target.Item1.SetVisualOutline(noColor);
         }
 
@@ -84,10 +92,10 @@ public class CharacterTargetSelector : MonoBehaviour, IPointerClickHandler {
     }
 
     public void OnPointerClick(PointerEventData eventData) {
-        if (selecting) {
+        if (Selecting) {
             Vector3 mousePos = VisualController.SharedInstance.mainCamera.ScreenToWorldPoint(Input.mousePosition);
             for (int i = 0; i < selectableTargets.Count; i++) {
-                Fighter selectable = selectableTargets[i].Item1;
+                BaseInteractable selectable = selectableTargets[i].Item1;
                 RectTransform selectableArea = selectable.GetVisualRect();
                 float halfWidth = selectableArea.sizeDelta.x / 2;
                 float halfHeight = selectableArea.sizeDelta.y / 2;
@@ -111,9 +119,9 @@ public class CharacterTargetSelector : MonoBehaviour, IPointerClickHandler {
     }
 
     private void OnTargetingDone() {
-        if (selecting) {
+        if (Selecting) {
             if ((minTargets > 0 && selectedTargets.Count >= minTargets) || minTargets == 0) {
-                selecting = false;
+                Selecting = false;
                 DisableTargeting();
                 TargetsSelectedButton.OnTargetsSelectedClicked -= OnTargetingDone;
                 OnTargetingComplete?.Invoke(selectedTargets);

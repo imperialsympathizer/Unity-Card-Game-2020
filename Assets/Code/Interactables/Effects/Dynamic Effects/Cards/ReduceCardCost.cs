@@ -1,4 +1,6 @@
-﻿public class ReduceCardCost : DynamicEffect {
+﻿using System.Collections.Generic;
+
+public class ReduceCardCost : TargetableDynamicEffect {
     // This dynamic effect reduces the cost of a card in hand by reduceAmount
     // If random is true, a random card in hand will be chosen
     // Otherwise, the player chooses the card to reduce the cost
@@ -6,7 +8,7 @@
     private int reduceAmount;
     private bool random;
 
-    public ReduceCardCost(int effectCount, int reduceAmount, bool random = true) : base(effectCount) {
+    public ReduceCardCost(int effectCount, List<Target> validTargets, string targetingDialogue, int minTargets, int maxTargets, int reduceAmount, bool random = true) : base(effectCount, validTargets, targetingDialogue, minTargets, maxTargets) {
         this.reduceAmount = reduceAmount;
         this.random = random;
     }

@@ -1,12 +1,10 @@
-﻿using System;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CardView : MonoBehaviour {
-    private GameObject visual;
-
-    private int Id;
+public class CardView : BaseView {
+    // image of the whole card (not just art)
+    private Image cardImage;
 
     // TODO: add an object to the card that can take images for card art
 
@@ -14,12 +12,7 @@ public class CardView : MonoBehaviour {
     private TextMeshProUGUI cost;
     private TextMeshProUGUI description;
 
-    private Image cardImage;
-
-    public void InitializeView(int id, GameObject prefab) {
-        this.Id = id;
-        visual = this.gameObject;
-
+    public CardView(GameObject visual, int id) : base(visual, id) {
         // Deactivate the visual while linking the UI components
         visual.SetActive(false);
         cardImage = visual.transform.GetChild(0).GetComponent<Image>();

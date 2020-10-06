@@ -120,7 +120,7 @@ public class CardControl : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     public void OnPointerDown(PointerEventData eventData) {
         // Cannot drag a card when selecting cards for effects
-        if (!CardTargetSelector.SharedInstance.selecting) {
+        if (!TargetSelector.SharedInstance.Selecting) {
             if (!dragging) {
                 zooming = false;
                 dragging = true;

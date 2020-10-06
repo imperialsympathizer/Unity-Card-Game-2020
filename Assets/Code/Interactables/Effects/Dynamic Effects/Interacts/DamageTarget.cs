@@ -9,11 +9,6 @@ public class DamageTarget : TargetableDynamicEffect {
         this.damageValue = damageValue;
     }
 
-    public override List<Target> GetValidTargets() {
-        // TODO
-        return validTargets;
-    }
-
     public override void ResolveEffect() {
         // TODO: implement effect properly
         // Debug.Log("Dealing " + effectCount.ToString() + " damage.");

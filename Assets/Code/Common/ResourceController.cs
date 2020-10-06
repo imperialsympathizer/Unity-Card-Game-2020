@@ -8,7 +8,6 @@ public class ResourceController : MonoBehaviour {
     // This class is also used for generating unique ids of objects instantiated in the game
 
     private VisualController visualController;
-    // private CharacterTargetSelector targetSelector
 
     private static int uniqueId = 0;
 
@@ -41,7 +40,7 @@ public class ResourceController : MonoBehaviour {
         SummonController.Initialize();
         EnemyController.Initialize();
         GameEndManager.Initialize();
-        // CharacterTargetSelector.Initialize();
+        // TargetSelector.Initialize();
         StaticEffectController.Initialize();
         AttackAnimator.Initialize();
 

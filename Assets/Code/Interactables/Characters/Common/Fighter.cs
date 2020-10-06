@@ -17,7 +17,7 @@ public abstract class Fighter : Character {
     public static Action<Fighter, int, int> OnDamageNonAttack;
     public static Action<Fighter, int, int> OnHeal;
 
-    public Fighter(string name, FighterType fighterType, int baseAttack, int baseAttackTimes, bool hasLife = false, int baseMaxLife = 0, int baseLife = 0) : base(name) {
+    public Fighter(string name, FighterType fighterType, int baseAttack, int baseAttackTimes, bool hasLife = false, int baseMaxLife = 0, int baseLife = 0) : base(name, "") {
         this.fighterType = fighterType;
         AttackValue = baseAttack;
         AttackTimes = baseAttackTimes;
@@ -25,10 +25,6 @@ public abstract class Fighter : Character {
         MaxLife = baseMaxLife;
         LifeValue = baseLife;
     }
-
-    public abstract RectTransform GetVisualRect();
-
-    public abstract void SetVisualOutline(Color color);
 
     public void UpdateAttackValue(int valueChange) {
         // Add or subtract an value from the current
