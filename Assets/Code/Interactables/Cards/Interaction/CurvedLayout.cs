@@ -41,7 +41,7 @@ public class CurvedLayout : MonoBehaviour {
 
         // Optimal degreeDelta is 4 unless hand size is 7 or higher
         float degreeDelta = 4 - (Math.Max(0, childCount - 6) * 0.4f - Math.Max(0, childCount - 9) * 0.15f);
-        // Go from left to right
+        // Variable for calculating degree location of a card
         float currentDegrees = 90 + ((childCount - 1) * degreeDelta / 2);
 
         // Get the current positions of all cards in hand and cancel all animations attached to them
@@ -100,7 +100,7 @@ public class CurvedLayout : MonoBehaviour {
             float degreeLoc = currentDegrees - degreeDelta * i;
 
             // Once i is even with phantomIndex is the first card that should be to the right
-            // Decrement handIndex to make the math function correctly
+            // Decrement phantomIndex to make the math function correctly
             if (phantomIndex == i) {
                 phantomIndex--;
             }

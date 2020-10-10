@@ -6,9 +6,6 @@ public static class EnemyController {
     // List is used for resolving things like combat, where iteration is important
     private static Dictionary<int, Enemy> enemyDictionary = new Dictionary<int, Enemy>();
 
-    // Cache the index of an enemy whenever it is attacked
-    private static int index;
-
     public static void Initialize() {
         CreateEnemy(Enemy.EnemyType.KNIGHT);
     }
@@ -44,7 +41,6 @@ public static class EnemyController {
 
     public static Enemy GetDefender() {
         // This function returns null if there are no enemies available to take damage from an attack
-        index = 0;
         if (enemyDictionary.Count < 1) {
             return null;
         }
@@ -97,8 +93,7 @@ public static class EnemyController {
 
     private static void UpdateVisual(int id) {
         // Updates any visuals that display enemy data
-        Enemy editEnemy;
-        if (enemyDictionary.TryGetValue(id, out editEnemy)) {
+        if (enemyDictionary.TryGetValue(id, out Enemy editEnemy)) {
             editEnemy.UpdateVisual();
         }
     }

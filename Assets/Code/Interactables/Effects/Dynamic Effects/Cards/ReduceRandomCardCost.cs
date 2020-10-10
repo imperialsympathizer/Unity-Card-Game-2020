@@ -20,7 +20,7 @@ public class ReduceRandomCardCost : DynamicEffect {
                 int randomIndex = Random.Range(0, cards.Count - 1);
                 Card updatedCard = cards[randomIndex];
                 updatedCard.UpdateLifeCost(reduceAmount);
-                CardManager.SharedInstance
+                CardManager.SharedInstance.UpdateHandCard(updatedCard);
             }
         }
 
