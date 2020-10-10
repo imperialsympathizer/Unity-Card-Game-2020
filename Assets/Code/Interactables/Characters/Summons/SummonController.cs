@@ -6,9 +6,6 @@ public static class SummonController {
     // List is used for resolving things like combat, where iteration is important
     private static Dictionary<int, Summon> summonDictionary = new Dictionary<int, Summon>();
 
-    // Cache the index of a summon whenever it is attacked
-    private static int index;
-
     public static void Initialize() {
     }
 
@@ -27,7 +24,7 @@ public static class SummonController {
                     break;
                 case Summon.Summonable.SPIRIT:
                     newSummon = new Summon("Spirit", VisualController.SharedInstance.GetPrefab("SpiritPrefab"), 0, 0);
-                    // TODO: add effect to the spirit that reduces all enemy attack values
+                    StaticEffectController.AddStatus(new CostReducer(newSummon, -5));
                     break;
                 default:
                     newSummon = new Summon("Zombie", VisualController.SharedInstance.GetPrefab("ZombiePrefab"), 1, 1, 1, 1);
@@ -67,7 +64,6 @@ public static class SummonController {
     public static Summon GetDefender() {
         // This function returns null if there are no summons available to take damage from an attack
         // Otherwise, the front summon is returned
-        index = 0;
         if (summonDictionary.Count < 1) {
             return null;
         }
@@ -106,8 +102,7 @@ public static class SummonController {
 
     private static void UpdateVisual(int id) {
         // Updates any visuals that display player data
-        Summon editSummon;
-        if (summonDictionary.TryGetValue(id, out editSummon)) {
+        if (summonDictionary.TryGetValue(id, out Summon editSummon)) {
             editSummon.UpdateVisual();
         }
     }

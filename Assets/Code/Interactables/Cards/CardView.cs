@@ -57,7 +57,8 @@ public class CardView : BaseView {
     }
 
     public void SetCost(int cost) {
-        this.cost.text = cost.ToString();
+        // this.cost.text = cost.ToString();
+        NumberAnimator.AnimateNumberChange(this.cost, cost);
         // this.dummyCost.text = cost.ToString();
     }
 

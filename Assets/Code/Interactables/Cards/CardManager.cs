@@ -49,12 +49,16 @@ public class CardManager : MonoBehaviour {
         return hand.GetCards();
     }
 
+    public void UpdateHandCard(Card updatedCard) {
+        hand.UpdateCard(updatedCard);
+    }
+
     #region PlayCard
     public void BeginCardPlay(int cardId) {
         playedCard = hand.GetCard(cardId);
         if (playedCard != null) {
             // Only play the card if the player can afford the life cost
-            if (PlayerController.GetVigor() >= playedCard.lifeCost) {
+            if (PlayerController.GetVigor() >= playedCard.LifeCost) {
                 // Set the card visual out of the way temporarily
                 playedCard.EnableVisual(false);
 
@@ -70,7 +74,7 @@ public class CardManager : MonoBehaviour {
 
     private IEnumerator ResolveCardEffects() {
         // Loop through all card effects and resolve them
-        List<DynamicEffect> effects = playedCard.Effects;
+        List<DynamicEffect> effects = playedCard.effects;
         bool cardPlayed = true;
         for (int i = 0; i < effects.Count; i++) {
             DynamicEffect effect = effects[i];
@@ -100,7 +104,7 @@ public class CardManager : MonoBehaviour {
         }
 
         // Update the card in hand with the targets, then play it
-        playedCard.Effects = effects;
+        playedCard.effects = effects;
         FinishCardPlay(cardPlayed);
         yield break;
     }
@@ -117,15 +121,15 @@ public class CardManager : MonoBehaviour {
             hand.RemoveCard(playedCard.id);
 
             // Calculate resulting life and will (the player can kill themselves)
-            PlayerController.UpdateVigor(-playedCard.lifeCost);
-            PlayerController.UpdateLife(-playedCard.lifeCost);
+            PlayerController.UpdateVigor(-playedCard.LifeCost);
+            PlayerController.UpdateLife(-playedCard.LifeCost);
 
             // Move card to discard and disable visual
             playedCard.ClearVisual();
             discard.AddCard(playedCard);
 
             // Push all DynamicEffects related to the card to the DynamicEffectController queue
-            DynamicEffectController.SharedInstance.AddEffects(playedCard.Effects);
+            DynamicEffectController.SharedInstance.AddEffects(playedCard.effects);
 
             // Update visuals on screen
             PlayerController.UpdateVisual();

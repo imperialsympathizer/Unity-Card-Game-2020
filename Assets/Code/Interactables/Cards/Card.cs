@@ -2,25 +2,43 @@
 using UnityEngine;
 
 public class Card : BaseInteractable {
-    public int lifeCost { get; private set; }
+    public int LifeCost { get; private set; }
+
+    public readonly CardRarity rarity;
     // This is the list of game effects to perform when a card is played
     // Needs to be publicly accessible to update targets
-    public List<DynamicEffect> Effects;
+    public List<DynamicEffect> effects;
 
     // Visual component of the card, stored within its own View class
     private CardView display;
 
+    public enum CardRarity {
+        COMMON,
+        UNCOMMON,
+        RARE,
+        VERY_RARE
+    }
+
     // Constructor that creates the object, but does not instantiate visuals.
     // Those can be called as needed by the CreateVisual() function
-    public Card(string name, string description, int cost, List<DynamicEffect> effects) : base(name, description) {
-        this.lifeCost = cost;
-        this.Effects = effects;
+    public Card(string name, string description, int cost, CardRarity rarity, List<DynamicEffect> effects) : base(name, description) {
+        this.LifeCost = cost;
+        this.rarity = rarity;
+        this.effects = effects;
     }
 
     // Creates a Card with a new id (for copying cards and such)
     public Card(Card cardSource) : base(cardSource.name, cardSource.description) {
-        this.lifeCost = cardSource.lifeCost;
-        this.Effects = cardSource.Effects;
+        this.LifeCost = cardSource.LifeCost;
+        this.effects = cardSource.effects;
+    }
+
+    public void UpdateLifeCost(int val) {
+        LifeCost += val;
+        if (LifeCost < 0) {
+            LifeCost = 0;
+        }
+        UpdateVisual();
     }
 
     public override void CreateVisual() {
@@ -32,7 +50,7 @@ public class Card : BaseInteractable {
     public override void UpdateVisual() {
         display.SetActive(false);
         display.SetName(name);
-        display.SetCost(lifeCost);
+        display.SetCost(LifeCost);
         display.SetDescription(description);
         display.SetActive(true);
     }

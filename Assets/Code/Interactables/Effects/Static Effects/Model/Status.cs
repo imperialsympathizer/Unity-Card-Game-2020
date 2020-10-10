@@ -12,7 +12,8 @@ public abstract class Status : AttachedStaticEffect {
     public enum StatusType {
         INFECTOR,       // Status native to zombies, add infection status to any enemies that it attacks or is killed by
         INFECTION,
-        UNDYING
+        UNDYING,
+        COST_REDUCER
     }
 
     protected override void RemoveEffect(Trigger trigger) {
