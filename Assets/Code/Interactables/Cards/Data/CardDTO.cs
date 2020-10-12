@@ -8,7 +8,6 @@ public class CardDTO {
     public string Name;
     public string Description;
     public int LifeCost;
-    [JsonConverter(typeof(StringEnumConverter))]
     public Card.CardRarity Rarity;
     public List<EffectDTO> Effects;
 }

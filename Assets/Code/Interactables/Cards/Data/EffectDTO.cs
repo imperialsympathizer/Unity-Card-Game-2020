@@ -11,11 +11,9 @@ public class EffectDTO {
     public int EffectCount;
 
     // Field for summoning effects
-    // [JsonConverter(typeof(StringEnumConverter))]
     public Summon.Summonable SummonType;
 
     // Fields for TargetableDynamicEffects
-    // [JsonConverter(typeof(StringEnumConverter))]
     public List<Target> ValidTargets;
     public string TargetingDialogue;
     public int MinTargets;
