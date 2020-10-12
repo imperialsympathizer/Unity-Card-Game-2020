@@ -3,23 +3,19 @@
 public class Infector : Status {
     // This status goes on characters that deal infection when they attack
     // Additionally, on the character's death, it will trigger infection if killed by an enemy
-
-    // The amount of infection that is applied to a character on a specific trigger (can be any character, not necessarily the character with the Infector status)
-    private int infectionValue;
+    // infectionValue: The amount of infection that is applied to a character on a specific trigger (can be any character, not necessarily the character with the Infector status)
 
     public Infector(Character character, int infectionValue) :
         base(
         character,
         StatusType.INFECTOR,
-        1,
+        infectionValue,
         new List<Trigger> { // List of triggers for the effect
             new OnDamageAttack(new List<Trigger.TriggerAction> { // Subscribe to the OnDamageAttack trigger
                 Trigger.TriggerAction.RESOLVE // Execute ResolveEffect() when triggered
             })
         },
-        0) {
-        this.infectionValue = infectionValue;
-    }
+        0) {}
 
     protected override void ResolveEffect(Trigger trigger) {
         if (trigger is OnDamageAttack onDmg) {
@@ -38,13 +34,13 @@ public class Infector : Status {
 
     private void InfectCharacter(Character character) {
         // Debug.Log($"Infecting character: {character.name}");
-        // If the character already has infection status, increase it by infectionValue
-        // Otherwise, create a new infectionStatus equal to infectionValue
+        // If the character already has infection status, increase it by effectCount
+        // Otherwise, create a new infection Status equal to effectCount
 
         bool infected = false;
         foreach (KeyValuePair<int, AttachedStaticEffect> attachedEffect in character.attachedEffects) {
             if (attachedEffect.Value is Infected infectedStatus) {
-                infectedStatus.infectionValue += infectionValue;
+                infectedStatus.effectCount += effectCount;
                 character.attachedEffects[attachedEffect.Key] = infectedStatus;
                 infected = true;
                 break;
@@ -53,7 +49,7 @@ public class Infector : Status {
 
         // If there wasn't an infection status on the character, create one
         if (!infected) {
-            StaticEffectController.AddStatus(new Infected(character, infectionValue));
+            StaticEffectController.AddStatus(new Infected(character, effectCount));
         }
     }
 }

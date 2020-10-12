@@ -7,6 +7,10 @@ public class CreatePassiveEffect : DynamicEffect {
     public CreatePassiveEffect(int effectCount) : base(effectCount) {
     }
 
+    public override bool IsValid() {
+        return (id >= 0 && effectCount >= 0);
+    }
+
     public override void ResolveEffect() {
         // TODO: implement effect properly
         // Debug.Log("amount:" + effectCount.ToString());

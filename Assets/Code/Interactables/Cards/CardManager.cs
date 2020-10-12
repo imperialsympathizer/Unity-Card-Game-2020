@@ -49,6 +49,10 @@ public class CardManager : MonoBehaviour {
         return hand.GetCards();
     }
 
+    public Card GetHandCardById(int cardId) {
+        return hand.GetCard(cardId);
+    }
+
     public void UpdateHandCard(Card updatedCard) {
         hand.UpdateCard(updatedCard);
     }

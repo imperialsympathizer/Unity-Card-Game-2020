@@ -1,11 +1,13 @@
-﻿using UnityEngine;
-
-public class CreateSummon : DynamicEffect {
+﻿public class CreateSummon : DynamicEffect {
     // The type of summon to create
     private readonly Summon.Summonable summonType;
 
     public CreateSummon(int effectCount, Summon.Summonable summonType) : base(effectCount) {
         this.summonType = summonType;
+    }
+
+    public override bool IsValid() {
+        return (id >= 0 && effectCount >= 0);
     }
 
     public override void ResolveEffect() {

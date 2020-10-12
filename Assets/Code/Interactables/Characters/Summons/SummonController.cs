@@ -24,7 +24,7 @@ public static class SummonController {
                     break;
                 case Summon.Summonable.SPIRIT:
                     newSummon = new Summon("Spirit", VisualController.SharedInstance.GetPrefab("SpiritPrefab"), 0, 0);
-                    StaticEffectController.AddStatus(new CostReducer(newSummon, -5));
+                    StaticEffectController.AddStatus(new CardCostChanger(newSummon, -5));
                     break;
                 default:
                     newSummon = new Summon("Zombie", VisualController.SharedInstance.GetPrefab("ZombiePrefab"), 1, 1, 1, 1);

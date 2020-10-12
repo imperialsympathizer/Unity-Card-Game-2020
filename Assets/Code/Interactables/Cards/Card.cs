@@ -12,12 +12,12 @@ public class Card : BaseInteractable {
     // Visual component of the card, stored within its own View class
     private CardView display;
 
-    public enum CardRarity {
-        COMMON,
-        UNCOMMON,
-        RARE,
-        VERY_RARE
-    }
+    //public enum CardRarity {
+    //    COMMON,
+    //    UNCOMMON,
+    //    RARE,
+    //    VERY_RARE
+    //}
 
     // Constructor that creates the object, but does not instantiate visuals.
     // Those can be called as needed by the CreateVisual() function

@@ -1,11 +1,12 @@
-﻿using UnityEngine;
-
-public class DiscardCard : DynamicEffect {
+﻿public class DiscardCard : DynamicEffect {
     public DiscardCard(int effectCount) : base(effectCount) {
     }
 
+    public override bool IsValid() {
+        return (id >= 0 && effectCount >= 0);
+    }
+
     public override void ResolveEffect() {
-        // Debug.Log("amount:" + effectCount.ToString());
         for (int i = 0; i < effectCount; i++) {
             CardManager.SharedInstance.DiscardRandomCard();
         }

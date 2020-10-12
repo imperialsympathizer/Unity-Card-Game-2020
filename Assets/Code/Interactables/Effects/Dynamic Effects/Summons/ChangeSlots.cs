@@ -1,24 +1,21 @@
 ﻿using UnityEngine;
 
 public class ChangeSlots : DynamicEffect {
-    // determines whether the effect is adding (true) or removing (false) slots
-    private readonly bool addSlots = true;
+    public ChangeSlots(int effectCount) : base(effectCount) {}
 
-    public ChangeSlots(int effectCount, bool addSlots) : base(effectCount) {
-        this.addSlots = addSlots;
+    public override bool IsValid() {
+        return (id >= 0 && effectCount != 0);
     }
 
     public override void ResolveEffect() {
-        if (addSlots) {
-            // Debug.Log("Adding " + effectCount.ToString() + " slots.");
-            for (int i = 0; i < effectCount; i++) {
-                PlayerController.AddSlot();
+        if (effectCount < 0) {
+            for (int i = 0; i < Mathf.Abs(effectCount); i++) {
+                PlayerController.RemoveSlot();
             }
         }
-        else {
-            // Debug.Log("Removing " + effectCount.ToString() + " slots.");
+        else if (effectCount > 0) {
             for (int i = 0; i < effectCount; i++) {
-                PlayerController.RemoveSlot();
+                PlayerController.AddSlot();
             }
         }
 

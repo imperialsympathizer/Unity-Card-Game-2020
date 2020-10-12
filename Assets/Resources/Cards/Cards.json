@@ -1,9 +1,17 @@
-[
-    {
-        name: "Dark Pact",
-        description: "Draw 2 cards",
-        LifeCost: 4,      
-    }
+{
+    "Cards":[
+        {
+            "Name":"Dark Pact",
+            "Description":"Draw 2 cards",
+            "LifeCost":4,
+            "Rarity":"Common",
+            "Effects":[
+                {
+                    "EffectType":"DrawCard",
+                    "EffectCount":2
+                }
+            ]
+        }
+    ]
+}
 
-
-]
