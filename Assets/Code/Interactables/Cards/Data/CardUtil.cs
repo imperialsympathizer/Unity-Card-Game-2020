@@ -1,7 +1,7 @@
 ﻿using System;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using UnityEngine;
 
 public static class CardUtil {
@@ -12,33 +12,18 @@ public static class CardUtil {
             string jsonString = Resources.Load<TextAsset>("Cards/Cards").text;
 
             // Deserialize the json to a CardSource
-            CardSourceDTO source = JsonUtility.FromJson<CardSourceDTO>(jsonString);
+            CardSourceDTO source = JsonConvert.DeserializeObject<CardSourceDTO>(jsonString);
 
             foreach (CardDTO cardDTO in source.Cards) {
                 // Create a new card object for each DTO in the source
                 // First need to reflectively create each effect object for the card
                 List<DynamicEffect> cardEffects = CreateCardEffects(cardDTO);
 
-                CardRarity rarity;
-                if (cardDTO.Rarity == CardRarity.Rare.Value) {
-                    rarity = CardRarity.Rare;
-                }
-                else if (cardDTO.Rarity == CardRarity.Uncommon.Value) {
-                    rarity = CardRarity.Uncommon;
-                }
-                else {
-                    rarity = CardRarity.Common;
-                }
-
-                if (null != rarity) {
-                    cards.Add(new Card(cardDTO.Name, cardDTO.Description, cardDTO.LifeCost, rarity, cardEffects));
-                }
-                else {
-                    throw new Exception($"Unable to create card of rarity {cardDTO.Rarity}");
-                }
+                cards.Add(new Card(cardDTO.Name, cardDTO.Description, cardDTO.LifeCost, cardDTO.Rarity, cardEffects));
             }
         }
-        catch {
+        catch (Exception e) {
+            throw new Exception($"Error while loading cards from json: {e}");
         }
 
         return cards;

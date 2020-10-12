@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using System;
 using System.Collections.Generic;
 
 [Serializable]
@@ -9,10 +11,12 @@ public class EffectDTO {
     public int EffectCount;
 
     // Field for summoning effects
-    // public Summon.Summonable Summonable { get; set; }
+    // [JsonConverter(typeof(StringEnumConverter))]
+    public Summon.Summonable SummonType;
 
     // Fields for TargetableDynamicEffects
-    // public List<Target> ValidTargets { get; set; }
+    // [JsonConverter(typeof(StringEnumConverter))]
+    public List<Target> ValidTargets;
     public string TargetingDialogue;
     public int MinTargets;
     public int MaxTargets;
