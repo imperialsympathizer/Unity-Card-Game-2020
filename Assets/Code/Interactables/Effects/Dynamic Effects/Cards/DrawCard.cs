@@ -1,7 +1,9 @@
-﻿using UnityEngine;
-
-public class DrawCard : DynamicEffect {
+﻿public class DrawCard : DynamicEffect {
     public DrawCard(int effectCount) : base(effectCount) {
+    }
+
+    public override bool IsValid() {
+        return (id >= 0 && effectCount >= 0);
     }
 
     public override void ResolveEffect() {

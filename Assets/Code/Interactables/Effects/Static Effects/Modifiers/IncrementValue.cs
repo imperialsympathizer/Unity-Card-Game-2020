@@ -3,9 +3,7 @@ using System.Collections.Generic;
 
 public class IncrementValue : Modifier {
     // Generic modifier for incrementing various character values
-
-    // The amount to modify the value by whenever triggered (can be positive or negative)
-    private int incrementValue;
+    // effectCount: The amount to modify the value by whenever triggered (can be positive or negative)
 
     // This is used as the number of times to perform the effect before removing it
     // default is no limit (-1)
@@ -15,12 +13,10 @@ public class IncrementValue : Modifier {
     public IncrementValue(
         Character character,
         ModifierType modifierType,
-        int effectCount,
-        List<Trigger> triggers,
         int incrementValue,
+        List<Trigger> triggers,
         int incrementTimes = -1) 
-        : base(character, modifierType, effectCount, triggers, 0) {
-        this.incrementValue = incrementValue;
+        : base(character, modifierType, incrementValue, triggers, 0) {
         this.incrementTimes = incrementTimes;
     }
 
@@ -28,32 +24,32 @@ public class IncrementValue : Modifier {
         switch (modifierType) {
             case ModifierType.ATK_VALUE:
                 if (character is Fighter) {
-                    ((Fighter)character).UpdateAttackValue(incrementValue);
+                    ((Fighter)character).UpdateAttackValue(effectCount);
                 }
                 break;
             case ModifierType.ATK_TIMES:
                 if (character is Fighter) {
-                    ((Fighter)character).UpdateAttackTimes(incrementValue);
+                    ((Fighter)character).UpdateAttackTimes(effectCount);
                 }
                 break;
             case ModifierType.MAX_LIFE:
                 if (character is Fighter) {
-                    ((Fighter)character).UpdateMaxLife(incrementValue);
+                    ((Fighter)character).UpdateMaxLife(effectCount);
                 }
                 break;
             case ModifierType.LIFE_VALUE:
                 if (character is Fighter) {
-                    ((Fighter)character).UpdateLifeValue(incrementValue);
+                    ((Fighter)character).UpdateLifeValue(effectCount);
                 }
                 break;
             case ModifierType.MAX_WILL:
                 if (character is Player) {
-                    ((Player)character).UpdateMaxWill(incrementValue);
+                    ((Player)character).UpdateMaxWill(effectCount);
                 }
                 break;
             case ModifierType.WILL_VALUE:
                 if (character is Player) {
-                    ((Player)character).UpdateWillValue(incrementValue);
+                    ((Player)character).UpdateWillValue(effectCount);
                 }
                 break;
         }

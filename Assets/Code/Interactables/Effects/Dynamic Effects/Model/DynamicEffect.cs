@@ -15,12 +15,7 @@ public abstract class DynamicEffect : BaseEffect {
         DynamicEffectController.OnEffectBegin += ResolveEffect;
     }
 
-    public bool IsValid() {
-        if (id < 0 || effectCount < 0) {
-            return false;
-        }
-        return true;
-    }
+    public abstract bool IsValid();
 
     public abstract void ResolveEffect();
 

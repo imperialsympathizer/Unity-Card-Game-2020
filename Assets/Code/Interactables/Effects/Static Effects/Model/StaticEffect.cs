@@ -46,9 +46,7 @@ public abstract class StaticEffect : BaseEffect {
         for (int i = 0; i < actions.Count; i++) {
             switch (actions[i]) {
                 case Trigger.TriggerAction.RESOLVE:
-                    for (int j = 0; j < effectCount; j++) {
-                        ResolveEffect(trigger);
-                    }
+                    ResolveEffect(trigger);
                     break;
                 case Trigger.TriggerAction.REMOVE:
                     RemoveEffect(trigger);

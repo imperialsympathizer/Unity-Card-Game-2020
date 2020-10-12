@@ -1,9 +1,49 @@
-[
-    {
-        name: "Dark Pact",
-        description: "Draw 2 cards",
-        LifeCost: 4,      
-    }
+{
+    "Cards":[
+        {
+            "Name": "Dark Pact",
+            "Description": "Draw 2 cards",
+            "LifeCost": 4,
+            "Rarity": "COMMON",
+            "Effects": [
+                {
+                    "EffectType": "DrawCard",
+                    "EffectCount": 2
+                }
+            ]
+        },
+        {
+            "Name": "Raise Dead",
+            "Description": "Summon 1 zombie",
+            "LifeCost": 3,
+            "Rarity":"COMMON",
+            "Effects": [
+                {
+                    "EffectType": "CreateSummon",
+                    "EffectCount": 1,
+                    "SummonType": "ZOMBIE"
+                }
+            ]
+        },
+        {
+            "Name": "Burn 'Em All",
+            "Description": "Deal 5 damage to 1-2 targets",
+            "LifeCost": 2,
+            "Rarity":"COMMON",
+            "Effects": [
+                {
+                    "EffectType": "ChangeTargetHealth",
+                    "EffectCount": -5,
+                    "ValidTargets": [
+                        "SUMMON",
+                        "ENEMY"
+                    ],
+                    "TargetingDialogue": "Select 1-2 targets",
+                    "MinTargets": 1,
+                    "MaxTargets": 2,
+                }
+            ]
+        }
+    ]
+}
 
-
-]
