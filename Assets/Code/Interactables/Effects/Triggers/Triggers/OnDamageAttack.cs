@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 
 public class OnDamageAttack : CombatTrigger {
-    public OnDamageAttack(List<TriggerAction> triggerActions) : base(TriggerType.DAMAGE_ATK, triggerActions) {
+    public OnDamageAttack(List<TriggerAction> triggerActions) : base(triggerActions) {
         Fighter.OnDamageAttack += OnEventTriggered;
     }
 

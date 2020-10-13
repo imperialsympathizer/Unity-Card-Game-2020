@@ -1,5 +1,4 @@
-﻿// TODO: move this somewhere better
-public enum Target {
+﻿public enum Target {
     PLAYER,
     SUMMON,
     ENEMY,

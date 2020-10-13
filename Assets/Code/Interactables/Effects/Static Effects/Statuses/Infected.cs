@@ -5,11 +5,9 @@ public class Infected : Status {
     // At the beginning of each turn, the character takes damage equal to effectCount, then effectCount is decremented by 1
     // if effectCount reaches zero, remove this effect
 
-    public Infected(Character character, int infectionValue) :
+    public Infected(int effectCount) :
         base(
-        character,
-        StatusType.INFECTOR,
-        infectionValue,
+        effectCount,
         new List<Trigger> { // List of triggers for the effect
             new OnBeginTurn(new List<Trigger.TriggerAction> { // Subscribe to the BeginTurn trigger
                 Trigger.TriggerAction.RESOLVE // Execute ResolveEffect() when triggered

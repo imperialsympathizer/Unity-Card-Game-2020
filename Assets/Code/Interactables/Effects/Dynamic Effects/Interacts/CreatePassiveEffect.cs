@@ -1,10 +1,10 @@
-﻿using UnityEngine;
+﻿using System;
 
 public class CreatePassiveEffect : DynamicEffect {
     // DynamicEffect that creates the specified Passive (Status only)
     // These are specifically for effects that do not target
 
-    public CreatePassiveEffect(int effectCount) : base(effectCount) {
+    public CreatePassiveEffect(int effectCount, Type passiveType, object[] passiveParams) : base(effectCount) {
     }
 
     public override bool IsValid() {

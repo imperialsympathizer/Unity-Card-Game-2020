@@ -12,7 +12,8 @@ public class Summon : Fighter {
     public enum Summonable {
         ZOMBIE,
         SKELETON,
-        SPIRIT
+        SPIRIT,
+        MUMMY
     }
 
     // Constructor that creates the object, but does not instantiate visuals.

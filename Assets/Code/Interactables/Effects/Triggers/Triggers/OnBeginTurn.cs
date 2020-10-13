@@ -2,7 +2,7 @@
 
 public class OnBeginTurn : TurnTrigger {
 
-    public OnBeginTurn(List<TriggerAction> triggerActions) : base(TriggerType.BEGIN_TURN, triggerActions) {
+    public OnBeginTurn(List<TriggerAction> triggerActions) : base(triggerActions) {
         BeginTurn.OnBeginTurn += OnEventTriggered;
     }
 
