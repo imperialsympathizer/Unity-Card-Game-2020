@@ -64,6 +64,15 @@ public static class SummonController {
         return summons;
     }
 
+    public static Summon GetSummon(int summonId) {
+        // This function returns null if the requested enemy does not exist
+        if (summonDictionary.ContainsKey(summonId)) {
+            return summonDictionary[summonId];
+        }
+
+        return null;
+    }
+
     public static Summon GetDefender() {
         // This function returns null if there are no summons available to take damage from an attack
         // Otherwise, the front summon is returned
