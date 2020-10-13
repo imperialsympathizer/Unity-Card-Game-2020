@@ -7,17 +7,25 @@ public abstract class AttachedStaticEffect : StaticEffect {
     // reference to the character that has the static effect
     protected Character character;
 
-    public AttachedStaticEffect(Character character, int effectCount, List<Trigger> triggers, int priority) : base(effectCount, triggers, priority) {
-        this.character = character;
+    public bool IsAttached { get; private set; }
+
+    public AttachedStaticEffect(int effectCount, List<Trigger> triggers, int priority) : base(effectCount, triggers, priority) {
+        IsAttached = false;
     }
 
-    public void AttachEffectToCharacter() {
-        character.attachedEffects.Add(this.id, this);
+    public void AttachEffectToCharacter(Character character) {
+        if (!IsAttached) {
+            this.character = character;
+            this.character.attachedEffects.Add(this.id, this);
+            ActivateTriggers();
+            IsAttached = true;
+        }
     }
 
     public void RemoveEffectFromCharacter() {
-        if (character.attachedEffects.ContainsKey(this.id)) {
+        if (IsAttached && character.attachedEffects.ContainsKey(this.id)) {
             character.attachedEffects.Remove(this.id);
         }
+        IsAttached = false;
     }
 }

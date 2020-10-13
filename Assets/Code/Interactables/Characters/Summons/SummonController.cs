@@ -15,19 +15,22 @@ public static class SummonController {
             switch (summonType) {
                 case Summon.Summonable.ZOMBIE:
                     newSummon = new Summon("Zombie", VisualController.SharedInstance.GetPrefab("ZombiePrefab"), 1, 1, 1, 1);
-                    StaticEffectController.AddStatus(new Infector(newSummon, 1));
-                    // TODO: add attack effect to the zombie so that any enemy hit by it takes infection
-                    // TODO: add death effect to the zombie so that any enemy that kills it takes infection
+                    StaticEffectController.AddStatus(newSummon, new Infector(1));
                     break;
                 case Summon.Summonable.SKELETON:
                     newSummon = new Summon("Skeleton", VisualController.SharedInstance.GetPrefab("SkeletonPrefab"), 3, 2, 10, 10);
                     break;
                 case Summon.Summonable.SPIRIT:
                     newSummon = new Summon("Spirit", VisualController.SharedInstance.GetPrefab("SpiritPrefab"), 0, 0);
-                    StaticEffectController.AddStatus(new CardCostChanger(newSummon, -5));
+                    StaticEffectController.AddStatus(newSummon, new CardCostChanger(-5));
+                    break;
+                case Summon.Summonable.MUMMY:
+                    newSummon = new Summon("Mummy", VisualController.SharedInstance.GetPrefab("MummyPrefab"), 0, 0, 5, 5);
+                    // TODO: add curse status to mummy (whenever curse is applied to a summon, deal damage = to curse value to random enemy)
                     break;
                 default:
                     newSummon = new Summon("Zombie", VisualController.SharedInstance.GetPrefab("ZombiePrefab"), 1, 1, 1, 1);
+                    StaticEffectController.AddStatus(newSummon, new Infector(1));
                     // Default summon is zombie
                     break;
             }
@@ -59,6 +62,15 @@ public static class SummonController {
             }
         }
         return summons;
+    }
+
+    public static Summon GetSummon(int summonId) {
+        // This function returns null if the requested enemy does not exist
+        if (summonDictionary.ContainsKey(summonId)) {
+            return summonDictionary[summonId];
+        }
+
+        return null;
     }
 
     public static Summon GetDefender() {

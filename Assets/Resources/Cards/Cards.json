@@ -1,46 +1,68 @@
 {
     "Cards":[
         {
-            "Name": "Dark Pact",
-            "Description": "Draw 2 cards",
-            "LifeCost": 4,
-            "Rarity": "COMMON",
-            "Effects": [
+            "name": "Dark Pact",
+            "description": "Draw 2 cards",
+            "lifeCost": 4,
+            "rarity": "COMMON",
+            "effects": [
                 {
-                    "EffectType": "DrawCard",
-                    "EffectCount": 2
+                    "effectType": "DrawCard",
+                    "effectCount": 2
                 }
             ]
         },
         {
-            "Name": "Raise Dead",
-            "Description": "Summon 1 zombie",
-            "LifeCost": 3,
-            "Rarity":"COMMON",
-            "Effects": [
+            "name": "Raise Dead",
+            "description": "Summon 1 zombie",
+            "lifeCost": 3,
+            "rarity":"COMMON",
+            "effects": [
                 {
-                    "EffectType": "CreateSummon",
-                    "EffectCount": 1,
-                    "SummonType": "ZOMBIE"
+                    "effectType": "CreateSummon",
+                    "effectCount": 1,
+                    "summonType": "ZOMBIE"
                 }
             ]
         },
         {
-            "Name": "Burn 'Em All",
-            "Description": "Deal 5 damage to 1-2 targets",
-            "LifeCost": 2,
-            "Rarity":"COMMON",
-            "Effects": [
+            "name": "Burn 'Em All",
+            "description": "Deal 5 damage to 1-2 targets",
+            "lifeCost": 2,
+            "rarity":"COMMON",
+            "effects": [
                 {
-                    "EffectType": "ChangeTargetHealth",
-                    "EffectCount": -5,
-                    "ValidTargets": [
+                    "effectType": "ChangeTargetHealth",
+                    "effectCount": -5,
+                    "validTargets": [
                         "SUMMON",
                         "ENEMY"
                     ],
-                    "TargetingDialogue": "Select 1-2 targets",
-                    "MinTargets": 1,
-                    "MaxTargets": 2,
+                    "targetingDialogue": "Select 1-2 targets",
+                    "minTargets": 1,
+                    "maxTargets": 2
+                }
+            ]
+        },
+        {
+            "name": "Infect Enemy",
+            "description": "Infect an enemy by 10",
+            "lifeCost": 5,
+            "rarity":"COMMON",
+            "effects": [
+                {
+                    "effectType": "AttachEffectTarget",
+                    "effectCount": 1,
+                    "validTargets": [
+                        "ENEMY"
+                    ],
+                    "targetingDialogue": "Select a target to status",
+                    "minTargets": 1,
+                    "maxTargets": 1,
+                    "attachedStaticEffect": {
+                        "effectType": "Infected",
+                        "effectCount": 10
+                    }
                 }
             ]
         }

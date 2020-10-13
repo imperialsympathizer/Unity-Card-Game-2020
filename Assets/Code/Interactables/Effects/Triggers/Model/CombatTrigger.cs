@@ -6,6 +6,6 @@ public abstract class CombatTrigger : Trigger {
     public int damage { get; protected set; }
     public int lifeResult { get; protected set; }
 
-    public CombatTrigger(TriggerType triggerType, List<TriggerAction> triggerActions) : base(triggerType, triggerActions) {
+    public CombatTrigger(List<TriggerAction> triggerActions) : base(triggerActions) {
     }
 }

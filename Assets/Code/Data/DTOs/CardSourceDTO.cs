@@ -2,6 +2,6 @@
 using System.Collections.Generic;
 
 [Serializable]
-public class CardSourceDTO {
-    public List<CardDTO> Cards;
+public class CardSourceDTO : DTO {
+    public List<CardDTO> cards;
 }

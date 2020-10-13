@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
 
 public class CardCostChanger : Status {
-    public CardCostChanger(Character character, int changeValue)
-        : base(character,
-            StatusType.COST_REDUCER,
-            changeValue,
+    public CardCostChanger(int effectCount)
+        : base(
+            effectCount,
             new List<Trigger> { // List of triggers for the effect
                 new OnBeginTurn(new List<Trigger.TriggerAction> { // Subscribe to the OnBeginTurn trigger
                     Trigger.TriggerAction.RESOLVE // Execute ResolveEffect() when triggered

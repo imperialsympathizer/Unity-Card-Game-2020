@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 
 public static class EnemyController {
-
     // Dictionary is used for searching for a specific summon by Id (when targeting, etc.)
     // List is used for resolving things like combat, where iteration is important
     private static Dictionary<int, Enemy> enemyDictionary = new Dictionary<int, Enemy>();
@@ -50,6 +49,15 @@ public static class EnemyController {
             if (enemyEntry.Value.HasLife) {
                 return enemyEntry.Value;
             }
+        }
+
+        return null;
+    }
+
+    public static Enemy GetEnemy(int enemyId) {
+        // This function returns null if the requested enemy does not exist
+        if (enemyDictionary.ContainsKey(enemyId)) {
+            return enemyDictionary[enemyId];
         }
 
         return null;

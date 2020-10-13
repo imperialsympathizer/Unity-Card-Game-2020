@@ -5,11 +5,9 @@ public class Infector : Status {
     // Additionally, on the character's death, it will trigger infection if killed by an enemy
     // infectionValue: The amount of infection that is applied to a character on a specific trigger (can be any character, not necessarily the character with the Infector status)
 
-    public Infector(Character character, int infectionValue) :
+    public Infector(int effectCount) :
         base(
-        character,
-        StatusType.INFECTOR,
-        infectionValue,
+        effectCount,
         new List<Trigger> { // List of triggers for the effect
             new OnDamageAttack(new List<Trigger.TriggerAction> { // Subscribe to the OnDamageAttack trigger
                 Trigger.TriggerAction.RESOLVE // Execute ResolveEffect() when triggered
@@ -49,7 +47,7 @@ public class Infector : Status {
 
         // If there wasn't an infection status on the character, create one
         if (!infected) {
-            StaticEffectController.AddStatus(new Infected(character, effectCount));
+            StaticEffectController.AddStatus(character, new Infected(effectCount));
         }
     }
 }

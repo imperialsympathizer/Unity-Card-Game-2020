@@ -28,12 +28,21 @@ public abstract class StaticEffect : BaseEffect {
             Triggers = triggers;
         }
         this.priority = priority;
-        InitializeTriggers();
     }
 
-    private void InitializeTriggers() {
-        for (int i = 0; i < Triggers.Count; i++) {
-            Triggers[i].InitializeTrigger(this);
+    protected void ActivateTriggers() {
+        if (Triggers != null && Triggers.Count > 0) {
+            for (int i = 0; i < Triggers.Count; i++) {
+                Triggers[i].InitializeTrigger(this);
+            }
+        }
+    }
+
+    protected void DeactivateTriggers() {
+        if (Triggers != null && Triggers.Count > 0) {
+            for (int i = 0; i < Triggers.Count; i++) {
+                Triggers[i].DeactivateTrigger();
+            }
         }
     }
 

@@ -3,7 +3,7 @@
 public class OnDraw : Trigger {
     public Card drawnCard { get; private set; }
 
-    public OnDraw(List<TriggerAction> triggerActions) : base(TriggerType.DRAW, triggerActions) {
+    public OnDraw(List<TriggerAction> triggerActions) : base(triggerActions) {
         CardManager.OnCardDraw += OnEventTriggered;
     }
 

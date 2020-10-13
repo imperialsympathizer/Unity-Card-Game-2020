@@ -13,8 +13,8 @@ public class ChangeTargetHealth : TargetableDynamicEffect {
     public override void ResolveEffect() {
         // TODO: implement effect properly
         // Debug.Log("Dealing " + effectCount.ToString() + " damage.");
-        for (int j = 0; j < selectedTargets.Count; j++) {
-            Tuple<int, Target> targetData = selectedTargets[j];
+        for (int i = 0; i < selectedTargets.Count; i++) {
+            Tuple<int, Target> targetData = selectedTargets[i];
             switch (targetData.Item2) {
                 case Target.ENEMY:
                     EnemyController.UpdateLife(targetData.Item1, effectCount);
