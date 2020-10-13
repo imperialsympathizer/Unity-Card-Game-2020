@@ -33,11 +33,11 @@ public class AttachEffectTarget : TargetableDynamicEffect {
                     AddEffect(EnemyController.GetEnemy(targetData.Item1));
                     break;
                 case Target.SUMMON:
-                    AddEffect(EnemyController.GetEnemy(targetData.Item1));
+                    AddEffect(SummonController.GetSummon(targetData.Item1));
                     break;
                 case Target.PLAYER:
                 default:
-                    AddEffect(EnemyController.GetEnemy(targetData.Item1));
+                    AddEffect(PlayerController.GetPlayer());
                     break;
             }
         }
