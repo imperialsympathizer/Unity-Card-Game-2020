@@ -48,11 +48,22 @@ public class AttachEffectTarget : TargetableDynamicEffect {
     }
 
     private void AddEffect(Character target) {
-        if (attachedEffect is Modifier modifier) {
-            StaticEffectController.AddModifier(target, modifier);
+        bool attached = false;
+        foreach (KeyValuePair<int, AttachedStaticEffect> targetEffect in target.attachedEffects) {
+            if (targetEffect.Value.GetType() == attachedEffect.GetType()) {
+                targetEffect.Value.UpdateEffectCount(attachedEffect.effectCount);
+                target.attachedEffects[targetEffect.Key] = targetEffect.Value;
+                attached = true;
+                break;
+            }
         }
-        else if (attachedEffect is Status status) {
-            StaticEffectController.AddStatus(target, status);
+        if (!attached) {
+            if (attachedEffect is Modifier modifier) {
+                StaticEffectController.AddModifier(target, modifier);
+            }
+            else if (attachedEffect is Status status) {
+                StaticEffectController.AddStatus(target, status);
+            }
         }
     }
 }

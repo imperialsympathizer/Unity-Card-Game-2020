@@ -116,6 +116,13 @@ public class Player : Fighter {
             lifeResult += MaxLife;
         }
 
+        // On the player's turn, if they heal, they regain that energy to spend
+        if (val > 0 && TurnSystem.SharedInstance.IsPlayerTurn()) {
+            int vigorResult = VigorValue + val;
+            vigorResult = vigorResult > MaxLife ? MaxLife : vigorResult;
+            UpdateVigorValue(vigorResult - VigorValue);
+        }
+
         UpdateWillValue(willResult - WillValue);
         base.UpdateLifeValue(lifeResult - LifeValue, triggers);
     }

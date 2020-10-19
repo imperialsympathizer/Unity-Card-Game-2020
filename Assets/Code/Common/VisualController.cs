@@ -22,9 +22,6 @@ public class VisualController {
     // Nothing should ever be parented to this, it is just a rect for checking if cards have been played
     private GameObject playZone;
 
-    // Game over canvas, should always be disabled unless receiving a game over event
-    private GameObject gameOver;
-
     // The GameController, where objects can be parented to remove from any visual canvases
     private GameObject gameController;
 
@@ -63,9 +60,6 @@ public class VisualController {
         slots = characterCanvas.transform.GetChild(1).gameObject;
         summons = characterCanvas.transform.GetChild(2).gameObject;
         enemies = characterCanvas.transform.GetChild(3).gameObject;
-
-        // Game Over canvas
-        gameOver = displayCanvas.transform.GetChild(3).gameObject;
     }
 
     public GameObject GetPrefab(string prefabKey) {
@@ -116,10 +110,6 @@ public class VisualController {
     }
 
 #endregion
-
-    public GameObject GetGameOver() {
-        return gameOver;
-    }
 
     public Rect GetPlayzoneRect() {
         return playZone.GetComponent<RectTransform>().rect;

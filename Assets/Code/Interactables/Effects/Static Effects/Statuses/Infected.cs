@@ -17,9 +17,8 @@ public class Infected : Status {
 
     protected override void ResolveEffect(Trigger trigger) {
         if (character is Fighter fighter && fighter.HasLife) {
-            // To prevent infinite loops, do not trigger other effeects
-            // TODO: consider allowing infinite loops, or looping for a prescribed amount
-            fighter.UpdateLifeValue(-effectCount, false);
+            // TODO: consider preventing infinite loops, or looping for a prescribed amount
+            DynamicEffectController.SharedInstance.AddEffect(new ChangeFighterHealth(-effectCount, fighter));
             effectCount--;
             if (effectCount == 0) {
                 RemoveEffect(trigger);

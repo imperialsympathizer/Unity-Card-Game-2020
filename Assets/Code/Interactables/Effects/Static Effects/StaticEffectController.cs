@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using UnityEngine;
 
 public static class StaticEffectController {
     // This class manages static effects (both attached and passive) as the game progresses through states

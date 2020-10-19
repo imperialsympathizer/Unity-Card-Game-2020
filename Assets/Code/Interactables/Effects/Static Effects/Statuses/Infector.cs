@@ -31,7 +31,6 @@ public class Infector : Status {
     protected override void OperateOnEffect(Trigger trigger) {}
 
     private void InfectCharacter(Character character) {
-        // Debug.Log($"Infecting character: {character.name}");
         // If the character already has infection status, increase it by effectCount
         // Otherwise, create a new infection Status equal to effectCount
 
@@ -39,7 +38,7 @@ public class Infector : Status {
         foreach (KeyValuePair<int, AttachedStaticEffect> attachedEffect in character.attachedEffects) {
             if (attachedEffect.Value is Infected infectedStatus) {
                 infectedStatus.effectCount += effectCount;
-                character.attachedEffects[attachedEffect.Key] = infectedStatus;
+                // character.attachedEffects[attachedEffect.Key] = infectedStatus;
                 infected = true;
                 break;
             }

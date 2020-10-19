@@ -4,11 +4,8 @@ public abstract class Trigger {
     // This is the parent class for triggers in the game
     // Since each trigger may have unique information that needs to be passed to the StaticEffect, they are implemented as separate classes
 
-    // Every trigger has a type which indicates the event that it is listening too
-    // public readonly TriggerType triggerType;
-
     // Reference to the effect to call when triggered
-    protected StaticEffect effect;
+    public StaticEffect effect;
 
     // What actions to take on the specified trigger
     public readonly List<TriggerAction> triggerActions;
@@ -31,26 +28,6 @@ public abstract class Trigger {
     }
 
     public abstract void DeactivateTrigger();
-
-
-    // Events that will cause effects to do things
-    // Each event will have its own Trigger class that subscribes to the event for a specified effect
-    //public enum TriggerType {
-    //    BEGIN_BATTLE,
-    //    END_BATTLE,
-    //    BEGIN_TURN,
-    //    END_TURN,
-    //    BEGIN_COMBAT,
-    //    END_COMBAT,
-    //    ATTACK,         // When attacking
-    //    DAMAGE_ATK,     // When damaged by an attack
-    //    DAMAGE_NO_ATK,  // When damaged by a non-attack
-    //    HEAL,
-    //    DEATH,
-    //    DRAW,
-    //    DISCARD,
-    //    CARD_PLAY
-    //}
 
     // What the effect should do on a specific trigger
     public enum TriggerAction {

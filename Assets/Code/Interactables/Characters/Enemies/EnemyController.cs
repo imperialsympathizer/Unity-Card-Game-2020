@@ -25,7 +25,7 @@ public static class EnemyController {
     }
 
     public static void UpdateLife(int enemyId, int val) {
-        Enemy enemy = enemyDictionary[enemyId];
+        Enemy enemy = GetEnemy(enemyId);
         if (enemy != null) {
             enemy.UpdateLifeValue(val);
             if (enemy.CheckDeath()) {
@@ -97,6 +97,25 @@ public static class EnemyController {
             }
         }
         return enemies;
+    }
+
+    public static Enemy GetRandomEnemy(bool hasLife = false) {
+        // This function returns null if there are no enemies available
+        if (enemyDictionary.Count < 1) {
+            return null;
+        }
+
+        List<Enemy> enemiesWithLife = GetEnemyList();
+
+        if (hasLife) {
+            foreach (Enemy enemy in enemiesWithLife) {
+                if (!enemy.HasLife) {
+                    enemiesWithLife.Remove(enemy);
+                }
+            }
+        }
+
+        return enemiesWithLife[RandomNumberGenerator.getRandomIndexFromRange(enemiesWithLife.Count - 1)];
     }
 
     private static void UpdateVisual(int id) {

@@ -19,7 +19,7 @@ public static class CardUtil {
                 // Create effect objects required for the card
                 List<DynamicEffect> cardEffects = CreateCardEffects(cardDTO);
 
-                cards.Add(new Card(cardDTO.name, cardDTO.description, cardDTO.lifeCost, cardDTO.rarity, cardEffects));
+                cards.Add(new Card(cardDTO.name, cardDTO.description, cardDTO.lifeCost, cardDTO.rarity, cardDTO.uses, cardEffects));
             }
         }
         catch (Exception e) {

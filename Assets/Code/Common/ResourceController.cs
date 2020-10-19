@@ -2,12 +2,13 @@
 using UnityEngine;
 
 public class ResourceController : MonoBehaviour {
-    // This class is for initializing the game's framework at startup
+    // This class is for initializing the game's framework and resources at startup
     // Currently it doesn't load other monobehaviour controllers (they are attached to the GameController in Unity),
     // But that may be something to do at a later date
     // This class is also used for generating unique ids of objects instantiated in the game
 
     private VisualController visualController;
+    private GameEndManager gameEndManager;
 
     private static int uniqueId = 0;
 
@@ -19,10 +20,9 @@ public class ResourceController : MonoBehaviour {
     }
 
     private void InitializeResources() {
-        // Debug.Log("Loading resources");
-
         // Create Controllers and Managers
         visualController = new VisualController(); // Dependencies - prefabs
+        gameEndManager = new GameEndManager();
 
         // Load requisite prefabs into a dictionary indexed by prefab name
         GameObject[] prefabs = Resources.LoadAll<GameObject>("Prefabs");
@@ -39,7 +39,7 @@ public class ResourceController : MonoBehaviour {
         PlayerController.Initialize();
         SummonController.Initialize();
         EnemyController.Initialize();
-        GameEndManager.Initialize();
+        gameEndManager.Initialize();
         // TargetSelector.Initialize();
         StaticEffectController.Initialize();
         AttackAnimator.Initialize();
