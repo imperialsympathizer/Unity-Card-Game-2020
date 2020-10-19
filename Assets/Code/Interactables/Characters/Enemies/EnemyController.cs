@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Runtime.Remoting.Messaging;
 
 public static class EnemyController {
     // Dictionary is used for searching for a specific summon by Id (when targeting, etc.)
@@ -56,8 +57,8 @@ public static class EnemyController {
 
     public static Enemy GetEnemy(int enemyId) {
         // This function returns null if the requested enemy does not exist
-        if (enemyDictionary.ContainsKey(enemyId)) {
-            return enemyDictionary[enemyId];
+        if (enemyDictionary.TryGetValue(enemyId, out Enemy enemy)) {
+            return enemy;
         }
 
         return null;

@@ -79,7 +79,7 @@ public static class ObjectPooler {
         if (pools == null) {
             pools = new Dictionary<GameObject, Pool>();
         }
-        if (prefab != null && pools.ContainsKey(prefab) == false) {
+        if (prefab != null && !pools.ContainsKey(prefab)) {
             pools[prefab] = new Pool(prefab, qty);
         }
     }

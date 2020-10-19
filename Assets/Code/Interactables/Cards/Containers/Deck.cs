@@ -3,19 +3,20 @@
 public class Deck : CardStore {
     public Deck(Dictionary<string, Card> cardSource) : base() {
 
-        if (cardSource.ContainsKey("Awaken the Bones")) {
+        Card card;
+        if (cardSource.TryGetValue("Awaken the Bones", out card) && card != null) {
             for (int j = 0; j < 8; j++) {
-                AddCard(new Card(cardSource["Awaken the Bones"]));
+                AddCard(new Card(card));
             }
         }
 
-        if (cardSource.ContainsKey("Quick Study")) {
-            AddCard(new Card(cardSource["Quick Study"]));
-            AddCard(new Card(cardSource["Quick Study"]));
+        if (cardSource.TryGetValue("Quick Study", out card) && card != null) {
+            AddCard(new Card(card));
+            AddCard(new Card(card));
         }
 
-        if (cardSource.ContainsKey("Revitalize")) {
-            AddCard(new Card(cardSource["Revitalize"]));
+        if (cardSource.TryGetValue("Revitalize", out card) && card != null) {
+            AddCard(new Card(card));
         }
 
         Shuffle();

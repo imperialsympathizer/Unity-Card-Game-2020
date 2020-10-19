@@ -32,8 +32,15 @@ public class ResourceController : MonoBehaviour {
             prefabDictionary.Add(prefabs[i].name, prefabs[i]);
         }
 
+        // Do the same for sprite images
+        Sprite[] images = Resources.LoadAll<Sprite>("Images");
+        Dictionary<string, Sprite> spriteDictionary = new Dictionary<string, Sprite>();
+
+        for (int i = 0; i < images.Length; i++) {
+            spriteDictionary.Add(images[i].name, images[i]);
+        }
         // Initialize Controllers
-        visualController.Initialize(prefabDictionary);
+        visualController.Initialize(prefabDictionary, spriteDictionary);
         NumberAnimator.Initialize();
         CardManager.SharedInstance.Initialize();
         PlayerController.Initialize();
@@ -43,6 +50,7 @@ public class ResourceController : MonoBehaviour {
         // TargetSelector.Initialize();
         StaticEffectController.Initialize();
         AttackAnimator.Initialize();
+        ElementController.Initialize();
 
         // When resources are completely loaded, sets the field that tells the TurnSystem to begin the game
         Loaded = true;

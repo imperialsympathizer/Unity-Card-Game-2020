@@ -62,8 +62,8 @@ public static class SummonController {
 
     public static Summon GetSummon(int summonId) {
         // This function returns null if the requested enemy does not exist
-        if (summonDictionary.ContainsKey(summonId)) {
-            return summonDictionary[summonId];
+        if (summonDictionary.TryGetValue(summonId, out Summon summon)) {
+            return summon;
         }
 
         return null;

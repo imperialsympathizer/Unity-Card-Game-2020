@@ -9,4 +9,5 @@ public class CardDTO : DTO {
     public Card.CardRarity rarity;
     public int uses;
     public List<DynamicEffectDTO> effects;
+    public List<Element> elements;
 }

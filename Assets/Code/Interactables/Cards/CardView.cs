@@ -1,4 +1,6 @@
-﻿using TMPro;
+﻿using System;
+using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,6 +14,9 @@ public class CardView : BaseView {
     private TextMeshProUGUI cost;
     private TextMeshProUGUI description;
 
+    private Transform elementsContainer;
+    private List<GameObject> elements;
+
     public CardView(GameObject visual, int id) : base(visual, id) {
         // Deactivate the visual while linking the UI components
         visual.SetActive(false);
@@ -19,6 +24,9 @@ public class CardView : BaseView {
         cardName = cardImage.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
         cost = cardImage.transform.GetChild(1).GetComponent<TextMeshProUGUI>();
         description = cardImage.transform.GetChild(2).GetComponent<TextMeshProUGUI>();
+        elementsContainer = visual.transform.GetChild(2).transform;
+
+        elements = new List<GameObject>();
 
         // Move the card to hand
         MoveToHand();
@@ -61,6 +69,22 @@ public class CardView : BaseView {
         // NumberAnimator.AnimateNumberChange(this.cost, cost);
     }
 
+    public void SetElements(List<Element> elementList) {
+        int childIndex = 0;
+        foreach (Element element in elementList) {
+            for (int i = 0; i < element.count; i++) {
+                if (childIndex < elementsContainer.childCount - 1) {
+                    ElementController.SetElementView(elementsContainer.GetChild(childIndex).gameObject, element.type);
+                }
+                else {
+                    GameObject newIcon = ElementController.SpawnElementView(element.type, elementsContainer);
+                    elements.Add(newIcon);
+                }
+                childIndex++;
+            }
+        }
+    }
+
     // It's a good idea to deactivate visuals before making updates to an object because
     // the process of "dirtying" the object forces Unity to make expensive render calls on changes
     // that may not even show up after all changes have occurred.
@@ -69,6 +93,10 @@ public class CardView : BaseView {
     }
 
     public void Despawn() {
+        // Despawn element icons first
+        foreach (GameObject icon in elements) {
+            ObjectPooler.Despawn(icon);
+        }
         ObjectPooler.Despawn(visual);
     }
 }

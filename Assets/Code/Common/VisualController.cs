@@ -27,8 +27,9 @@ public class VisualController {
 
     // Prefabs must be loaded by the ResourceController and passed as arguments to the Initialize method
     private Dictionary<string, GameObject> prefabs;
+    private Dictionary<string, Sprite> images;
 
-    public void Initialize(Dictionary<string, GameObject> prefabs) {
+    public void Initialize(Dictionary<string, GameObject> prefabs, Dictionary<string, Sprite> images) {
         SharedInstance = this;
 
         // Main camera is sometimes useful for positional calculation,
@@ -38,6 +39,7 @@ public class VisualController {
 
         // Initialize prefabs
         this.prefabs = prefabs;
+        this.images = images;
 
         // Game controller
         gameController = GameObject.Find("GameController");
@@ -63,7 +65,19 @@ public class VisualController {
     }
 
     public GameObject GetPrefab(string prefabKey) {
-        return prefabs[prefabKey];
+        if (prefabs.TryGetValue(prefabKey, out GameObject prefab)) {
+            return prefab;
+        }
+
+        return null;
+    }
+
+    public Sprite GetImage(string imageKey) {
+        if (images.TryGetValue(imageKey, out Sprite image)) {
+            return image;
+        }
+
+        return null;
     }
 
     #region Parenting Functions
