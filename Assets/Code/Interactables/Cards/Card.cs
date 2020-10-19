@@ -2,12 +2,17 @@
 using UnityEngine;
 
 public class Card : BaseInteractable {
-    public int LifeCost { get; private set; }
+    public int LifeCost { get { return lifeCost; } }
+
+    private int lifeCost;
 
     public readonly CardRarity rarity;
     // This is the list of game effects to perform when a card is played
     // Needs to be publicly accessible to update targets
     public List<DynamicEffect> effects;
+
+    // Number of times the card can be played before being exiled
+    public int uses;
 
     // Visual component of the card, stored within its own View class
     private CardView display;
@@ -21,22 +26,24 @@ public class Card : BaseInteractable {
 
     // Constructor that creates the object, but does not instantiate visuals.
     // Those can be called as needed by the CreateVisual() function
-    public Card(string name, string description, int cost, CardRarity rarity, List<DynamicEffect> effects) : base(name, description) {
-        this.LifeCost = cost;
+    public Card(string name, string description, int cost, CardRarity rarity, int uses, List<DynamicEffect> effects) : base(name, description) {
+        this.lifeCost = cost;
         this.rarity = rarity;
         this.effects = effects;
+        this.uses = uses;
     }
 
     // Creates a Card with a new id (for copying cards and such)
     public Card(Card cardSource) : base(cardSource.name, cardSource.description) {
-        this.LifeCost = cardSource.LifeCost;
+        this.lifeCost = cardSource.LifeCost;
         this.effects = cardSource.effects;
+        this.uses = cardSource.uses;
     }
 
     public void UpdateLifeCost(int val) {
-        LifeCost += val;
-        if (LifeCost < 0) {
-            LifeCost = 0;
+        lifeCost += val;
+        if (lifeCost < 0) {
+            lifeCost = 0;
         }
         UpdateVisual();
     }

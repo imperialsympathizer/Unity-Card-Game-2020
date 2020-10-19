@@ -1,71 +1,145 @@
 {
-    "Cards":[
+  "Cards": [
+    {
+      "name": "Quick Study",
+      "description": "Gain 1 summoning slot\nExile",
+      "lifeCost": 2,
+      "rarity": "COMMON",
+      "uses": 1,
+      "effects": [
         {
-            "name": "Dark Pact",
-            "description": "Draw 2 cards",
-            "lifeCost": 4,
-            "rarity": "COMMON",
-            "effects": [
-                {
-                    "effectType": "DrawCard",
-                    "effectCount": 2
-                }
-            ]
-        },
-        {
-            "name": "Raise Dead",
-            "description": "Summon 1 zombie",
-            "lifeCost": 3,
-            "rarity":"COMMON",
-            "effects": [
-                {
-                    "effectType": "CreateSummon",
-                    "effectCount": 1,
-                    "summonType": "ZOMBIE"
-                }
-            ]
-        },
-        {
-            "name": "Burn 'Em All",
-            "description": "Deal 5 damage to 1-2 targets",
-            "lifeCost": 2,
-            "rarity":"COMMON",
-            "effects": [
-                {
-                    "effectType": "ChangeTargetHealth",
-                    "effectCount": -5,
-                    "validTargets": [
-                        "SUMMON",
-                        "ENEMY"
-                    ],
-                    "targetingDialogue": "Select 1-2 targets",
-                    "minTargets": 1,
-                    "maxTargets": 2
-                }
-            ]
-        },
-        {
-            "name": "Infect Enemy",
-            "description": "Infect an enemy by 10",
-            "lifeCost": 5,
-            "rarity":"COMMON",
-            "effects": [
-                {
-                    "effectType": "AttachEffectTarget",
-                    "effectCount": 1,
-                    "validTargets": [
-                        "ENEMY"
-                    ],
-                    "targetingDialogue": "Select a target to status",
-                    "minTargets": 1,
-                    "maxTargets": 1,
-                    "attachedStaticEffect": {
-                        "effectType": "Infected",
-                        "effectCount": 10
-                    }
-                }
-            ]
+          "effectType": "ChangeSlots",
+          "effectCount": 1
         }
-    ]
+      ]
+    },
+    {
+      "name": "Revitalize",
+      "description": "Deal 10 damage to an enemy\nGain 3 Life\nDraw a card",
+      "lifeCost": 6,
+      "rarity": "COMMON",
+      "uses": -1,
+      "effects": [
+        {
+          "effectType": "ChangeTargetFighterHealth",
+          "effectCount": -10,
+          "validTargets": [
+            "ENEMY"
+          ],
+          "targetingDialogue": "Select an enemy",
+          "minTargets": 1,
+          "maxTargets": 1
+        },
+        {
+          "effectType": "ChangeRandomFighterHealth",
+          "effectCount": 3,
+          "targetType": "PLAYER"
+        },
+        {
+          "effectType": "DrawCard",
+          "effectCount": 1
+        }
+      ]
+    },
+    {
+      "name": "Blood Rite",
+      "description": "Summon 1 zombie",
+      "lifeCost": 4,
+      "rarity": "COMMON",
+      "uses": -1,
+      "effects": [
+        {
+          "effectType": "CreateSummon",
+          "effectCount": 1,
+          "summonType": "ZOMBIE"
+        }
+      ]
+    },
+    {
+      "name": "Awaken the Bones",
+      "description": "Summon 1 skeleton",
+      "lifeCost": 3,
+      "rarity": "COMMON",
+      "uses": -1,
+      "effects": [
+        {
+          "effectType": "CreateSummon",
+          "effectCount": 1,
+          "summonType": "SKELETON"
+        }
+      ]
+    },
+    {
+      "name": "Seance",
+      "description": "Summon 1 spirit",
+      "lifeCost": 2,
+      "rarity": "COMMON",
+      "uses": -1,
+      "effects": [
+        {
+          "effectType": "CreateSummon",
+          "effectCount": 1,
+          "summonType": "SPIRIT"
+        }
+      ]
+    },
+    {
+      "name": "Invoked Curse",
+      "description": "Summon 1 mummy",
+      "lifeCost": 3,
+      "rarity": "COMMON",
+      "uses": -1,
+      "effects": [
+        {
+          "effectType": "CreateSummon",
+          "effectCount": 1,
+          "summonType": "MUMMY"
+        }
+      ]
+    },
+    {
+      "name": "Burn 'Em All",
+      "description": "Deal 5 damage to 1-2 targets",
+      "lifeCost": 2,
+      "rarity": "COMMON",
+      "uses": -1,
+      "effects": [
+        {
+          "effectType": "ChangeTargetFighterHealth",
+          "effectCount": -5,
+          "validTargets": [
+            "SUMMON",
+            "ENEMY"
+          ],
+          "targetingDialogue": "Select 1-2 targets",
+          "minTargets": 1,
+          "maxTargets": 2
+        }
+      ]
+    },
+    {
+      "name": "Infect Enemy",
+      "description": "Infect an enemy by 10",
+      "lifeCost": 5,
+      "rarity": "COMMON",
+      "uses": -1,
+      "effects": [
+        {
+          "effectType": "AttachEffectTarget",
+          "effectCount": 1,
+          "validTargets": [
+            "ENEMY"
+          ],
+          "targetingDialogue": "Select a target to status",
+          "minTargets": 1,
+          "maxTargets": 1,
+          "attachedStaticEffect": {
+            "effectType": "Infected",
+            "effectCount": 10
+          }
+        }
+      ]
+    }
+  ]
 }
 

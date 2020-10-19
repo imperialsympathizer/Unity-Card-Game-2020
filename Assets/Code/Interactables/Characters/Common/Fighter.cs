@@ -38,7 +38,6 @@ public abstract class Fighter : Character {
     public void UpdateMaxLife(int valueChange) {
         MaxLife += valueChange;
         UpdateVisual();
-        TurnSystem.SharedInstance.CheckGameConditions();
     }
 
     // Updates life value and returns if the character is considered dead

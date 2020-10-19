@@ -25,7 +25,7 @@ public class TurnSystem : StateMachine {
         return (State.GetType() == typeof(PlayerTurn));
     }
 
-    public void CheckGameConditions() {
+    public bool CheckGameConditions() {
         // This method checks for all win and loss conditions
         // If one is reached, sets the state to EndBattle
         // Otherwise, nothing happens
@@ -33,13 +33,17 @@ public class TurnSystem : StateMachine {
         // If the player has no will left, defeat
         if (PlayerController.GetWill() <= 0) {
             // Debug.Log("You Lose.");
-            GameEndManager.ShowGameEnd(false);
+            GameEndManager.SharedInstance.ShowGameEnd(false);
+            return true;
         }
 
         // If all enemies are dead, win
         if (EnemyController.GetEnemyList().Count < 1) {
             // Debug.Log("You Win.");
-            GameEndManager.ShowGameEnd(true);
+            GameEndManager.SharedInstance.ShowGameEnd(true);
+            return true;
         }
+
+        return false;
     }
 }

@@ -14,6 +14,7 @@ public static class SummonController {
             Summon newSummon;
             switch (summonType) {
                 case Summon.Summonable.ZOMBIE:
+                default:
                     newSummon = new Summon("Zombie", VisualController.SharedInstance.GetPrefab("ZombiePrefab"), 1, 1, 1, 1);
                     StaticEffectController.AddStatus(newSummon, new Infector(1));
                     break;
@@ -26,12 +27,7 @@ public static class SummonController {
                     break;
                 case Summon.Summonable.MUMMY:
                     newSummon = new Summon("Mummy", VisualController.SharedInstance.GetPrefab("MummyPrefab"), 0, 0, 5, 5);
-                    // TODO: add curse status to mummy (whenever curse is applied to a summon, deal damage = to curse value to random enemy)
-                    break;
-                default:
-                    newSummon = new Summon("Zombie", VisualController.SharedInstance.GetPrefab("ZombiePrefab"), 1, 1, 1, 1);
-                    StaticEffectController.AddStatus(newSummon, new Infector(1));
-                    // Default summon is zombie
+                    StaticEffectController.AddStatus(newSummon, new Cursed(10));
                     break;
             }
             newSummon.CreateVisual();
@@ -40,7 +36,7 @@ public static class SummonController {
     }
 
     public static void UpdateLife(int summonId, int val) {
-        Summon summon = summonDictionary[summonId];
+        Summon summon = GetSummon(summonId);
         if (summon != null) {
             summon.UpdateLifeValue(val);
             summon.UpdateVisual();
@@ -88,6 +84,25 @@ public static class SummonController {
         }
 
         return null;
+    }
+
+    public static Summon GetRandomSummon(bool hasLife = false) {
+        // This function returns null if there are no summons available
+        if (summonDictionary.Count < 1) {
+            return null;
+        }
+
+        List<Summon> summonsWithLife = GetSummonList();
+
+        if (hasLife) {
+            foreach (Summon summon in summonsWithLife) {
+                if (!summon.HasLife) {
+                    summonsWithLife.Remove(summon);
+                }
+            }
+        }
+
+        return summonsWithLife[RandomNumberGenerator.getRandomIndexFromRange(summonsWithLife.Count - 1)];
     }
 
     public static void CompleteAttack(int summonId, Fighter attacker) {

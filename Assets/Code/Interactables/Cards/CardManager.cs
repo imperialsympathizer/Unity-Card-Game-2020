@@ -20,6 +20,7 @@ public class CardManager : MonoBehaviour {
     private Deck deck;
     private Hand hand;
     private Discard discard;
+    private Exile exile;
 
     private CurvedLayout handArea;
     private TextMeshProUGUI deckCount;
@@ -39,6 +40,7 @@ public class CardManager : MonoBehaviour {
         deck = new Deck(cardSource.allCards);
         discard = new Discard();
         hand = new Hand();
+        exile = new Exile();
 
         handArea = VisualController.SharedInstance.GetHand().GetComponent<CurvedLayout>();
         deckCount = VisualController.SharedInstance.GetDeckCount().GetComponent<TextMeshProUGUI>();
@@ -128,9 +130,19 @@ public class CardManager : MonoBehaviour {
             PlayerController.UpdateVigor(-playedCard.LifeCost);
             PlayerController.UpdateLife(-playedCard.LifeCost);
 
-            // Move card to discard and disable visual
+            // Move card to discard or exile and disable visual
             playedCard.ClearVisual();
-            discard.AddCard(playedCard);
+
+            if (playedCard.uses > 0) {
+                playedCard.uses--;
+            }
+
+            if (playedCard.uses == 0) {
+                exile.AddCard(playedCard);
+            }
+            else {
+                discard.AddCard(playedCard);
+            }
 
             // Push all DynamicEffects related to the card to the DynamicEffectController queue
             DynamicEffectController.SharedInstance.AddEffects(playedCard.effects);

@@ -15,10 +15,10 @@ public class CardView : BaseView {
     public CardView(GameObject visual, int id) : base(visual, id) {
         // Deactivate the visual while linking the UI components
         visual.SetActive(false);
-        cardImage = visual.transform.GetChild(0).GetComponent<Image>();
-        cardName = visual.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>();
-        cost = visual.transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>();
-        description = visual.transform.GetChild(0).GetChild(2).GetComponent<TextMeshProUGUI>();
+        cardImage = visual.transform.GetChild(1).GetComponent<Image>();
+        cardName = cardImage.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
+        cost = cardImage.transform.GetChild(1).GetComponent<TextMeshProUGUI>();
+        description = cardImage.transform.GetChild(2).GetComponent<TextMeshProUGUI>();
 
         // Move the card to hand
         MoveToHand();
@@ -57,9 +57,8 @@ public class CardView : BaseView {
     }
 
     public void SetCost(int cost) {
-        // this.cost.text = cost.ToString();
-        NumberAnimator.AnimateNumberChange(this.cost, cost);
-        // this.dummyCost.text = cost.ToString();
+        this.cost.text = cost.ToString();
+        // NumberAnimator.AnimateNumberChange(this.cost, cost);
     }
 
     // It's a good idea to deactivate visuals before making updates to an object because

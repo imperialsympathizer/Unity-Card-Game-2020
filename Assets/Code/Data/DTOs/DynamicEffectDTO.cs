@@ -17,6 +17,9 @@ public class DynamicEffectDTO : DTO {
     public int minTargets;
     public int maxTargets;
 
+    // Field for randomly selected effects
+    public Target targetType;
+
     // Fields for creating static effects
     public StaticEffectDTO attachedStaticEffect;
     public StaticEffectDTO passiveEffect;

@@ -11,7 +11,7 @@ public static class PlayerController {
     public static void CreatePlayer(Player.PlayerCharacter character) {
         switch (character) {
             case Player.PlayerCharacter.NECROMANCER:
-                player = new Player("The Necromancer", VisualController.SharedInstance.GetPrefab("NecromancerPrefab"), 5, 1, 20, 20, 20, 20, true, 8, 3);
+                player = new Player("The Necromancer", VisualController.SharedInstance.GetPrefab("NecromancerPrefab"), 5, 1, 10, 10, 20, 20, true, 8, 3);
                 break;
         }
         player.CreateVisual();

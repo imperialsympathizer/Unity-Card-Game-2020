@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using UnityEngine;
 
 public class ChangeRandomCardCost : DynamicEffect {
     // This dynamic effect reduces the cost of a card in hand by effectCount
@@ -19,8 +18,8 @@ public class ChangeRandomCardCost : DynamicEffect {
             cards = CardManager.SharedInstance.GetHandCards();
         }
 
-        if (cards.Count > 0) {
-            int randomIndex = Random.Range(0, cards.Count - 1);
+        int randomIndex = RandomNumberGenerator.getRandomIndexFromRange(cards.Count - 1);
+        if (randomIndex >= 0) {
             Card updatedCard = cards[randomIndex];
             updatedCard.UpdateLifeCost(effectCount);
             CardManager.SharedInstance.UpdateHandCard(updatedCard);
@@ -32,7 +31,7 @@ public class ChangeRandomCardCost : DynamicEffect {
     }
 
     private List<Card> GetNonZeroCards() {
-        List<Card> cards = CardManager.SharedInstance.GetHandCards();
+        List<Card> cards = new List<Card>(CardManager.SharedInstance.GetHandCards());
         for (int i = 0; i < cards.Count; i++) {
             if (cards[i].LifeCost == 0) {
                 cards.RemoveAt(i);

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,24 +14,32 @@ public class DynamicEffectController : MonoBehaviour {
 
     public static event Action OnEffectBegin;
 
+    private bool running;
+
     private void Awake() {
         SharedInstance = this;
         DynamicEffect.OnEffectComplete += OnEffectComplete;
+        running = true;
+        StartCoroutine(ResolveEffects());
     }
 
     // Will not resolve an effect until the previous effect is finished resolving
     // This is mostly for animation considerations
-    void Update() {
-        if (effects.Count > 0 && !effectInProgress) {
-            effectInProgress = true;
-            DynamicEffect effect = effects.Dequeue();
-            if (effect != null) {
-                // Debug.Log("Resolving effect.");
-                effect.AddBeginListener();
-                OnEffectBegin.Invoke();
+    private IEnumerator ResolveEffects() {
+        while (running) {
+            if (effects.Count > 0 && !effectInProgress) {
+                effectInProgress = true;
+                DynamicEffect effect = effects.Dequeue();
+                if (effect != null && effect.IsValid()) {
+                    effect.AddBeginListener();
+                    OnEffectBegin.Invoke();
+                }
+                else {
+                    effectInProgress = false;
+                }
             }
             else {
-                effectInProgress = false;
+                yield return new WaitForSeconds(0.05f);
             }
         }
     }
@@ -63,6 +72,9 @@ public class DynamicEffectController : MonoBehaviour {
 
     private void OnEffectComplete() {
         // Debug.Log("Effect completed.");
+        if (TurnSystem.SharedInstance.CheckGameConditions()) {
+            effects.Clear();
+        }
         effectInProgress = false;
     }
 }
