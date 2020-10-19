@@ -109,7 +109,7 @@ public class VisualController {
         }
     }
 
-#endregion
+    #endregion
 
     public Rect GetPlayzoneRect() {
         return playZone.GetComponent<RectTransform>().rect;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class ChangeTargetFighterHealth : TargetableDynamicEffect {
     public ChangeTargetFighterHealth(int effectCount, List<Target> validTargets, string targetingDialogue, int minTargets, int maxTargets)
-        : base(effectCount, validTargets, targetingDialogue, minTargets, maxTargets) {}
+        : base(effectCount, validTargets, targetingDialogue, minTargets, maxTargets) { }
 
     // effectCount can be positive (heal) or negative (damage)
     public override bool IsValid() {

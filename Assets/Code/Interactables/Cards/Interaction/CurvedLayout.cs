@@ -59,7 +59,7 @@ public class CurvedLayout : MonoBehaviour {
                 // However, the effect is more pronounced on the right side of the hand compared to the left (due to how cards are stacked)
                 // So the constant is also offset by handIndex at the end to mitigate this
                 float difference = Math.Abs(handIndex - i) * (1.8f - childCount * 0.15f) + handIndex * 0.02f;
-                
+
                 if (i < handIndex) {
                     degreeLoc += (float)(padDegrees / Math.Sqrt(difference));
                 }

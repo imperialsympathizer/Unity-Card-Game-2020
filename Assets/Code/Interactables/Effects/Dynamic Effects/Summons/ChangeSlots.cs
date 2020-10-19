@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 public class ChangeSlots : DynamicEffect {
-    public ChangeSlots(int effectCount) : base(effectCount) {}
+    public ChangeSlots(int effectCount) : base(effectCount) { }
 
     public override bool IsValid() {
         return (id >= 0 && effectCount != 0);

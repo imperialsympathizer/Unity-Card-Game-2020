@@ -23,7 +23,7 @@ public class Player : Fighter {
 
     // Since there probably won't be many player characters, we'll use an enum for setup
     public enum PlayerCharacter {
-        NECROMANCER 
+        NECROMANCER
     }
 
 
@@ -36,7 +36,7 @@ public class Player : Fighter {
         int baseAttackTimes,
         int baseMaxLife,
         int baseLife,
-        int baseMaxWill, 
+        int baseMaxWill,
         int baseWillValue,
         bool hasSlots,
         int maxSlots = 0,

@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Runtime.Remoting.Messaging;
-using UnityEngine;
 
 public abstract class Fighter : Character {
     // abstract class defining a combatant that has both health and attack

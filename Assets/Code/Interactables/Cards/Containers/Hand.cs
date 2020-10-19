@@ -8,7 +8,7 @@ public class Hand {
     private int maxSize = 10;
 
     public void AddCard(Card card) {
-        cards.Add(card); 
+        cards.Add(card);
     }
 
     public void UpdateCard(Card card) {

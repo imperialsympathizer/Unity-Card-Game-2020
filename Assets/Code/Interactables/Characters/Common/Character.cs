@@ -11,5 +11,5 @@ public abstract class Character : BaseInteractable {
     // An example of this is a character may become infected, so a new Infected status would be added to this list
     public Dictionary<int, AttachedStaticEffect> attachedEffects = new Dictionary<int, AttachedStaticEffect>();
 
-    public Character(string name, string description) : base(name, description) {}
+    public Character(string name, string description) : base(name, description) { }
 }

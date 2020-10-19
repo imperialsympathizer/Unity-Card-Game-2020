@@ -204,7 +204,7 @@ public class CardManager : MonoBehaviour {
     public void DiscardHand() {
         // This method is usually called at the end of the turn, but could be used in other circumstances
         List<Card> discarded = hand.GetCards();
-        for (int i = 0; i <discarded.Count; i++) {
+        for (int i = 0; i < discarded.Count; i++) {
             Card card = discarded[i];
             if (card != null) {
                 OnDiscard?.Invoke(card);

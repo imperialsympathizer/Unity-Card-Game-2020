@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using UnityEngine;
 
 public class EndBattle : State {
     public EndBattle(TurnSystem turnSystem) : base(turnSystem) { }
