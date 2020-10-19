@@ -73,5 +73,5 @@ public class Enemy : Fighter {
         display.AnimateAttack();
     }
 
-    
+
 }

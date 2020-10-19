@@ -13,7 +13,7 @@ public class Infected : Status {
                 Trigger.TriggerAction.RESOLVE // Execute ResolveEffect() when triggered
             })
         },
-        0) {}
+        0) { }
 
     protected override void ResolveEffect(Trigger trigger) {
         if (character is Fighter fighter && fighter.HasLife) {

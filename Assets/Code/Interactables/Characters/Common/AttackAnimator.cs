@@ -26,7 +26,7 @@ public static class AttackAnimator {
             moveAmount *= -1;
         }
         EnableCanvasGrid(type, false);
-        LeanTween.moveLocalX(character, character.transform.localPosition.x + moveAmount, backTime).setOnComplete( () => {
+        LeanTween.moveLocalX(character, character.transform.localPosition.x + moveAmount, backTime).setOnComplete(() => {
             LeanTween.moveLocalX(character, character.transform.localPosition.x - moveAmount * 2, forwardTime).setOnComplete(() => {
                 LeanTween.moveLocalX(character, character.transform.localPosition.x + moveAmount, resetTime).setOnComplete(() => {
                     EnableCanvasGrid(type, true);

@@ -7,7 +7,7 @@ public class ChangeCardCost : TargetableDynamicEffect {
         string targetingDialogue,
         int minTargets,
         int maxTargets)
-        : base(effectCount, new List<Target> { Target.CARD }, targetingDialogue, minTargets, maxTargets) {}
+        : base(effectCount, new List<Target> { Target.CARD }, targetingDialogue, minTargets, maxTargets) { }
 
     public override bool IsValid() {
         return (id >= 0 && effectCount != 0 && selectedTargets != null && selectedTargets.Count > 0);

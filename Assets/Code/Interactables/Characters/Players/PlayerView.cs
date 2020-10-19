@@ -82,7 +82,7 @@ public class PlayerView : FighterView {
         willValue.gameObject.SetActive(active);
     }
 
-    public new void Despawn() {}
+    public new void Despawn() { }
 
     public void AddSlot() {
         GameObject newSlot = ObjectPooler.Spawn(slotPrefab, new Vector3(0, 0, 0), Quaternion.identity);

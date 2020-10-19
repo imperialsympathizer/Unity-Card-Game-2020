@@ -62,13 +62,13 @@ public class CardControl : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             this.transform.SetSiblingIndex(handIndex);
             hand.UpdateCardPositions();
         }
-    } 
+    }
 
     private void Update() {
         if (dragging) {
             // Use linear interpolation to smoothly move the card's origin toward the pointer
             // Then, keep it snapped to the pointer
-            
+
             Vector3 mousePos = VisualController.SharedInstance.mainCamera.ScreenToWorldPoint(Input.mousePosition);
             if (interpolation < 1) {
                 Vector3 currentPos = this.transform.position;
@@ -79,7 +79,7 @@ public class CardControl : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             else {
                 this.transform.position = new Vector3(mousePos.x, mousePos.y, 0);
             }
-            
+
             // Check if the position of the dragged object is over the hand or not
             // handYThreshold = hand.GetComponent<RectTransform>().sizeDelta.y / 2 + hand.transform.localPosition.y;
             // yLoc = Input.mousePosition.y - VisualController.SharedInstance.GetDisplaySize().y / 2;
@@ -156,6 +156,6 @@ public class CardControl : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             OnCardPlayed?.Invoke(cardId);
             hand.UpdateCardPositions();
         }
-        
+
     }
 }

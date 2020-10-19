@@ -24,8 +24,7 @@ public static class NumberAnimator {
 
         float time = Math.Abs((finalNum - startNum) * timeConstant);
 
-        LTDescr description = LeanTween.value(startNum, finalNum, timeConstant).setOnUpdate((float val) =>
-        {
+        LTDescr description = LeanTween.value(startNum, finalNum, timeConstant).setOnUpdate((float val) => {
             textUGUI.text = ((int)val).ToString();
         });
 

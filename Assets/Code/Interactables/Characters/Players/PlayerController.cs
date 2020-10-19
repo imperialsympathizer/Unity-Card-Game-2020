@@ -1,6 +1,4 @@
-﻿using System;
-
-public static class PlayerController {
+﻿public static class PlayerController {
 
     private static Player player;
 

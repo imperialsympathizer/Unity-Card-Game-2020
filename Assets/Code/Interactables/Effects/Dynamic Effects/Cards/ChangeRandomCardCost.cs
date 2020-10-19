@@ -2,7 +2,7 @@
 
 public class ChangeRandomCardCost : DynamicEffect {
     // This dynamic effect reduces the cost of a card in hand by effectCount
-    public ChangeRandomCardCost(int effectCount) : base(effectCount) {}
+    public ChangeRandomCardCost(int effectCount) : base(effectCount) { }
 
     public override bool IsValid() {
         return (id >= 0 && effectCount != 0);

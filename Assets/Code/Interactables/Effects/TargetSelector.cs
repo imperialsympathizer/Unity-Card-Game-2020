@@ -47,7 +47,7 @@ public class TargetSelector : MonoBehaviour, IPointerClickHandler {
         // Enable targetable characters to be selected
         for (int i = 0; i < effect.validTargets.Count; i++) {
             Target targetType = effect.validTargets[i];
-            
+
             if (targetType == Target.ENEMY) {
                 List<Enemy> enemies = EnemyController.GetEnemyList();
                 for (int j = 0; j < enemies.Count; j++) {
@@ -84,7 +84,7 @@ public class TargetSelector : MonoBehaviour, IPointerClickHandler {
     }
 
     public void DisableTargeting() {
-        foreach(Tuple<BaseInteractable, Target> target in selectableTargets) {
+        foreach (Tuple<BaseInteractable, Target> target in selectableTargets) {
             target.Item1.SetVisualOutline(noColor);
         }
 

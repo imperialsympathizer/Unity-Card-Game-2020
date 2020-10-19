@@ -13,7 +13,7 @@ public class Infector : Status {
                 Trigger.TriggerAction.RESOLVE // Execute ResolveEffect() when triggered
             })
         },
-        0) {}
+        0) { }
 
     protected override void ResolveEffect(Trigger trigger) {
         if (trigger is OnDamageAttack onDmg) {
@@ -28,7 +28,7 @@ public class Infector : Status {
         }
     }
 
-    protected override void OperateOnEffect(Trigger trigger) {}
+    protected override void OperateOnEffect(Trigger trigger) { }
 
     private void InfectCharacter(Character character) {
         // If the character already has infection status, increase it by effectCount

@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections;
-using UnityEngine;
 
 public class BeginBattle : State {
-    public BeginBattle(TurnSystem turnSystem) : base(turnSystem) {}
+    public BeginBattle(TurnSystem turnSystem) : base(turnSystem) { }
 
     public static event Action OnBeginBattle;
 
