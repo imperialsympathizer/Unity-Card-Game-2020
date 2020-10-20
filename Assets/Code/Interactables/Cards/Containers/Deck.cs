@@ -22,6 +22,13 @@ public class Deck : CardStore {
         Shuffle();
     }
 
+    // Constructor meant for copying the run deck but keeping the same card ids
+    public Deck(Deck deckToCopy) : base() {
+        foreach (Card card in deckToCopy.cards) {
+            AddCard(new Card(card, true));
+        }
+    }
+
     public Card DrawCard() {
         return RemoveCard(0);
     }

@@ -11,6 +11,12 @@ public abstract class BaseInteractable {
         this.description = description;
     }
 
+    public BaseInteractable(string name, string description, int id) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+    }
+
     public abstract void CreateVisual();
 
     public abstract void UpdateVisual();

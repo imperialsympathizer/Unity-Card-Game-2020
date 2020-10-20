@@ -14,9 +14,13 @@ public class CardManager : MonoBehaviour {
     public static event Action<Card> OnCardPlay;
     public static event Action<Card> OnDiscard;
 
-    // The library of cards that can be played with
+    // The library of all cards
     private CardSource cardSource = new CardSource();
 
+    // Cards existing in the player's deck during a run
+    private Deck runDeck;
+
+    // Card containers for battle
     private Deck deck;
     private Hand hand;
     private Discard discard;
@@ -37,7 +41,10 @@ public class CardManager : MonoBehaviour {
 
     public void Initialize() {
         cardSource.InitializeCards();
-        deck = new Deck(cardSource.allCards);
+        // Create the starter deck
+        runDeck = new Deck(cardSource.allCards);
+
+        deck = new Deck(runDeck);
         discard = new Discard();
         hand = new Hand();
         exile = new Exile();
@@ -57,6 +64,10 @@ public class CardManager : MonoBehaviour {
 
     public void UpdateHandCard(Card updatedCard) {
         hand.UpdateCard(updatedCard);
+    }
+
+    public List<Card> GetRunDeckCards() {
+        return runDeck.GetCards();
     }
 
     #region PlayCard
@@ -146,6 +157,9 @@ public class CardManager : MonoBehaviour {
 
             // Push all DynamicEffects related to the card to the DynamicEffectController queue
             DynamicEffectController.SharedInstance.AddEffects(playedCard.effects);
+
+            // Update Elements played this turn
+            ElementController.AddTurnElements(playedCard.GetOrderedElements());
 
             // Update visuals on screen
             PlayerController.UpdateVisual();

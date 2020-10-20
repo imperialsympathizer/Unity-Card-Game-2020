@@ -51,6 +51,16 @@ public class Card : BaseInteractable {
         this.elements = new Dictionary<Element.ElementType, Element>(cardSource.elements);
     }
 
+    // Creates a Card with the same id 
+    // Used for separation of run deck from battle deck, but allows linking between the cards later through id
+    public Card(Card cardSource, bool copyId) : base(cardSource.name, cardSource.description, cardSource.id) {
+        this.lifeCost = cardSource.LifeCost;
+        this.effects = cardSource.effects;
+        this.uses = cardSource.uses;
+        this.ElementTotal = cardSource.ElementTotal;
+        this.elements = new Dictionary<Element.ElementType, Element>(cardSource.elements);
+    }
+
     public void UpdateLifeCost(int val) {
         lifeCost += val;
         if (lifeCost < 0) {
