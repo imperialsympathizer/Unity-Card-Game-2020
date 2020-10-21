@@ -11,7 +11,7 @@ public abstract class Status : AttachedStaticEffect {
             DeactivateTriggers();
 
             // Then, remove the effect from the character and from the StaticEffectController
-            StaticEffectController.RemoveStatus(id);
+            StaticEffectController.Instance.RemoveStatus(id);
         }
     }
 }

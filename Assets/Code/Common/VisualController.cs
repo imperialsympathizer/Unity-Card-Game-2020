@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class VisualController {
-    public static VisualController SharedInstance;
+public class VisualController : BaseController {
+    public static VisualController Instance;
 
     public Camera mainCamera;
 
@@ -29,8 +29,8 @@ public class VisualController {
     private Dictionary<string, GameObject> prefabs;
     private Dictionary<string, Sprite> images;
 
-    public void Initialize(Dictionary<string, GameObject> prefabs, Dictionary<string, Sprite> images) {
-        SharedInstance = this;
+    protected override bool Initialize() {
+        Instance = this;
 
         // Main camera is sometimes useful for positional calculation,
         // But calling Camera.main every time is is needed is VERY expensive
@@ -38,8 +38,8 @@ public class VisualController {
         mainCamera = Camera.main;
 
         // Initialize prefabs
-        this.prefabs = prefabs;
-        this.images = images;
+        prefabs = new Dictionary<string, GameObject>(ResourceController.prefabDictionary);
+        images = new Dictionary<string, Sprite>(ResourceController.spriteDictionary);
 
         // Game controller
         gameController = GameObject.Find("GameController");
@@ -62,6 +62,8 @@ public class VisualController {
         slots = characterCanvas.transform.GetChild(1).gameObject;
         summons = characterCanvas.transform.GetChild(2).gameObject;
         enemies = characterCanvas.transform.GetChild(3).gameObject;
+
+        return true;
     }
 
     public GameObject GetPrefab(string prefabKey) {
@@ -78,6 +80,18 @@ public class VisualController {
         }
 
         return null;
+    }
+
+    public GameObject GetPlayerCanvas() {
+        return players;
+    }
+
+    public GameObject GetSummonCanvas() {
+        return summons;
+    }
+
+    public GameObject GetEnemyCanvas() {
+        return enemies;
     }
 
     #region Parenting Functions

@@ -22,7 +22,7 @@ public class PlayerView : FighterView {
         this.slotPrefab = slotPrefab;
         visual.SetActive(false);
         sprite = visual.transform.GetChild(0).GetComponent<SpriteRenderer>();
-        VisualController.SharedInstance.ParentToPlayerCanvas(visual.transform);
+        VisualController.Instance.ParentToPlayerCanvas(visual.transform);
         visual.transform.localScale = new Vector3(1, 1, 1);
         visual.transform.localPosition = new Vector3(visual.transform.localPosition.x, visual.transform.localPosition.y, -20);
 
@@ -30,13 +30,13 @@ public class PlayerView : FighterView {
         attackTimes = visual.transform.GetChild(3).GetComponent<TextMeshProUGUI>();
         xText = visual.transform.GetChild(4).GetComponent<TextMeshProUGUI>();
 
-        willIcon = VisualController.SharedInstance.GetWillIcon().transform.GetChild(1).GetComponent<RectTransform>();
-        lifeIcon = VisualController.SharedInstance.GetLifeIcon().transform.GetChild(1).GetComponent<RectTransform>();
-        vigorIcon = VisualController.SharedInstance.GetVigorIcon().transform.GetChild(1).GetComponent<RectTransform>();
+        willIcon = VisualController.Instance.GetWillIcon().transform.GetChild(1).GetComponent<RectTransform>();
+        lifeIcon = VisualController.Instance.GetLifeIcon().transform.GetChild(1).GetComponent<RectTransform>();
+        vigorIcon = VisualController.Instance.GetVigorIcon().transform.GetChild(1).GetComponent<RectTransform>();
 
-        lifeValue = VisualController.SharedInstance.GetLifeIcon().transform.GetChild(2).GetComponent<TextMeshProUGUI>();
-        willValue = VisualController.SharedInstance.GetWillIcon().transform.GetChild(2).GetComponent<TextMeshProUGUI>();
-        vigorValue = VisualController.SharedInstance.GetVigorIcon().transform.GetChild(2).GetComponent<TextMeshProUGUI>();
+        lifeValue = VisualController.Instance.GetLifeIcon().transform.GetChild(2).GetComponent<TextMeshProUGUI>();
+        willValue = VisualController.Instance.GetWillIcon().transform.GetChild(2).GetComponent<TextMeshProUGUI>();
+        vigorValue = VisualController.Instance.GetVigorIcon().transform.GetChild(2).GetComponent<TextMeshProUGUI>();
         visual.SetActive(true);
 
         // Spawn a slot for each starting slot the player has
@@ -46,7 +46,7 @@ public class PlayerView : FighterView {
     }
 
     public new void SetLife(bool nothing, int life, int maxLife) {
-        NumberAnimator.AnimateNumberChange(this.lifeValue, life);
+        NumberAnimator.Instance.AnimateNumberChange(this.lifeValue, life);
         // Animate the icon
         float newSize = System.Math.Max(0, lifeIconSize * ((float)life / (float)maxLife));
         LeanTween.cancel(lifeIcon);
@@ -63,14 +63,14 @@ public class PlayerView : FighterView {
     }
 
     public void SetWill(int val, int maxWill) {
-        NumberAnimator.AnimateNumberChange(this.willValue, val);
+        NumberAnimator.Instance.AnimateNumberChange(this.willValue, val);
         float newSize = willIconSize * ((float)val / (float)maxWill);
         LeanTween.cancel(willIcon);
         LeanTween.size(willIcon, new Vector2(willIcon.sizeDelta.x, newSize), 0.3f);
     }
 
     public void SetVigor(int val, int maxLife) {
-        NumberAnimator.AnimateNumberChange(this.vigorValue, val);
+        NumberAnimator.Instance.AnimateNumberChange(this.vigorValue, val);
         float newSize = vigorIconSize * ((float)val / (float)maxLife);
         LeanTween.cancel(vigorIcon);
         LeanTween.size(vigorIcon, new Vector2(vigorIcon.sizeDelta.x, newSize), 0.3f);
@@ -87,7 +87,7 @@ public class PlayerView : FighterView {
     public void AddSlot() {
         GameObject newSlot = ObjectPooler.Spawn(slotPrefab, new Vector3(0, 0, 0), Quaternion.identity);
         newSlot.SetActive(false);
-        VisualController.SharedInstance.ParentToSlotCanvas(newSlot.transform);
+        VisualController.Instance.ParentToSlotCanvas(newSlot.transform);
         newSlot.transform.localScale = new Vector3(1, 1, 1);
         newSlot.transform.localPosition = new Vector3(0, 0, 0);
         newSlot.SetActive(true);

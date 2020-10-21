@@ -8,7 +8,7 @@ public class CardManager : MonoBehaviour {
     // This class is for the management of cards through drawing/discarding and playing
     // It delegates responsiblities to the Deck, Hand, and Discard for moving objects between them
     // It also triggers visuals on cards (e.g. they appear on screen) when relevant
-    public static CardManager SharedInstance;
+    public static CardManager Instance;
 
     public static event Action<Card> OnCardDraw;
     public static event Action<Card> OnCardPlay;
@@ -35,24 +35,34 @@ public class CardManager : MonoBehaviour {
     private bool targetSelected;
     private List<Tuple<int, Target>> effectTargets = new List<Tuple<int, Target>>();
 
+    public bool Initialized { get; private set; } = false;
+
     private void Awake() {
-        SharedInstance = this;
+        Instance = this;
     }
 
-    public void Initialize() {
-        cardSource = new CardSource();
-        cardSource.InitializeCards();
-        // Create the starter deck
-        runDeck = new Deck(cardSource.allCards);
+    public IEnumerator Initialize() {
+        if (!Initialized) {
+            // Wait for VisualController to be initialized
+            while (VisualController.Instance == null || !VisualController.Instance.Initialized) {
+                yield return null;
+            }
 
-        deck = new Deck(runDeck);
-        discard = new Discard();
-        hand = new Hand();
-        exile = new Exile();
+            cardSource = new CardSource();
+            // Create the starter deck
+            runDeck = new Deck(cardSource.allCards);
 
-        handArea = VisualController.SharedInstance.GetHand().GetComponent<CurvedLayout>();
-        deckCount = VisualController.SharedInstance.GetDeckCount().GetComponent<TextMeshProUGUI>();
-        discardCount = VisualController.SharedInstance.GetDiscardCount().GetComponent<TextMeshProUGUI>();
+            deck = new Deck(runDeck);
+            discard = new Discard();
+            hand = new Hand();
+            exile = new Exile();
+
+            handArea = VisualController.Instance.GetHand().GetComponent<CurvedLayout>();
+            deckCount = VisualController.Instance.GetDeckCount().GetComponent<TextMeshProUGUI>();
+            discardCount = VisualController.Instance.GetDiscardCount().GetComponent<TextMeshProUGUI>();
+
+            Initialized = true;
+        }
     }
 
     public List<Card> GetHandCards() {
@@ -76,7 +86,7 @@ public class CardManager : MonoBehaviour {
         playedCard = hand.GetCard(cardId);
         if (playedCard != null) {
             // Only play the card if the player can afford the life cost
-            if (PlayerController.GetVigor() >= playedCard.LifeCost) {
+            if (PlayerController.Instance.GetVigor() >= playedCard.LifeCost) {
                 // Set the card visual out of the way temporarily
                 playedCard.EnableVisual(false);
 
@@ -101,7 +111,7 @@ public class CardManager : MonoBehaviour {
                 // TargetSelector will enable the targeting canvas and make targetable objects selectable
                 targetSelected = false;
                 TargetSelector.OnTargetingComplete += OnTargetingComplete;
-                TargetSelector.SharedInstance.EnableTargeting(targetable);
+                TargetSelector.Instance.EnableTargeting(targetable);
                 while (!targetSelected) {
                     yield return new WaitForSeconds(0.1f);
                 }
@@ -139,8 +149,8 @@ public class CardManager : MonoBehaviour {
             hand.RemoveCard(playedCard.id);
 
             // Calculate resulting life and will (the player can kill themselves)
-            PlayerController.UpdateVigor(-playedCard.LifeCost);
-            PlayerController.UpdateLife(-playedCard.LifeCost);
+            PlayerController.Instance.UpdateVigor(-playedCard.LifeCost);
+            PlayerController.Instance.UpdateLife(-playedCard.LifeCost);
 
             // Move card to discard or exile and disable visual
             playedCard.ClearVisual();
@@ -157,13 +167,13 @@ public class CardManager : MonoBehaviour {
             }
 
             // Push all DynamicEffects related to the card to the DynamicEffectController queue
-            DynamicEffectController.SharedInstance.AddEffects(playedCard.effects);
+            DynamicEffectController.Instance.AddEffects(playedCard.effects);
 
             // Update Elements played this turn
-            ElementController.AddTurnElements(playedCard.GetOrderedElements());
+            ElementController.Instance.AddTurnElements(playedCard.GetOrderedElements());
 
             // Update visuals on screen
-            PlayerController.UpdateVisual();
+            PlayerController.Instance.UpdateVisual();
             UpdateVisuals();
 
             // Fire card played event

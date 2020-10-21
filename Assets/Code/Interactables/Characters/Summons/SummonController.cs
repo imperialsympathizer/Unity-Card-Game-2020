@@ -1,33 +1,37 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-public static class SummonController {
+public class SummonController : BaseController {
+    public static SummonController Instance;
+
     // Dictionary is used for searching for a specific summon by Id (when targeting, etc.)
     // List is used for resolving things like combat, where iteration is important
-    private static Dictionary<int, Summon> summonDictionary = new Dictionary<int, Summon>();
+    private Dictionary<int, Summon> summonDictionary = new Dictionary<int, Summon>();
 
-    public static void Initialize() {
+    protected override bool Initialize() {
+        Instance = this;
+        return true;
     }
 
-    public static void CreateSummon(Summon.Summonable summonType) {
-        if (PlayerController.GetSlotsValue() - summonDictionary.Count > 0) {
+    public void CreateSummon(Summon.Summonable summonType) {
+        if (PlayerController.Instance.GetSlotsValue() - summonDictionary.Count > 0) {
             Summon newSummon;
             switch (summonType) {
                 case Summon.Summonable.ZOMBIE:
                 default:
-                    newSummon = new Summon("Zombie", VisualController.SharedInstance.GetPrefab("ZombiePrefab"), 1, 1, 1, 1);
-                    StaticEffectController.AddStatus(newSummon, new Infector(1));
+                    newSummon = new Summon("Zombie", VisualController.Instance.GetPrefab("ZombiePrefab"), 1, 1, 1, 1);
+                    StaticEffectController.Instance.AddStatus(newSummon, new Infector(1));
                     break;
                 case Summon.Summonable.SKELETON:
-                    newSummon = new Summon("Skeleton", VisualController.SharedInstance.GetPrefab("SkeletonPrefab"), 3, 2, 10, 10);
+                    newSummon = new Summon("Skeleton", VisualController.Instance.GetPrefab("SkeletonPrefab"), 3, 2, 10, 10);
                     break;
                 case Summon.Summonable.SPIRIT:
-                    newSummon = new Summon("Spirit", VisualController.SharedInstance.GetPrefab("SpiritPrefab"), 0, 0);
-                    StaticEffectController.AddStatus(newSummon, new CardCostChanger(-5));
+                    newSummon = new Summon("Spirit", VisualController.Instance.GetPrefab("SpiritPrefab"), 0, 0);
+                    StaticEffectController.Instance.AddStatus(newSummon, new CardCostChanger(-5));
                     break;
                 case Summon.Summonable.MUMMY:
-                    newSummon = new Summon("Mummy", VisualController.SharedInstance.GetPrefab("MummyPrefab"), 0, 0, 5, 5);
-                    StaticEffectController.AddStatus(newSummon, new Cursed(10));
+                    newSummon = new Summon("Mummy", VisualController.Instance.GetPrefab("MummyPrefab"), 0, 0, 5, 5);
+                    StaticEffectController.Instance.AddStatus(newSummon, new Cursed(10));
                     break;
             }
             newSummon.CreateVisual();
@@ -35,7 +39,7 @@ public static class SummonController {
         }
     }
 
-    public static void UpdateLife(int summonId, int val) {
+    public void UpdateLife(int summonId, int val) {
         Summon summon = GetSummon(summonId);
         if (summon != null) {
             summon.UpdateLifeValue(val);
@@ -50,7 +54,7 @@ public static class SummonController {
         }
     }
 
-    public static List<Summon> GetSummonList() {
+    public List<Summon> GetSummonList() {
         List<Summon> summons = new List<Summon>();
         foreach (KeyValuePair<int, Summon> summonEntry in summonDictionary) {
             if (summonEntry.Value != null) {
@@ -60,7 +64,7 @@ public static class SummonController {
         return summons;
     }
 
-    public static Summon GetSummon(int summonId) {
+    public Summon GetSummon(int summonId) {
         // This function returns null if the requested enemy does not exist
         if (summonDictionary.TryGetValue(summonId, out Summon summon)) {
             return summon;
@@ -69,7 +73,7 @@ public static class SummonController {
         return null;
     }
 
-    public static Summon GetDefender() {
+    public Summon GetDefender() {
         // This function returns null if there are no summons available to take damage from an attack
         // Otherwise, the front summon is returned
         if (summonDictionary.Count < 1) {
@@ -86,7 +90,7 @@ public static class SummonController {
         return null;
     }
 
-    public static Summon GetRandomSummon(bool hasLife = false) {
+    public Summon GetRandomSummon(bool hasLife = false) {
         // This function returns null if there are no summons available
         if (summonDictionary.Count < 1) {
             return null;
@@ -105,7 +109,7 @@ public static class SummonController {
         return summonsWithLife[RandomNumberGenerator.getRandomIndexFromRange(summonsWithLife.Count - 1)];
     }
 
-    public static void CompleteAttack(int summonId, Fighter attacker) {
+    public void CompleteAttack(int summonId, Fighter attacker) {
         // Change the life total to reflect damage taken
         Summon defender = summonDictionary[summonId];
         if (defender != null) {
@@ -127,7 +131,7 @@ public static class SummonController {
         }
     }
 
-    private static void UpdateVisual(int id) {
+    private void UpdateVisual(int id) {
         // Updates any visuals that display player data
         if (summonDictionary.TryGetValue(id, out Summon editSummon)) {
             editSummon.UpdateVisual();

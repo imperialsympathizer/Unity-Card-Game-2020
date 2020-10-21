@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class TargetSelector : MonoBehaviour, IPointerClickHandler {
-    public static TargetSelector SharedInstance;
+    public static TargetSelector Instance;
 
     private GameObject targetCanvas;
     private GameObject shadow;
@@ -26,7 +26,7 @@ public class TargetSelector : MonoBehaviour, IPointerClickHandler {
     public static event Action<List<Tuple<int, Target>>> OnTargetingComplete;
 
     private void Awake() {
-        SharedInstance = this;
+        Instance = this;
         Selecting = false;
         targetCanvas = GameObject.Find("TargetingCanvas");
         targetCanvas.SetActive(false);
@@ -49,7 +49,7 @@ public class TargetSelector : MonoBehaviour, IPointerClickHandler {
             Target targetType = effect.validTargets[i];
 
             if (targetType == Target.ENEMY) {
-                List<Enemy> enemies = EnemyController.GetEnemyList();
+                List<Enemy> enemies = EnemyController.Instance.GetEnemyList();
                 for (int j = 0; j < enemies.Count; j++) {
                     Enemy enemy = enemies[j];
                     enemy.SetVisualOutline(unselectedColor);
@@ -57,7 +57,7 @@ public class TargetSelector : MonoBehaviour, IPointerClickHandler {
                 }
             }
             if (targetType == Target.SUMMON) {
-                List<Summon> summons = SummonController.GetSummonList();
+                List<Summon> summons = SummonController.Instance.GetSummonList();
                 for (int j = 0; j < summons.Count; j++) {
                     Summon summon = summons[j];
                     summon.SetVisualOutline(unselectedColor);
@@ -65,12 +65,12 @@ public class TargetSelector : MonoBehaviour, IPointerClickHandler {
                 }
             }
             if (targetType == Target.PLAYER) {
-                Player player = PlayerController.GetPlayer();
+                Player player = PlayerController.Instance.GetPlayer();
                 player.SetVisualOutline(unselectedColor);
                 selectableTargets.Add(new Tuple<BaseInteractable, Target>(player, Target.PLAYER));
             }
             if (targetType == Target.CARD) {
-                List<Card> cards = CardManager.SharedInstance.GetHandCards();
+                List<Card> cards = CardManager.Instance.GetHandCards();
                 for (int j = 0; j < cards.Count; j++) {
                     Card card = cards[j];
                     card.SetVisualOutline(unselectedColor);
@@ -93,7 +93,7 @@ public class TargetSelector : MonoBehaviour, IPointerClickHandler {
 
     public void OnPointerClick(PointerEventData eventData) {
         if (Selecting) {
-            Vector3 mousePos = VisualController.SharedInstance.mainCamera.ScreenToWorldPoint(Input.mousePosition);
+            Vector3 mousePos = VisualController.Instance.mainCamera.ScreenToWorldPoint(Input.mousePosition);
             for (int i = 0; i < selectableTargets.Count; i++) {
                 BaseInteractable selectable = selectableTargets[i].Item1;
                 RectTransform selectableArea = selectable.GetVisualRect();

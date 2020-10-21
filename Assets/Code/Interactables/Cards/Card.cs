@@ -130,7 +130,7 @@ public class Card : BaseInteractable {
 
     public override void CreateVisual() {
         // Spawn an object to view the card on screen
-        display = new CardView(ObjectPooler.Spawn(VisualController.SharedInstance.GetPrefab("CardPrefab"), new Vector3(0, 0, 0), Quaternion.identity), id);
+        display = new CardView(ObjectPooler.Spawn(VisualController.Instance.GetPrefab("CardPrefab"), new Vector3(0, 0, 0), Quaternion.identity), id);
         UpdateVisual();
     }
 

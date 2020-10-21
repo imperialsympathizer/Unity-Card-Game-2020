@@ -1,72 +1,82 @@
-﻿public static class PlayerController {
+﻿public class PlayerController : BaseController {
+    public static PlayerController Instance;
 
-    private static Player player;
+    private Player player;
 
-    public static void Initialize() {
-        CreatePlayer(Player.PlayerCharacter.NECROMANCER);
+    protected override bool Initialize() {
+        Instance = this;
+        if (VisualController.Instance != null && VisualController.Instance.Initialized &&
+            NumberAnimator.Instance != null && NumberAnimator.Instance.Initialized) {
+            CreatePlayer(Player.PlayerCharacter.NECROMANCER);
+
+            return true;
+        }
+
+        return false;
     }
 
-    public static void CreatePlayer(Player.PlayerCharacter character) {
+    public void CreatePlayer(Player.PlayerCharacter character) {
         switch (character) {
             case Player.PlayerCharacter.NECROMANCER:
-                player = new Player("The Necromancer", VisualController.SharedInstance.GetPrefab("NecromancerPrefab"), 5, 1, 10, 10, 20, 20, true, 8, 3);
+            default:
+                player = new Player("The Necromancer", VisualController.Instance.GetPrefab("NecromancerPrefab"), 5, 1, 10, 10, 20, 20, true, 8, 3);
                 break;
         }
         player.CreateVisual();
     }
 
-    public static int GetSlotsValue() {
+    public int GetSlotsValue() {
         return player.SlotsValue;
     }
 
-    public static void AddSlot() {
+    public void AddSlot() {
         player.AddSlot();
     }
 
-    public static void RemoveSlot() {
+    public void RemoveSlot() {
         player.RemoveSlot();
     }
 
-    public static int GetLife() {
+    public int GetLife() {
         return player.LifeValue;
     }
 
-    public static int GetWill() {
+    public int GetWill() {
         return player.WillValue;
     }
 
-    public static int GetVigor() {
+    public int GetVigor() {
         return player.VigorValue;
     }
 
-    public static void UpdateLife(int val) {
+    public void UpdateLife(int val) {
         player.UpdateLifeValue(val);
         player.CheckDeath();
     }
 
-    public static void UpdateWill(int val) {
+    public void UpdateWill(int val) {
         player.UpdateWillValue(val);
         player.CheckDeath();
     }
 
-    public static void UpdateVigor(int val) {
+    public void UpdateVigor(int val) {
         player.UpdateVigorValue(val);
     }
 
-    public static void ResetVigor() {
+    public void ResetVigor() {
         player.UpdateVigorValue(player.MaxLife - player.VigorValue);
     }
 
-    public static void UpdateVisual() {
+    public void UpdateVisual() {
         // Updates any visuals that display player data
         player.UpdateVisual();
     }
 
-    public static Player GetPlayer() {
+    public Player GetPlayer() {
         return player;
     }
 
-    public static bool CompleteAttack(Fighter attacker) {
+    public bool CompleteAttack(Fighter attacker) {
         // This function returns false if the player is already considered dead
         if (player.LifeValue < 1 && player.WillValue < 1) {
             return false;

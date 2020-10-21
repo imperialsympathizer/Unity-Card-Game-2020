@@ -3,6 +3,10 @@
 public class CardSource {
     public Dictionary<string, Card> allCards;
 
+    public CardSource() {
+        InitializeCards();
+    }
+
     public void InitializeCards() {
         allCards = new Dictionary<string, Card>();
 

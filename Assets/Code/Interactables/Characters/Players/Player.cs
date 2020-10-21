@@ -42,7 +42,7 @@ public class Player : Fighter {
         int maxSlots = 0,
         int slotsValue = 0) : base(name, Fighter.FighterType.PLAYER, baseAttack, baseAttackTimes, true, baseMaxLife, baseLife) {
         this.prefab = prefab;
-        slotPrefab = VisualController.SharedInstance.GetPrefab("SlotPrefab");
+        slotPrefab = VisualController.Instance.GetPrefab("SlotPrefab");
         MaxWill = baseMaxWill;
         WillValue = baseWillValue;
         HasSlots = hasSlots;

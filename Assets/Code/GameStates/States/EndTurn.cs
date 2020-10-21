@@ -23,6 +23,6 @@ public class EndTurn : State {
     }
 
     private void EndTurnEffects() {
-        CardManager.SharedInstance.DiscardHand();
+        CardManager.Instance.DiscardHand();
     }
 }

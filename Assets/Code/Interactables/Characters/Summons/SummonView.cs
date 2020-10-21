@@ -4,7 +4,7 @@ using UnityEngine;
 public class SummonView : FighterView {
     public SummonView(GameObject view, int id, int healthBarSize) : base(view, id, Fighter.FighterType.SUMMON, healthBarSize) {
         visual.SetActive(false);
-        VisualController.SharedInstance.ParentToSummonCanvas(visual.transform);
+        VisualController.Instance.ParentToSummonCanvas(visual.transform);
         visual.transform.localScale = new Vector3(1, 1, 1);
         visual.transform.localPosition = new Vector3(0, 0, -10);
 

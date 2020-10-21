@@ -39,7 +39,7 @@ public class CombatStep : State {
 
     private IEnumerator EnemyAttacks() {
         // Get the list of enemies
-        List<Enemy> enemies = EnemyController.GetEnemyList();
+        List<Enemy> enemies = EnemyController.Instance.GetEnemyList();
 
         // Iterate from left to right
         for (int i = 0; i < enemies.Count; i++) {
@@ -51,11 +51,11 @@ public class CombatStep : State {
                 for (int j = 0; j < attacker.AttackTimes; j++) {
                     bool summon = true;
                     // If there is a summon available to be hit by an attack, attack it
-                    defender = SummonController.GetDefender();
+                    defender = SummonController.Instance.GetDefender();
                     if (defender == null) {
                         summon = false;
                         // Otherwise, attack the player
-                        defender = PlayerController.GetPlayer();
+                        defender = PlayerController.Instance.GetPlayer();
                         if (defender == null) {
                             // If there are no entities to resolve attacks on (they're dead) escape the loop
                             break;
@@ -71,10 +71,10 @@ public class CombatStep : State {
 
                     // Change the life total to reflect damage taken
                     if (summon) {
-                        SummonController.CompleteAttack(defender.id, attacker);
+                        SummonController.Instance.CompleteAttack(defender.id, attacker);
                     }
                     else {
-                        PlayerController.CompleteAttack(attacker);
+                        PlayerController.Instance.CompleteAttack(attacker);
                     }
 
                     // wait for health to decrease before the next attack
@@ -92,7 +92,7 @@ public class CombatStep : State {
 
     private IEnumerator SummonAttacks() {
         // Get the list of enemies
-        List<Summon> summons = SummonController.GetSummonList();
+        List<Summon> summons = SummonController.Instance.GetSummonList();
 
         // Iterate from left to right
         for (int i = summons.Count - 1; i >= 0; i--) {
@@ -103,7 +103,7 @@ public class CombatStep : State {
                 // Resolve attacks on the front enemy until it is dead, then continue until all attacks are gone or all enemies are defeated
                 for (int j = 0; j < attacker.AttackTimes; j++) {
                     // If there is an enemy available to be hit by an attack, attack it
-                    defender = EnemyController.GetDefender();
+                    defender = EnemyController.Instance.GetDefender();
                     if (defender == null) {
                         // If there are no enemies to resolve attacks on (they're dead) escape the loop
                         break;
@@ -117,7 +117,7 @@ public class CombatStep : State {
                     }
 
                     // Change the life total to reflect damage taken
-                    EnemyController.CompleteAttack(defender.id, attacker);
+                    EnemyController.Instance.CompleteAttack(defender.id, attacker);
 
                     // wait for health to decrease before the next attack
                     yield return new WaitForSeconds(0.3f);
@@ -134,7 +134,7 @@ public class CombatStep : State {
 
     private IEnumerator PlayerAttacks() {
         // Get the list of enemies
-        Player player = PlayerController.GetPlayer();
+        Player player = PlayerController.Instance.GetPlayer();
 
         if (player.AttackTimes > 0 && player.AttackValue > 0) {
             Fighter defender;
@@ -142,7 +142,7 @@ public class CombatStep : State {
             // Resolve attacks on the front enemy until it is dead, then continue until all attacks are gone or all enemies are defeated
             for (int j = 0; j < player.AttackTimes; j++) {
                 // If there is an enemy available to be hit by an attack, attack it
-                defender = EnemyController.GetDefender();
+                defender = EnemyController.Instance.GetDefender();
                 if (defender == null) {
                     // If there are no enemies to resolve attacks on (they're dead) escape the loop
                     break;
@@ -156,7 +156,7 @@ public class CombatStep : State {
                 }
 
                 // Change the life total to reflect damage taken
-                EnemyController.CompleteAttack(defender.id, player);
+                EnemyController.Instance.CompleteAttack(defender.id, player);
 
                 // wait for health to decrease before the next attack
                 yield return new WaitForSeconds(0.3f);

@@ -15,9 +15,9 @@ public class ChangeCardCost : TargetableDynamicEffect {
 
     public override void ResolveEffect() {
         for (int i = 0; i < selectedTargets.Count; i++) {
-            Card updatedCard = CardManager.SharedInstance.GetHandCardById(selectedTargets[i].Item1);
+            Card updatedCard = CardManager.Instance.GetHandCardById(selectedTargets[i].Item1);
             updatedCard.UpdateLifeCost(effectCount);
-            CardManager.SharedInstance.UpdateHandCard(updatedCard);
+            CardManager.Instance.UpdateHandCard(updatedCard);
         }
 
         // After resolving effects, remove event listener then fire OnEffectComplete

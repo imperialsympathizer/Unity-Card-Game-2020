@@ -33,7 +33,7 @@ public class CardControl : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             hand.UpdateCardPositions(true, handIndex);
 
             // Move the object being zoomed to the game canvas layer so it is visible above everything else
-            VisualController.SharedInstance.ParentToInteractableCanvas(this.transform);
+            VisualController.Instance.ParentToInteractableCanvas(this.transform);
 
             // Scale the card up so that it is easy to read
             float scale = 1.5f;
@@ -41,7 +41,7 @@ public class CardControl : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
             // Move the card so that its bottom edge is at the bottom edge of the screen
             // New y position is half the card's NEW height minus half the screen's height
-            float canvasHeight = VisualController.SharedInstance.GetDisplaySize().y;
+            float canvasHeight = VisualController.Instance.GetDisplaySize().y;
             float cardHeight = this.transform.GetComponent<RectTransform>().sizeDelta.y * scale;
 
             newPosition.y = cardHeight / 2 - canvasHeight / 2;
@@ -69,7 +69,7 @@ public class CardControl : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             // Use linear interpolation to smoothly move the card's origin toward the pointer
             // Then, keep it snapped to the pointer
 
-            Vector3 mousePos = VisualController.SharedInstance.mainCamera.ScreenToWorldPoint(Input.mousePosition);
+            Vector3 mousePos = VisualController.Instance.mainCamera.ScreenToWorldPoint(Input.mousePosition);
             if (interpolation < 1) {
                 Vector3 currentPos = this.transform.position;
                 Vector3 newPos = Vector3.Lerp(currentPos, mousePos, interpolation);
@@ -81,9 +81,6 @@ public class CardControl : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             }
 
             // Check if the position of the dragged object is over the hand or not
-            // handYThreshold = hand.GetComponent<RectTransform>().sizeDelta.y / 2 + hand.transform.localPosition.y;
-            // yLoc = Input.mousePosition.y - VisualController.SharedInstance.GetDisplaySize().y / 2;
-
             float handYThreshold = hand.GetComponent<RectTransform>().sizeDelta.y / 2;
             float yLoc = hand.transform.InverseTransformPoint(mousePos).y;
 
@@ -120,7 +117,7 @@ public class CardControl : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     public void OnPointerDown(PointerEventData eventData) {
         // Cannot drag a card when selecting cards for effects
-        if (!TargetSelector.SharedInstance.Selecting) {
+        if (!TargetSelector.Instance.Selecting) {
             if (!dragging) {
                 zooming = false;
                 dragging = true;
@@ -134,7 +131,7 @@ public class CardControl : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             handIndex = this.transform.GetSiblingIndex();
 
             // Move the object being dragged to the game canvas layer so it is visible above everything else
-            VisualController.SharedInstance.ParentToInteractableCanvas(this.transform);
+            VisualController.Instance.ParentToInteractableCanvas(this.transform);
             hand.UpdatePositionsFromDrag(handIndex);
         }
     }
@@ -144,7 +141,7 @@ public class CardControl : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
         if (inHand) {
             // Move the object being dragged back to the hand at its last recorded index
-            VisualController.SharedInstance.ParentToHand(this.transform, handIndex);
+            VisualController.Instance.ParentToHand(this.transform, handIndex);
             hand.UpdateCardPositions();
         }
         else {
@@ -156,6 +153,5 @@ public class CardControl : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             OnCardPlayed?.Invoke(cardId);
             hand.UpdateCardPositions();
         }
-
     }
 }

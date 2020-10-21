@@ -15,13 +15,13 @@ public class BeginTurn : State {
 
         TurnSystem.turnCount++;
         for (int i = 0; i < 5; i++) {
-            CardManager.SharedInstance.DrawCard();
+            CardManager.Instance.DrawCard();
         }
         CheckGameConditions();
 
         OnBeginTurn?.Invoke(TurnSystem.turnCount);
         // Reset available life to spend
-        PlayerController.ResetVigor();
+        PlayerController.Instance.ResetVigor();
 
         CheckGameConditions();
 

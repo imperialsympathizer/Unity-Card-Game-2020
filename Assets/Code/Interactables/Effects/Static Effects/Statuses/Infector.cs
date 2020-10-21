@@ -46,7 +46,7 @@ public class Infector : Status {
 
         // If there wasn't an infection status on the character, create one
         if (!infected) {
-            StaticEffectController.AddStatus(character, new Infected(effectCount));
+            StaticEffectController.Instance.AddStatus(character, new Infected(effectCount));
         }
     }
 }

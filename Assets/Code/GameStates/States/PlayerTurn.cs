@@ -21,7 +21,7 @@ public class PlayerTurn : State {
         while (!endTurn) {
             if (cardPlayed) {
                 // Call CardManager to resolve the card
-                CardManager.SharedInstance.BeginCardPlay(cardId);
+                CardManager.Instance.BeginCardPlay(cardId);
                 cardPlayed = false;
             }
             yield return new WaitForEndOfFrame();

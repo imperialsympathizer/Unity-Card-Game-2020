@@ -13,20 +13,20 @@
     public override void ResolveEffect() {
         switch (targetType) {
             case Target.ENEMY:
-                Enemy randomEnemy = EnemyController.GetRandomEnemy(true);
+                Enemy randomEnemy = EnemyController.Instance.GetRandomEnemy(true);
                 if (randomEnemy != null) {
-                    EnemyController.UpdateLife(randomEnemy.id, effectCount);
+                    EnemyController.Instance.UpdateLife(randomEnemy.id, effectCount);
                 }
                 break;
             case Target.SUMMON:
-                Summon randomSummon = SummonController.GetRandomSummon(true);
+                Summon randomSummon = SummonController.Instance.GetRandomSummon(true);
                 if (randomSummon != null) {
-                    SummonController.UpdateLife(randomSummon.id, effectCount);
+                    SummonController.Instance.UpdateLife(randomSummon.id, effectCount);
                 }
                 break;
             case Target.PLAYER:
             default:
-                PlayerController.UpdateLife(effectCount);
+                PlayerController.Instance.UpdateLife(effectCount);
                 break;
         }
 

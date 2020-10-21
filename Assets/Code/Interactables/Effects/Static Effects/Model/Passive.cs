@@ -16,6 +16,6 @@ public abstract class Passive : StaticEffect {
         DeactivateTriggers();
 
         // Then, remove the effect from the StaticEffectController
-        StaticEffectController.RemovePassive(id);
+        StaticEffectController.Instance.RemovePassive(id);
     }
 }

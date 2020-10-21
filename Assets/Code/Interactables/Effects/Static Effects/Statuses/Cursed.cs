@@ -13,6 +13,6 @@ public class Cursed : Status {
     protected override void OperateOnEffect(Trigger trigger) { }
 
     protected override void ResolveEffect(Trigger trigger) {
-        DynamicEffectController.SharedInstance.AddEffect(new ChangeRandomFighterHealth(-effectCount, Target.ENEMY));
+        DynamicEffectController.Instance.AddEffect(new ChangeRandomFighterHealth(-effectCount, Target.ENEMY));
     }
 }

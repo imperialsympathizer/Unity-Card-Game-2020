@@ -34,18 +34,18 @@ public class CardView : BaseView {
         // Ensure the real card doesn't have lingering effects from an old card
         visual.transform.localScale = new Vector3(1, 1, 1);
         // Set the position roughly to where the "deck" is so it animates to hand from that location
-        visual.transform.localPosition = new Vector3(-VisualController.SharedInstance.GetDisplaySize().x / 3f, 0, 0);
+        visual.transform.localPosition = new Vector3(-VisualController.Instance.GetDisplaySize().x / 3f, 0, 0);
         visual.transform.rotation = Quaternion.identity;
 
         // Set the CardInteraction parameters for the visual to hook up interaction
         CardControl control = visual.GetComponent<CardControl>();
         control.cardId = id;
-        control.hand = VisualController.SharedInstance.GetHand().GetComponent<CurvedLayout>();
+        control.hand = VisualController.Instance.GetHand().GetComponent<CurvedLayout>();
         visual.SetActive(true);
     }
 
     public void MoveToHand() {
-        VisualController.SharedInstance.ParentToHand(visual.transform);
+        VisualController.Instance.ParentToHand(visual.transform);
     }
 
     public RectTransform GetVisualRect() {
@@ -74,10 +74,10 @@ public class CardView : BaseView {
         foreach (Element element in elementList) {
             for (int i = 0; i < element.count; i++) {
                 if (childIndex < elementsContainer.childCount - 1) {
-                    ElementController.SetElementView(elementsContainer.GetChild(childIndex).gameObject, element.type);
+                    ElementController.Instance.SetElementView(elementsContainer.GetChild(childIndex).gameObject, element.type);
                 }
                 else {
-                    GameObject newIcon = ElementController.SpawnElementView(element.type, elementsContainer);
+                    GameObject newIcon = ElementController.Instance.SpawnElementView(element.type, elementsContainer);
                     elements.Add(newIcon);
                 }
                 childIndex++;

@@ -1,31 +1,39 @@
 ﻿using System.Collections.Generic;
-using System.Runtime.Remoting.Messaging;
 
-public static class EnemyController {
+public class EnemyController : BaseController {
+    public static EnemyController Instance;
     // Dictionary is used for searching for a specific summon by Id (when targeting, etc.)
     // List is used for resolving things like combat, where iteration is important
-    private static Dictionary<int, Enemy> enemyDictionary = new Dictionary<int, Enemy>();
+    private Dictionary<int, Enemy> enemyDictionary = new Dictionary<int, Enemy>();
 
-    public static void Initialize() {
-        CreateEnemy(Enemy.EnemyType.KNIGHT);
+    protected override bool Initialize() {
+        Instance = this;
+        if (VisualController.Instance != null && VisualController.Instance.Initialized &&
+            NumberAnimator.Instance != null && NumberAnimator.Instance.Initialized) {
+            CreateEnemy(Enemy.EnemyType.KNIGHT);
+
+            return true;
+        }
+
+        return false;
     }
 
-    public static void CreateEnemy(Enemy.EnemyType enemyType) {
+    public void CreateEnemy(Enemy.EnemyType enemyType) {
         Enemy newEnemy;
         switch (enemyType) {
             case Enemy.EnemyType.KNIGHT:
-                newEnemy = new Enemy("Knight", VisualController.SharedInstance.GetPrefab("KnightPrefab"), 10, 2, 50, 50);
+                newEnemy = new Enemy("Knight", VisualController.Instance.GetPrefab("KnightPrefab"), 10, 2, 50, 50);
                 break;
             default:
                 // Default enemy is knight
-                newEnemy = new Enemy("Knight", VisualController.SharedInstance.GetPrefab("KnightPrefab"), 10, 2, 50, 50);
+                newEnemy = new Enemy("Knight", VisualController.Instance.GetPrefab("KnightPrefab"), 10, 2, 50, 50);
                 break;
         }
         newEnemy.CreateVisual();
         enemyDictionary.Add(newEnemy.id, newEnemy);
     }
 
-    public static void UpdateLife(int enemyId, int val) {
+    public void UpdateLife(int enemyId, int val) {
         Enemy enemy = GetEnemy(enemyId);
         if (enemy != null) {
             enemy.UpdateLifeValue(val);
@@ -39,7 +47,7 @@ public static class EnemyController {
         }
     }
 
-    public static Enemy GetDefender() {
+    public Enemy GetDefender() {
         // This function returns null if there are no enemies available to take damage from an attack
         if (enemyDictionary.Count < 1) {
             return null;
@@ -55,7 +63,7 @@ public static class EnemyController {
         return null;
     }
 
-    public static Enemy GetEnemy(int enemyId) {
+    public Enemy GetEnemy(int enemyId) {
         // This function returns null if the requested enemy does not exist
         if (enemyDictionary.TryGetValue(enemyId, out Enemy enemy)) {
             return enemy;
@@ -64,7 +72,7 @@ public static class EnemyController {
         return null;
     }
 
-    public static bool CompleteAttack(int enemyId, Fighter attacker) {
+    public bool CompleteAttack(int enemyId, Fighter attacker) {
         // Change the life total to reflect damage taken
         Enemy defender = enemyDictionary[enemyId];
         if (defender != null) {
@@ -90,7 +98,7 @@ public static class EnemyController {
         return false;
     }
 
-    public static List<Enemy> GetEnemyList() {
+    public List<Enemy> GetEnemyList() {
         List<Enemy> enemies = new List<Enemy>();
         foreach (KeyValuePair<int, Enemy> enemyEntry in enemyDictionary) {
             if (enemyEntry.Value != null) {
@@ -100,7 +108,7 @@ public static class EnemyController {
         return enemies;
     }
 
-    public static Enemy GetRandomEnemy(bool hasLife = false) {
+    public Enemy GetRandomEnemy(bool hasLife = false) {
         // This function returns null if there are no enemies available
         if (enemyDictionary.Count < 1) {
             return null;
@@ -119,7 +127,7 @@ public static class EnemyController {
         return enemiesWithLife[RandomNumberGenerator.getRandomIndexFromRange(enemiesWithLife.Count - 1)];
     }
 
-    private static void UpdateVisual(int id) {
+    private void UpdateVisual(int id) {
         // Updates any visuals that display enemy data
         if (enemyDictionary.TryGetValue(id, out Enemy editEnemy)) {
             editEnemy.UpdateVisual();

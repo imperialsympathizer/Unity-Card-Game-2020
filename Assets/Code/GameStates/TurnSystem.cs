@@ -31,16 +31,16 @@ public class TurnSystem : StateMachine {
         // Otherwise, nothing happens
 
         // If the player has no will left, defeat
-        if (PlayerController.GetWill() <= 0) {
+        if (PlayerController.Instance.GetWill() <= 0) {
             // Debug.Log("You Lose.");
-            GameEndManager.SharedInstance.ShowGameEnd(false);
+            GameEndManager.Instance.ShowGameEnd(false);
             return true;
         }
 
         // If all enemies are dead, win
-        if (EnemyController.GetEnemyList().Count < 1) {
+        if (EnemyController.Instance.GetEnemyList().Count < 1) {
             // Debug.Log("You Win.");
-            GameEndManager.SharedInstance.ShowGameEnd(true);
+            GameEndManager.Instance.ShowGameEnd(true);
             return true;
         }
 
