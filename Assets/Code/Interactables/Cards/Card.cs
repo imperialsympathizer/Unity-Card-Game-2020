@@ -7,7 +7,7 @@ public class Card : BaseInteractable {
 
     private int lifeCost;
 
-    public readonly CardRarity rarity;
+    public readonly Rarity rarity;
     // This is the list of game effects to perform when a card is played
     // Needs to be publicly accessible to update targets
     public List<DynamicEffect> effects;
@@ -21,16 +21,9 @@ public class Card : BaseInteractable {
     // Visual component of the card, stored within its own View class
     private CardView display;
 
-    public enum CardRarity {
-        COMMON,
-        UNCOMMON,
-        RARE,
-        VERY_RARE
-    }
-
     // Constructor that creates the object, but does not instantiate visuals.
     // Those can be called as needed by the CreateVisual() function
-    public Card(string name, string description, int cost, CardRarity rarity, int uses, List<DynamicEffect> effects, List<Element> elements) : base(name, description) {
+    public Card(string name, string description, int cost, Rarity rarity, int uses, List<DynamicEffect> effects, List<Element> elements) : base(name, description) {
         this.lifeCost = cost;
         this.rarity = rarity;
         this.effects = effects;

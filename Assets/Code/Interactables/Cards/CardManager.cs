@@ -15,7 +15,7 @@ public class CardManager : MonoBehaviour {
     public static event Action<Card> OnDiscard;
 
     // The library of all cards
-    private CardSource cardSource = new CardSource();
+    private CardSource cardSource;
 
     // Cards existing in the player's deck during a run
     private Deck runDeck;
@@ -40,6 +40,7 @@ public class CardManager : MonoBehaviour {
     }
 
     public void Initialize() {
+        cardSource = new CardSource();
         cardSource.InitializeCards();
         // Create the starter deck
         runDeck = new Deck(cardSource.allCards);
