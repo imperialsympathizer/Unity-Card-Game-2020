@@ -17,8 +17,8 @@ public class EndTurn : State {
         OnEndTurn?.Invoke(TurnSystem.turnCount);
         CheckGameConditions();
 
-        // After completion, change state to CombatStep
-        TurnSystem.SetState(new CombatStep(TurnSystem));
+        // After completion, change state to BeginTurn
+        TurnSystem.SetState(new BeginTurn(TurnSystem));
         yield break;
     }
 

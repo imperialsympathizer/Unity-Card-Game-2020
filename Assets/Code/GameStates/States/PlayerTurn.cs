@@ -26,9 +26,9 @@ public class PlayerTurn : State {
             }
             yield return new WaitForEndOfFrame();
         }
-        // Debug.Log("ending player turn");
-        // After completion, change state to EndTurn
-        TurnSystem.SetState(new EndTurn(TurnSystem));
+
+        // After completion, change state to CombatStep
+        TurnSystem.SetState(new CombatStep(TurnSystem));
         yield break;
     }
 

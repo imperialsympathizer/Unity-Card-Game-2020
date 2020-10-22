@@ -39,21 +39,44 @@ public class SummonController : BaseController {
         }
     }
 
-    public void UpdateLife(int summonId, int val) {
+    #region Update Methods
+    public void UpdateMaxLife(int summonId, int val) {
         Summon summon = GetSummon(summonId);
         if (summon != null) {
-            summon.UpdateLifeValue(val);
-            summon.UpdateVisual();
-            if (summon.CheckDeath()) {
+            if (summon.UpdateMaxLife(val)) {
                 summon.ClearVisual();
                 summonDictionary.Remove(summonId);
-            }
-            else {
-                summonDictionary[summonId] = summon;
             }
         }
     }
 
+    public void UpdateLife(int summonId, int val) {
+        Summon summon = GetSummon(summonId);
+        if (summon != null) {
+            // If the summon dies from this change, remove it
+            if (summon.UpdateLifeValue(val)) {
+                summon.ClearVisual();
+                summonDictionary.Remove(summonId);
+            }
+        }
+    }
+
+    public void UpdateAttackValue(int summonId, int val) {
+        Summon summon = GetSummon(summonId);
+        if (summon != null) {
+            summon.UpdateAttackValue(val);
+        }
+    }
+
+    public void UpdateAttackTimes(int summonId, int val) {
+        Summon summon = GetSummon(summonId);
+        if (summon != null) {
+            summon.UpdateAttackTimes(val);
+        }
+    }
+    #endregion
+
+    #region Getters
     public List<Summon> GetSummonList() {
         List<Summon> summons = new List<Summon>();
         foreach (KeyValuePair<int, Summon> summonEntry in summonDictionary) {
@@ -108,6 +131,7 @@ public class SummonController : BaseController {
 
         return summonsWithLife[RandomNumberGenerator.getRandomIndexFromRange(summonsWithLife.Count - 1)];
     }
+    #endregion
 
     public void CompleteAttack(int summonId, Fighter attacker) {
         // Change the life total to reflect damage taken
@@ -128,13 +152,6 @@ public class SummonController : BaseController {
                 // Update the summon objects in the list and dictionary
                 summonDictionary[defender.id] = defender;
             }
-        }
-    }
-
-    private void UpdateVisual(int id) {
-        // Updates any visuals that display player data
-        if (summonDictionary.TryGetValue(id, out Summon editSummon)) {
-            editSummon.UpdateVisual();
         }
     }
 }

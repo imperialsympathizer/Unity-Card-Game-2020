@@ -33,18 +33,38 @@ public class EnemyController : BaseController {
         enemyDictionary.Add(newEnemy.id, newEnemy);
     }
 
-    public void UpdateLife(int enemyId, int val) {
+    #region Update
+    // Only updaters necessary are for MaxLife and LifeValue to check external conditions after update
+    public void UpdateMaxLife(int enemyId, int val) {
         Enemy enemy = GetEnemy(enemyId);
         if (enemy != null) {
-            enemy.UpdateLifeValue(val);
-            if (enemy.CheckDeath()) {
+            if (enemy.UpdateMaxLife(val)) {
                 enemy.ClearVisual();
                 enemyDictionary.Remove(enemyId);
             }
-            else {
-                enemyDictionary[enemyId] = enemy;
+        }
+    }
+
+    public void UpdateLife(int enemyId, int val) {
+        Enemy enemy = GetEnemy(enemyId);
+        if (enemy != null) {
+            // If the enemy dies from this change, remove it
+            if (enemy.UpdateLifeValue(val)) {
+                enemy.ClearVisual();
+                enemyDictionary.Remove(enemyId);
             }
         }
+    }
+    #endregion
+
+    #region Getters
+    public Enemy GetEnemy(int enemyId) {
+        // This function returns null if the requested enemy does not exist
+        if (enemyDictionary.TryGetValue(enemyId, out Enemy enemy)) {
+            return enemy;
+        }
+
+        return null;
     }
 
     public Enemy GetDefender() {
@@ -61,41 +81,6 @@ public class EnemyController : BaseController {
         }
 
         return null;
-    }
-
-    public Enemy GetEnemy(int enemyId) {
-        // This function returns null if the requested enemy does not exist
-        if (enemyDictionary.TryGetValue(enemyId, out Enemy enemy)) {
-            return enemy;
-        }
-
-        return null;
-    }
-
-    public bool CompleteAttack(int enemyId, Fighter attacker) {
-        // Change the life total to reflect damage taken
-        Enemy defender = enemyDictionary[enemyId];
-        if (defender != null) {
-            defender.ReceiveAttack(attacker);
-
-            // If damage exceeds the life remaining, the summon is defeated
-            // Otherwise, update the life total and visuals
-            if (defender.LifeValue <= 0) {
-                // TODO: death animation
-                // Clear the visual first to ensure proper removal
-                defender.ClearVisual();
-                enemyDictionary.Remove(enemyId);
-            }
-            else {
-                defender.UpdateVisual();
-                // Update the enemy objects in the list and dictionary
-                enemyDictionary[defender.id] = defender;
-            }
-
-            return true;
-        }
-
-        return false;
     }
 
     public List<Enemy> GetEnemyList() {
@@ -126,11 +111,31 @@ public class EnemyController : BaseController {
 
         return enemiesWithLife[RandomNumberGenerator.getRandomIndexFromRange(enemiesWithLife.Count - 1)];
     }
+    #endregion
 
-    private void UpdateVisual(int id) {
-        // Updates any visuals that display enemy data
-        if (enemyDictionary.TryGetValue(id, out Enemy editEnemy)) {
-            editEnemy.UpdateVisual();
+    public bool CompleteAttack(int enemyId, Fighter attacker) {
+        // Change the life total to reflect damage taken
+        Enemy defender = enemyDictionary[enemyId];
+        if (defender != null) {
+            defender.ReceiveAttack(attacker);
+
+            // If damage exceeds the life remaining, the summon is defeated
+            // Otherwise, update the life total and visuals
+            if (defender.LifeValue <= 0) {
+                // TODO: death animation
+                // Clear the visual first to ensure proper removal
+                defender.ClearVisual();
+                enemyDictionary.Remove(enemyId);
+            }
+            else {
+                defender.UpdateVisual();
+                // Update the enemy objects in the list and dictionary
+                enemyDictionary[defender.id] = defender;
+            }
+
+            return true;
         }
+
+        return false;
     }
 }

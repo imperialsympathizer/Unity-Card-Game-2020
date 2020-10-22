@@ -1,5 +1,6 @@
 ﻿public class ChangeFighterHealth : DynamicEffect {
-    Fighter fighter;
+    private Fighter fighter;
+
     public ChangeFighterHealth(int effectCount, Fighter fighter) : base(effectCount) {
         this.fighter = fighter;
     }

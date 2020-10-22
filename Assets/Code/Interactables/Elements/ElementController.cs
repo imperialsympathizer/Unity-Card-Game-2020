@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class ElementController : BaseController {
@@ -15,6 +16,9 @@ public class ElementController : BaseController {
 
     // This is the element totals for elements that have been played this turn
     private Dictionary<Element.ElementType, int> turnElements;
+
+    public static event Action<Dictionary<Element.ElementType, int>> OnTotalElementUpdate;
+    public static event Action<List<Element>> OnTurnElementUpdate;
 
     protected override bool Initialize() {
         Instance = this;
@@ -99,6 +103,8 @@ public class ElementController : BaseController {
                 totalElements.Add(element.type, element.count);
             }
         }
+
+        OnTotalElementUpdate?.Invoke(totalElements);
     }
 
     public void ResetTotalElements() {
@@ -113,6 +119,8 @@ public class ElementController : BaseController {
                 }
             }
         }
+
+        OnTotalElementUpdate?.Invoke(totalElements);
     }
 
     public int GetTurnElementCount(Element.ElementType type) {
@@ -124,13 +132,16 @@ public class ElementController : BaseController {
     }
 
     public void AddTurnElements(List<Element> elementList) {
-        foreach (Element element in elementList) {
-            if (turnElements.TryGetValue(element.type, out int currentValue)) {
-                turnElements[element.type] = currentValue + element.count;
+        if (elementList != null && elementList.Count > 0) {
+            foreach (Element element in elementList) {
+                if (turnElements.TryGetValue(element.type, out int currentValue)) {
+                    turnElements[element.type] = currentValue + element.count;
+                }
+                else {
+                    turnElements.Add(element.type, element.count);
+                }
             }
-            else {
-                turnElements.Add(element.type, element.count);
-            }
+            OnTurnElementUpdate?.Invoke(elementList);
         }
     }
 

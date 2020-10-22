@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 
 public class OnDraw : Trigger {
-    public Card drawnCard { get; private set; }
+    public Card drawnCard;
 
     public OnDraw(List<TriggerAction> triggerActions) : base(triggerActions) {
         CardManager.OnCardDraw += OnEventTriggered;

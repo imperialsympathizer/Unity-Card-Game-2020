@@ -50,13 +50,16 @@
     }
 
     public void UpdateLife(int val) {
-        player.UpdateLifeValue(val);
-        player.CheckDeath();
+        if (player.UpdateLifeValue(val)) {
+            TurnSystem.Instance.CheckGameConditions();
+        }
     }
 
     public void UpdateWill(int val) {
         player.UpdateWillValue(val);
-        player.CheckDeath();
+        if (player.CheckDeath()) {
+            TurnSystem.Instance.CheckGameConditions();
+        }
     }
 
     public void UpdateVigor(int val) {

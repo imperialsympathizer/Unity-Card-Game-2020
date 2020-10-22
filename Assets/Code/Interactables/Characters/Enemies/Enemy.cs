@@ -57,7 +57,6 @@ public class Enemy : Fighter {
     public override void ClearVisual() {
         if (display != null) {
             display.Despawn();
-            display = null;
         }
     }
 

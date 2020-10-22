@@ -72,7 +72,7 @@ public class DynamicEffectController : MonoBehaviour {
 
     private void OnEffectComplete() {
         // Debug.Log("Effect completed.");
-        if (TurnSystem.SharedInstance.CheckGameConditions()) {
+        if (TurnSystem.Instance.CheckGameConditions()) {
             effects.Clear();
         }
         effectInProgress = false;

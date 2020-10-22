@@ -11,7 +11,8 @@ public class ArtifactController : BaseController {
 
     protected override bool Initialize() {
         Instance = this;
-        if (ElementController.Instance != null && ElementController.Instance.Initialized) {
+        if (ElementController.Instance != null && ElementController.Instance.Initialized &&
+            PlayerController.Instance != null && PlayerController.Instance.Initialized) {
             artifactSource = new ArtifactSource();
 
             // Create starting artifacts
