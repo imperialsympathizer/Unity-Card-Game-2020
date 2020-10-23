@@ -11,6 +11,10 @@ public abstract class Passive : StaticEffect {
         ActivateTriggers();
     }
 
+    public void Deactivate() {
+        DeactivateTriggers();
+    }
+
     protected override void RemoveEffect(Trigger trigger) {
         // Clear any triggers the effect was subscribed to
         DeactivateTriggers();

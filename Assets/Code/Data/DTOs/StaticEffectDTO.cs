@@ -12,4 +12,7 @@ public class StaticEffectDTO : DTO {
 
     // Field for IncrementValue Modifiers
     public int incrementTimes;
+
+    // Field for artifact element thresholds
+    public List<Element> elementsRequired;
 }

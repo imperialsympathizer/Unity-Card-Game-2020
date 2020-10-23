@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class VisualController : BaseController {
@@ -15,10 +16,13 @@ public class VisualController : BaseController {
     // The "smaller" canvases that require frequent parenting
     private GameObject icons;
     private GameObject players;
+
     private GameObject slots;
     private GameObject summons;
     private GameObject enemies;
     private GameObject hand;
+    private GameObject artifacts;
+
     // Nothing should ever be parented to this, it is just a rect for checking if cards have been played
     private GameObject playZone;
 
@@ -51,17 +55,20 @@ public class VisualController : BaseController {
         backgroundCanvas = displayCanvas.transform.GetChild(0).gameObject;
         icons = backgroundCanvas.transform.GetChild(4).gameObject;
 
-        // Interactable canvas
-        interactableCanvas = displayCanvas.transform.GetChild(2).gameObject;
-        playZone = interactableCanvas.transform.GetChild(0).gameObject;
-        hand = interactableCanvas.transform.GetChild(1).gameObject;
+        // Artifact canvas
+        artifacts = displayCanvas.transform.GetChild(1).gameObject;
 
         // Character canvas
-        characterCanvas = displayCanvas.transform.GetChild(1).gameObject;
+        characterCanvas = displayCanvas.transform.GetChild(2).gameObject;
         players = characterCanvas.transform.GetChild(0).gameObject;
         slots = characterCanvas.transform.GetChild(1).gameObject;
         summons = characterCanvas.transform.GetChild(2).gameObject;
         enemies = characterCanvas.transform.GetChild(3).gameObject;
+
+        // Interactable canvas
+        interactableCanvas = displayCanvas.transform.GetChild(3).gameObject;
+        playZone = interactableCanvas.transform.GetChild(0).gameObject;
+        hand = interactableCanvas.transform.GetChild(1).gameObject;
 
         return true;
     }
@@ -122,6 +129,10 @@ public class VisualController : BaseController {
 
     public void ParentToSummonCanvas(Transform transform) {
         transform.SetParent(summons.transform, true);
+    }
+
+    public void ParentToArtifactCanvas(Transform transform) {
+        transform.SetParent(artifacts.transform, true);
     }
 
     // This is the bottom layer object (therefore is at the front of the screen)

@@ -30,7 +30,8 @@ public abstract class FighterView : BaseView {
     }
 
     public void SetAttack(int val) {
-        NumberAnimator.Instance.AnimateNumberChange(this.attackValue, val);
+        // NumberAnimator.Instance.AnimateNumberChange(this.attackValue, val);
+        this.attackValue.text = val.ToString();
     }
 
     public void SetMaxLife(int val) {

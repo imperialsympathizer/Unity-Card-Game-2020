@@ -57,6 +57,7 @@ public class StaticEffectController : BaseController {
 
     public void RemovePassive(int passiveId) {
         if (passiveEffects.TryGetValue(passiveId, out Passive effect)) {
+            effect.Deactivate();
             attachedEffects.Remove(passiveId);
         }
     }

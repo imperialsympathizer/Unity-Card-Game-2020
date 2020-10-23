@@ -1,5 +1,23 @@
 {
   "Artifacts": [
+    {
+      "name": "Aegis",
+      "description": "Weaken enemy attacks by 1",
+      "rarity": "COMMON",
+      "controlledByTurnElements": true,
+      "elementsRequired": [
+        {
+          "type": "EARTH",
+          "count": 2
+        }
+      ],
+      "effects": [
+        {
+          "effectType": "ChangeEnemyAttacksUntilEot",
+          "effectCount": -1
+        }
+      ]
+    }
   ]
 }
 

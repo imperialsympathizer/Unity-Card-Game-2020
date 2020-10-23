@@ -15,6 +15,7 @@ public class ChangeFighterAttackEot : Modifier {
     protected override void ResolveEffect(Trigger trigger) {
         if (character is Fighter fighter) {
             fighter.UpdateAttackValue(effectCount);
+            fighter.UpdateVisual();
         }
 
         // Remove the effect once resolved

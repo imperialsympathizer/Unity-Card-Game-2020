@@ -64,9 +64,9 @@ public static class JsonUtil {
 
             foreach (ArtifactDTO artifactDTO in source.artifacts) {
                 // Create effect objects required for the card
-                List<Passive> artifactEffects = CreateArtifactEffects(artifactDTO);
+                List<ArtifactPassive> artifactEffects = CreateArtifactEffects(artifactDTO);
 
-                artifacts.Add(new Artifact(artifactDTO.name, artifactDTO.description, artifactDTO.rarity, artifactEffects));
+                artifacts.Add(new Artifact(artifactDTO.name, artifactDTO.description, artifactDTO.rarity, artifactEffects, artifactDTO.elementsRequired, artifactDTO.controlledByTurnElements));
             }
         }
         catch (Exception e) {
@@ -76,13 +76,13 @@ public static class JsonUtil {
         return artifacts;
     }
 
-    private static List<Passive> CreateArtifactEffects(ArtifactDTO artifactDTO) {
-        List<Passive> artifactEffects = new List<Passive>();
+    private static List<ArtifactPassive> CreateArtifactEffects(ArtifactDTO artifactDTO) {
+        List<ArtifactPassive> artifactEffects = new List<ArtifactPassive>();
 
         foreach (StaticEffectDTO effectDTO in artifactDTO.effects) {
             StaticEffect staticEffect = ObjectFactory.CreateStaticEffectFromDTO(effectDTO);
 
-            if (staticEffect != null && staticEffect is Passive passive) {
+            if (staticEffect != null && staticEffect is ArtifactPassive passive) {
                 artifactEffects.Add(passive);
             }
             else {

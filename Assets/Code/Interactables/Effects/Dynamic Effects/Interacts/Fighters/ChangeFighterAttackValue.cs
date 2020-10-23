@@ -12,7 +12,8 @@
     }
 
     public override void ResolveEffect() {
-        fighter.UpdateAttackTimes(effectCount);
+        fighter.UpdateAttackValue(effectCount);
+        fighter.UpdateVisual();
 
         // After resolving effects, remove event listener then fire OnEffectComplete
         DynamicEffectController.OnEffectBegin -= ResolveEffect;

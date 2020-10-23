@@ -22,10 +22,7 @@ public class EnemyController : BaseController {
         Enemy newEnemy;
         switch (enemyType) {
             case Enemy.EnemyType.KNIGHT:
-                newEnemy = new Enemy("Knight", VisualController.Instance.GetPrefab("KnightPrefab"), 10, 2, 50, 50);
-                break;
             default:
-                // Default enemy is knight
                 newEnemy = new Enemy("Knight", VisualController.Instance.GetPrefab("KnightPrefab"), 10, 2, 50, 50);
                 break;
         }

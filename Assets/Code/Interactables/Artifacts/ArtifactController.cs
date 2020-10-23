@@ -17,10 +17,19 @@ public class ArtifactController : BaseController {
 
             // Create starting artifacts
             runArtifacts = new List<Artifact>();
+            AddArtifact("Aegis");
 
             return true;
         }
 
         return false;
+    }
+
+    public void AddArtifact(string name) {
+        if (artifactSource.allArtifacts.TryGetValue(name, out Artifact sourceArtifact)) {
+            Artifact newArtifact = new Artifact(sourceArtifact);
+            newArtifact.CreateVisual();
+            runArtifacts.Add(newArtifact);
+        }
     }
 }
