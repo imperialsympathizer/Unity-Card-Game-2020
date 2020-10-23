@@ -6,7 +6,8 @@ public class CardDTO : DTO {
     public string name;
     public string description;
     public int lifeCost;
-    public Card.CardRarity rarity;
+    public Rarity rarity;
     public int uses;
     public List<DynamicEffectDTO> effects;
+    public List<Element> elements;
 }

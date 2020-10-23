@@ -17,7 +17,7 @@ public class OnEffectCountChange : Trigger {
 
         if (effect != null) {
             // Add the trigger/effect pair to the DynamicEffectController queue for resolution in FIFO order
-            DynamicEffectController.SharedInstance.AddEffect(new TriggeredStaticEffect(this));
+            DynamicEffectController.Instance.AddEffect(new TriggeredStaticEffect(this));
         }
     }
 }

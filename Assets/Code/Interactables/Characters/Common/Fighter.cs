@@ -33,9 +33,15 @@ public abstract class Fighter : Character {
         AttackTimes += valueChange;
     }
 
-    public void UpdateMaxLife(int valueChange) {
+    public bool UpdateMaxLife(int valueChange) {
         MaxLife += valueChange;
-        UpdateVisual();
+        if (LifeValue > MaxLife) {
+            return UpdateLifeValue(0, false);
+        }
+        else {
+            UpdateVisual();
+            return CheckDeath();
+        }
     }
 
     // Updates life value and returns if the character is considered dead
@@ -56,7 +62,7 @@ public abstract class Fighter : Character {
     }
 
     public bool CheckDeath() {
-        if (HasLife && LifeValue < 1) {
+        if (HasLife && (LifeValue < 1 || MaxLife < 1)) {
             return true;
         }
         return false;

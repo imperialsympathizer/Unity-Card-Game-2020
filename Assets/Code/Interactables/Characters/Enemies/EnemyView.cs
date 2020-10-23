@@ -4,7 +4,7 @@ using UnityEngine;
 public class EnemyView : FighterView {
     public EnemyView(GameObject view, int id, int healthBarSize) : base(view, id, Fighter.FighterType.ENEMY, healthBarSize) {
         visual.SetActive(false);
-        VisualController.SharedInstance.ParentToEnemyCanvas(visual.transform);
+        VisualController.Instance.ParentToEnemyCanvas(visual.transform);
         visual.transform.localScale = new Vector3(1, 1, 1);
         visual.transform.localPosition = new Vector3(visual.transform.localPosition.x, visual.transform.localPosition.y, -20);
 

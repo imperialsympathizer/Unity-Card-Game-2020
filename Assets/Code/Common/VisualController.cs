@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class VisualController {
-    public static VisualController SharedInstance;
+public class VisualController : BaseController {
+    public static VisualController Instance;
 
     public Camera mainCamera;
 
@@ -15,10 +16,13 @@ public class VisualController {
     // The "smaller" canvases that require frequent parenting
     private GameObject icons;
     private GameObject players;
+
     private GameObject slots;
     private GameObject summons;
     private GameObject enemies;
     private GameObject hand;
+    private GameObject artifacts;
+
     // Nothing should ever be parented to this, it is just a rect for checking if cards have been played
     private GameObject playZone;
 
@@ -27,9 +31,10 @@ public class VisualController {
 
     // Prefabs must be loaded by the ResourceController and passed as arguments to the Initialize method
     private Dictionary<string, GameObject> prefabs;
+    private Dictionary<string, Sprite> images;
 
-    public void Initialize(Dictionary<string, GameObject> prefabs) {
-        SharedInstance = this;
+    protected override bool Initialize() {
+        Instance = this;
 
         // Main camera is sometimes useful for positional calculation,
         // But calling Camera.main every time is is needed is VERY expensive
@@ -37,7 +42,8 @@ public class VisualController {
         mainCamera = Camera.main;
 
         // Initialize prefabs
-        this.prefabs = prefabs;
+        prefabs = new Dictionary<string, GameObject>(ResourceController.prefabDictionary);
+        images = new Dictionary<string, Sprite>(ResourceController.spriteDictionary);
 
         // Game controller
         gameController = GameObject.Find("GameController");
@@ -49,21 +55,50 @@ public class VisualController {
         backgroundCanvas = displayCanvas.transform.GetChild(0).gameObject;
         icons = backgroundCanvas.transform.GetChild(4).gameObject;
 
-        // Interactable canvas
-        interactableCanvas = displayCanvas.transform.GetChild(2).gameObject;
-        playZone = interactableCanvas.transform.GetChild(0).gameObject;
-        hand = interactableCanvas.transform.GetChild(1).gameObject;
+        // Artifact canvas
+        artifacts = displayCanvas.transform.GetChild(1).gameObject;
 
         // Character canvas
-        characterCanvas = displayCanvas.transform.GetChild(1).gameObject;
+        characterCanvas = displayCanvas.transform.GetChild(2).gameObject;
         players = characterCanvas.transform.GetChild(0).gameObject;
         slots = characterCanvas.transform.GetChild(1).gameObject;
         summons = characterCanvas.transform.GetChild(2).gameObject;
         enemies = characterCanvas.transform.GetChild(3).gameObject;
+
+        // Interactable canvas
+        interactableCanvas = displayCanvas.transform.GetChild(3).gameObject;
+        playZone = interactableCanvas.transform.GetChild(0).gameObject;
+        hand = interactableCanvas.transform.GetChild(1).gameObject;
+
+        return true;
     }
 
     public GameObject GetPrefab(string prefabKey) {
-        return prefabs[prefabKey];
+        if (prefabs.TryGetValue(prefabKey, out GameObject prefab)) {
+            return prefab;
+        }
+
+        return null;
+    }
+
+    public Sprite GetImage(string imageKey) {
+        if (images.TryGetValue(imageKey, out Sprite image)) {
+            return image;
+        }
+
+        return null;
+    }
+
+    public GameObject GetPlayerCanvas() {
+        return players;
+    }
+
+    public GameObject GetSummonCanvas() {
+        return summons;
+    }
+
+    public GameObject GetEnemyCanvas() {
+        return enemies;
     }
 
     #region Parenting Functions
@@ -94,6 +129,10 @@ public class VisualController {
 
     public void ParentToSummonCanvas(Transform transform) {
         transform.SetParent(summons.transform, true);
+    }
+
+    public void ParentToArtifactCanvas(Transform transform) {
+        transform.SetParent(artifacts.transform, true);
     }
 
     // This is the bottom layer object (therefore is at the front of the screen)

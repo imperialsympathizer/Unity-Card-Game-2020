@@ -2,22 +2,32 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public static class AttackAnimator {
+public class AttackAnimator : BaseController {
     // This class creates a slow backward slide then fast forward slide to simulate an "attack" by a character, reseting the character's position once complete
+    public static AttackAnimator Instance;
 
-    private static HorizontalLayoutGroup playerCanvas;
-    private static HorizontalLayoutGroup summonCanvas;
-    private static HorizontalLayoutGroup enemyCanvas;
+    private HorizontalLayoutGroup playerCanvas;
+    private HorizontalLayoutGroup summonCanvas;
+    private HorizontalLayoutGroup enemyCanvas;
 
     public static event Action OnAnimateComplete;
 
-    public static void Initialize() {
-        playerCanvas = GameObject.Find("Players").GetComponent<HorizontalLayoutGroup>();
-        summonCanvas = GameObject.Find("Summons").GetComponent<HorizontalLayoutGroup>();
-        enemyCanvas = GameObject.Find("Enemies").GetComponent<HorizontalLayoutGroup>();
+    protected override bool Initialize() {
+        Instance = this;
+
+        if (VisualController.Instance != null && VisualController.Instance.Initialized) {
+
+            playerCanvas = VisualController.Instance.GetPlayerCanvas().GetComponent<HorizontalLayoutGroup>();
+            summonCanvas = VisualController.Instance.GetSummonCanvas().GetComponent<HorizontalLayoutGroup>();
+            enemyCanvas = VisualController.Instance.GetEnemyCanvas().GetComponent<HorizontalLayoutGroup>();
+
+            return true;
+        }
+
+        return false;
     }
 
-    public static void AnimateAttack(GameObject character, Fighter.FighterType type) {
+    public void AnimateAttack(GameObject character, Fighter.FighterType type) {
         float moveAmount = 50f;
         float backTime = 0.2f;
         float forwardTime = 0.1f;
@@ -36,7 +46,7 @@ public static class AttackAnimator {
         });
     }
 
-    private static void EnableCanvasGrid(Fighter.FighterType type, bool enable) {
+    private void EnableCanvasGrid(Fighter.FighterType type, bool enable) {
         switch (type) {
             case Fighter.FighterType.PLAYER:
                 playerCanvas.enabled = enable;

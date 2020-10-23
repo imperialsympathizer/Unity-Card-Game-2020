@@ -42,7 +42,7 @@ public class Player : Fighter {
         int maxSlots = 0,
         int slotsValue = 0) : base(name, Fighter.FighterType.PLAYER, baseAttack, baseAttackTimes, true, baseMaxLife, baseLife) {
         this.prefab = prefab;
-        slotPrefab = VisualController.SharedInstance.GetPrefab("SlotPrefab");
+        slotPrefab = VisualController.Instance.GetPrefab("SlotPrefab");
         MaxWill = baseMaxWill;
         WillValue = baseWillValue;
         HasSlots = hasSlots;
@@ -71,7 +71,6 @@ public class Player : Fighter {
     public override void ClearVisual() {
         if (display != null) {
             display.Despawn();
-            display = null;
         }
     }
 
@@ -107,7 +106,7 @@ public class Player : Fighter {
         UpdateVisual();
     }
 
-    public new void UpdateLifeValue(int val, bool triggers = false) {
+    public new bool UpdateLifeValue(int val, bool triggers = false) {
         // Lose 1 will for each max life required to get LifeValue back to positive
         int lifeResult = LifeValue + val;
         int willResult = WillValue;
@@ -117,19 +116,24 @@ public class Player : Fighter {
         }
 
         // On the player's turn, if they heal, they regain that energy to spend
-        if (val > 0 && TurnSystem.SharedInstance.IsPlayerTurn()) {
+        if (val > 0 && TurnSystem.Instance.IsPlayerTurn()) {
             int vigorResult = VigorValue + val;
             vigorResult = vigorResult > MaxLife ? MaxLife : vigorResult;
             UpdateVigorValue(vigorResult - VigorValue);
         }
 
         UpdateWillValue(willResult - WillValue);
-        base.UpdateLifeValue(lifeResult - LifeValue, triggers);
+        return base.UpdateLifeValue(lifeResult - LifeValue, triggers);
     }
 
     public void UpdateMaxWill(int val) {
         MaxWill += val;
-        UpdateVisual();
+        if (WillValue > MaxLife) {
+            UpdateWillValue(0);
+        }
+        else {
+            UpdateVisual();
+        }
     }
 
     public void UpdateWillValue(int val) {

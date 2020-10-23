@@ -6,6 +6,16 @@
       "lifeCost": 2,
       "rarity": "COMMON",
       "uses": 1,
+      "elements": [
+        {
+          "type": "ARTIFICE",
+          "count": 1
+        },
+        {
+          "type": "WATER",
+          "count": 1
+        }
+      ],
       "effects": [
         {
           "effectType": "ChangeSlots",
@@ -19,6 +29,20 @@
       "lifeCost": 6,
       "rarity": "COMMON",
       "uses": -1,
+      "elements": [
+        {
+          "type": "FIRE",
+          "count": 1
+        },
+        {
+          "type": "WATER",
+          "count": 1
+        },
+        {
+          "type": "LIFE",
+          "count": 1
+        }
+      ],
       "effects": [
         {
           "effectType": "ChangeTargetFighterHealth",
@@ -47,6 +71,16 @@
       "lifeCost": 4,
       "rarity": "COMMON",
       "uses": -1,
+      "elements": [
+        {
+          "type": "LIFE",
+          "count": 1
+        },
+        {
+          "type": "DEATH",
+          "count": 1
+        }
+      ],
       "effects": [
         {
           "effectType": "CreateSummon",
@@ -61,6 +95,16 @@
       "lifeCost": 3,
       "rarity": "COMMON",
       "uses": -1,
+      "elements": [
+        {
+          "type": "EARTH",
+          "count": 1
+        },
+        {
+          "type": "DEATH",
+          "count": 1
+        }
+      ],
       "effects": [
         {
           "effectType": "CreateSummon",
@@ -75,6 +119,16 @@
       "lifeCost": 2,
       "rarity": "COMMON",
       "uses": -1,
+      "elements": [
+        {
+          "type": "AIR",
+          "count": 2
+        },
+        {
+          "type": "DEATH",
+          "count": 1
+        }
+      ],
       "effects": [
         {
           "effectType": "CreateSummon",
@@ -89,6 +143,16 @@
       "lifeCost": 3,
       "rarity": "COMMON",
       "uses": -1,
+      "elements": [
+        {
+          "type": "WATER",
+          "count": 1
+        },
+        {
+          "type": "DEATH",
+          "count": 2
+        }
+      ],
       "effects": [
         {
           "effectType": "CreateSummon",
@@ -103,6 +167,12 @@
       "lifeCost": 2,
       "rarity": "COMMON",
       "uses": -1,
+      "elements": [
+        {
+          "type": "FIRE",
+          "count": 2
+        }
+      ],
       "effects": [
         {
           "effectType": "ChangeTargetFighterHealth",
@@ -123,6 +193,16 @@
       "lifeCost": 5,
       "rarity": "COMMON",
       "uses": -1,
+      "elements": [
+        {
+          "type": "LIFE",
+          "count": 1
+        },
+        {
+          "type": "DEATH",
+          "count": 1
+        }
+      ],
       "effects": [
         {
           "effectType": "AttachEffectTarget",

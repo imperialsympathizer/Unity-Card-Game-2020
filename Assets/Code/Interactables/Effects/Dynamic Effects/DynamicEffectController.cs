@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class DynamicEffectController : MonoBehaviour {
-    public static DynamicEffectController SharedInstance;
+    public static DynamicEffectController Instance;
     // This class waits for dynamic effects (from cards or other sources) to be pushed onto its queue, then resolves them in sequence (FIFO)
     // effects will resolve in tandem with their animations, and the next effect will not be pushed until all previous animations are complete
 
@@ -17,7 +17,7 @@ public class DynamicEffectController : MonoBehaviour {
     private bool running;
 
     private void Awake() {
-        SharedInstance = this;
+        Instance = this;
         DynamicEffect.OnEffectComplete += OnEffectComplete;
         running = true;
         StartCoroutine(ResolveEffects());
@@ -72,7 +72,7 @@ public class DynamicEffectController : MonoBehaviour {
 
     private void OnEffectComplete() {
         // Debug.Log("Effect completed.");
-        if (TurnSystem.SharedInstance.CheckGameConditions()) {
+        if (TurnSystem.Instance.CheckGameConditions()) {
             effects.Clear();
         }
         effectInProgress = false;

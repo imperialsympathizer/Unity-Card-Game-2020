@@ -17,14 +17,14 @@ public class ChangeTargetFighterHealth : TargetableDynamicEffect {
             Tuple<int, Target> targetData = selectedTargets[i];
             switch (targetData.Item2) {
                 case Target.ENEMY:
-                    EnemyController.UpdateLife(targetData.Item1, effectCount);
+                    EnemyController.Instance.UpdateLife(targetData.Item1, effectCount);
                     break;
                 case Target.SUMMON:
-                    SummonController.UpdateLife(targetData.Item1, effectCount);
+                    SummonController.Instance.UpdateLife(targetData.Item1, effectCount);
                     break;
                 case Target.PLAYER:
                 default:
-                    PlayerController.UpdateLife(effectCount);
+                    PlayerController.Instance.UpdateLife(effectCount);
                     break;
             }
         }

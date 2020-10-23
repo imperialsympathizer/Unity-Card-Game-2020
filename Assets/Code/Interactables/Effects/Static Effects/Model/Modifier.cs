@@ -15,7 +15,7 @@ public abstract class Modifier : AttachedStaticEffect {
             DeactivateTriggers();
 
             // Then, remove the effect from the character and from the StaticEffectController
-            StaticEffectController.RemoveModifier(id);
+            StaticEffectController.Instance.RemoveModifier(id);
         }
     }
 }

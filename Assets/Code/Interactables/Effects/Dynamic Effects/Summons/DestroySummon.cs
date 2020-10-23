@@ -12,7 +12,7 @@ public class DestroySummon : TargetableDynamicEffect {
         // TODO: implement effect properly
         // Debug.Log("Dealing " + effectCount.ToString() + " damage.");
         for (int i = 0; i < effectCount; i++) {
-            CardManager.SharedInstance.DrawCard();
+            CardManager.Instance.DrawCard();
         }
 
         // After resolving effects, remove event listener then fire OnEffectComplete

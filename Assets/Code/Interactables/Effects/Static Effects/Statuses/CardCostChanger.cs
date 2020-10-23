@@ -14,6 +14,6 @@ public class CardCostChanger : Status {
     protected override void OperateOnEffect(Trigger trigger) { }
 
     protected override void ResolveEffect(Trigger trigger) {
-        DynamicEffectController.SharedInstance.AddEffect(new ChangeRandomCardCost(effectCount));
+        DynamicEffectController.Instance.AddEffect(new ChangeRandomCardCost(effectCount));
     }
 }

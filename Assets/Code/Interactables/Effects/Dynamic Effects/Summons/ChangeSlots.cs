@@ -10,12 +10,12 @@ public class ChangeSlots : DynamicEffect {
     public override void ResolveEffect() {
         if (effectCount < 0) {
             for (int i = 0; i < Mathf.Abs(effectCount); i++) {
-                PlayerController.RemoveSlot();
+                PlayerController.Instance.RemoveSlot();
             }
         }
         else if (effectCount > 0) {
             for (int i = 0; i < effectCount; i++) {
-                PlayerController.AddSlot();
+                PlayerController.Instance.AddSlot();
             }
         }
 

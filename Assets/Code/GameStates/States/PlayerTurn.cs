@@ -21,14 +21,14 @@ public class PlayerTurn : State {
         while (!endTurn) {
             if (cardPlayed) {
                 // Call CardManager to resolve the card
-                CardManager.SharedInstance.BeginCardPlay(cardId);
+                CardManager.Instance.BeginCardPlay(cardId);
                 cardPlayed = false;
             }
             yield return new WaitForEndOfFrame();
         }
-        // Debug.Log("ending player turn");
-        // After completion, change state to EndTurn
-        TurnSystem.SetState(new EndTurn(TurnSystem));
+
+        // After completion, change state to CombatStep
+        TurnSystem.SetState(new CombatStep(TurnSystem));
         yield break;
     }
 

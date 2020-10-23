@@ -30,14 +30,14 @@ public class AttachEffectTarget : TargetableDynamicEffect {
             Tuple<int, Target> targetData = selectedTargets[i];
             switch (targetData.Item2) {
                 case Target.ENEMY:
-                    AddEffect(EnemyController.GetEnemy(targetData.Item1));
+                    AddEffect(EnemyController.Instance.GetEnemy(targetData.Item1));
                     break;
                 case Target.SUMMON:
-                    AddEffect(SummonController.GetSummon(targetData.Item1));
+                    AddEffect(SummonController.Instance.GetSummon(targetData.Item1));
                     break;
                 case Target.PLAYER:
                 default:
-                    AddEffect(PlayerController.GetPlayer());
+                    AddEffect(PlayerController.Instance.GetPlayer());
                     break;
             }
         }
@@ -59,10 +59,10 @@ public class AttachEffectTarget : TargetableDynamicEffect {
         }
         if (!attached) {
             if (attachedEffect is Modifier modifier) {
-                StaticEffectController.AddModifier(target, modifier);
+                StaticEffectController.Instance.AddModifier(target, modifier);
             }
             else if (attachedEffect is Status status) {
-                StaticEffectController.AddStatus(target, status);
+                StaticEffectController.Instance.AddStatus(target, status);
             }
         }
     }

@@ -1,60 +1,63 @@
 ﻿using System.Collections.Generic;
 
-public static class StaticEffectController {
+public class StaticEffectController : BaseController {
     // This class manages static effects (both attached and passive) as the game progresses through states
+    public static StaticEffectController Instance;
 
     // Structure containing all attached effects that are related to characters/entities (Statuses and Modifiers)
-    // Sorted by trigger first, then character
-    // TODO: worth considering to sort by trigger > priority > character instead of trigger > character > priority, but that's more of a high level design decision for later
-    private static Dictionary<int, AttachedStaticEffect> attachedEffects = new Dictionary<int, AttachedStaticEffect>();
+    // Key - effect Id, Value - effect
+    private Dictionary<int, AttachedStaticEffect> attachedEffects = new Dictionary<int, AttachedStaticEffect>();
 
     // Structure containing all passive effects that aren't directly attached to characters/entities
-    private static Dictionary<int, Passive> passiveEffects = new Dictionary<int, Passive>();
+    private Dictionary<int, Passive> passiveEffects = new Dictionary<int, Passive>();
 
-    public static void Initialize() {
+    protected override bool Initialize() {
+        Instance = this;
+        return true;
     }
 
     #region Data Modification
 
     // Creates a new modifier on a character
     // Adds the modifier as a dictionary entry for every trigger that it has
-    public static void AddModifier(Character character, Modifier modifier) {
+    public void AddModifier(Character character, Modifier modifier) {
         if (character != null && modifier != null) {
             modifier.AttachEffectToCharacter(character);
             attachedEffects.Add(modifier.id, modifier);
         }
     }
 
-    public static void AddStatus(Character character, Status status) {
+    public void AddStatus(Character character, Status status) {
         if (character != null && status != null) {
             status.AttachEffectToCharacter(character);
             attachedEffects.Add(status.id, status);
         }
     }
 
-    public static void AddPassive(Passive passive) {
+    public void AddPassive(Passive passive) {
         if (passive != null) {
             passive.Activate();
             passiveEffects.Add(passive.id, passive);
         }
     }
 
-    public static void RemoveModifier(int modifierId) {
+    public void RemoveModifier(int modifierId) {
         if (attachedEffects.TryGetValue(modifierId, out AttachedStaticEffect effect)) {
             effect.RemoveEffectFromCharacter();
             attachedEffects.Remove(modifierId);
         }
     }
 
-    public static void RemoveStatus(int statusId) {
+    public void RemoveStatus(int statusId) {
         if (attachedEffects.TryGetValue(statusId, out AttachedStaticEffect effect)) {
             effect.RemoveEffectFromCharacter();
             attachedEffects.Remove(statusId);
         }
     }
 
-    public static void RemovePassive(int passiveId) {
+    public void RemovePassive(int passiveId) {
         if (passiveEffects.TryGetValue(passiveId, out Passive effect)) {
+            effect.Deactivate();
             attachedEffects.Remove(passiveId);
         }
     }

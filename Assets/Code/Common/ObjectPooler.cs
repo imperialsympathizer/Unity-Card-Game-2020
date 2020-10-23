@@ -79,7 +79,7 @@ public static class ObjectPooler {
         if (pools == null) {
             pools = new Dictionary<GameObject, Pool>();
         }
-        if (prefab != null && pools.ContainsKey(prefab) == false) {
+        if (prefab != null && !pools.ContainsKey(prefab)) {
             pools[prefab] = new Pool(prefab, qty);
         }
     }
@@ -131,7 +131,7 @@ public static class ObjectPooler {
         }
         else {
             // First, parent unused objects to the GameController to prevent sibling indexing issues with other visuals
-            VisualController.SharedInstance.RemoveFromVisual(obj.transform);
+            VisualController.Instance.RemoveFromVisual(obj.transform);
             // Then despawn the object
             pm.myPool.Despawn(obj);
         }

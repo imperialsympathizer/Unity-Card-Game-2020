@@ -30,17 +30,18 @@ public abstract class FighterView : BaseView {
     }
 
     public void SetAttack(int val) {
-        NumberAnimator.AnimateNumberChange(this.attackValue, val);
+        // NumberAnimator.Instance.AnimateNumberChange(this.attackValue, val);
+        this.attackValue.text = val.ToString();
     }
 
     public void SetMaxLife(int val) {
-        NumberAnimator.AnimateNumberChange(this.maxLife, val);
+        NumberAnimator.Instance.AnimateNumberChange(this.maxLife, val);
     }
 
     public void SetLife(bool hasLife, int life, int maxLife) {
         if (hasLife) {
             healthBar.transform.parent.gameObject.SetActive(true);
-            NumberAnimator.AnimateNumberChange(this.lifeValue, life);
+            NumberAnimator.Instance.AnimateNumberChange(this.lifeValue, life);
             // Animate the healthbar
             float newSize = healthBarSize * ((float)life / (float)maxLife);
             LeanTween.size(healthBar, new Vector2(newSize, healthBar.sizeDelta.y), 0.2f);
@@ -84,6 +85,6 @@ public abstract class FighterView : BaseView {
     }
 
     public void AnimateAttack() {
-        AttackAnimator.AnimateAttack(sprite.gameObject, fighterType);
+        AttackAnimator.Instance.AnimateAttack(sprite.gameObject, fighterType);
     }
 }

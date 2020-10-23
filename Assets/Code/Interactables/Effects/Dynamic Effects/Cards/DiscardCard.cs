@@ -8,7 +8,7 @@
 
     public override void ResolveEffect() {
         for (int i = 0; i < effectCount; i++) {
-            CardManager.SharedInstance.DiscardRandomCard();
+            CardManager.Instance.DiscardRandomCard();
         }
 
         // After resolving effects, remove event listener then fire OnEffectComplete

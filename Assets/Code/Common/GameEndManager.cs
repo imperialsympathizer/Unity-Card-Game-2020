@@ -1,18 +1,25 @@
 ﻿using TMPro;
 using UnityEngine;
 
-public class GameEndManager {
-    public static GameEndManager SharedInstance;
+public class GameEndManager : BaseController {
+    public static GameEndManager Instance;
 
-    private GameObject prefab;
-    private GameObject endDisplay;
+    private static GameObject prefab;
+    private static GameObject endDisplay;
 
-    private bool battleOver;
+    private static bool battleOver;
 
-    public void Initialize() {
-        SharedInstance = this;
-        battleOver = false;
-        prefab = VisualController.SharedInstance.GetPrefab("BattleEnd");
+    protected override bool Initialize() {
+        Instance = this;
+
+        if (VisualController.Instance != null && VisualController.Instance.Initialized) {
+            battleOver = false;
+            prefab = VisualController.Instance.GetPrefab("BattleEnd");
+
+            return true;
+        }
+
+        return false;
     }
 
     public void ShowGameEnd(bool win) {
@@ -26,7 +33,7 @@ public class GameEndManager {
             endDisplay.transform.SetAsLastSibling();
             endDisplay.transform.position = Vector3.zero;
             GameObject canvas = endDisplay.transform.GetChild(0).gameObject;
-            canvas.GetComponent<Canvas>().worldCamera = VisualController.SharedInstance.mainCamera;
+            canvas.GetComponent<Canvas>().worldCamera = VisualController.Instance.mainCamera;
             TextMeshPro text = canvas.transform.GetChild(canvas.transform.childCount - 1).GetComponent<TextMeshPro>();
             endDisplay.transform.localScale = Vector3.one;
 

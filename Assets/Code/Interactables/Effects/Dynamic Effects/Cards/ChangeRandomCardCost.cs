@@ -15,14 +15,14 @@ public class ChangeRandomCardCost : DynamicEffect {
             cards = GetNonZeroCards();
         }
         else {
-            cards = CardManager.SharedInstance.GetHandCards();
+            cards = CardManager.Instance.GetHandCards();
         }
 
         int randomIndex = RandomNumberGenerator.getRandomIndexFromRange(cards.Count - 1);
         if (randomIndex >= 0) {
             Card updatedCard = cards[randomIndex];
             updatedCard.UpdateLifeCost(effectCount);
-            CardManager.SharedInstance.UpdateHandCard(updatedCard);
+            CardManager.Instance.UpdateHandCard(updatedCard);
         }
 
         // After resolving effects, remove event listener then fire OnEffectComplete
@@ -31,7 +31,7 @@ public class ChangeRandomCardCost : DynamicEffect {
     }
 
     private List<Card> GetNonZeroCards() {
-        List<Card> cards = new List<Card>(CardManager.SharedInstance.GetHandCards());
+        List<Card> cards = new List<Card>(CardManager.Instance.GetHandCards());
         for (int i = 0; i < cards.Count; i++) {
             if (cards[i].LifeCost == 0) {
                 cards.RemoveAt(i);

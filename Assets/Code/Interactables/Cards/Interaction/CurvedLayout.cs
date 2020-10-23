@@ -10,7 +10,7 @@ public class CurvedLayout : MonoBehaviour {
     private float radius = 2200;
 
     // TODO: make global variable
-    private float padDegrees = 3;
+    private float padDegrees = 4;
 
     private float yPadding;
 
@@ -23,7 +23,7 @@ public class CurvedLayout : MonoBehaviour {
 
     private void Start() {
         // adjust yPadding as needed based on the location of the hand object
-        yPadding = mainCanvas.GetComponent<RectTransform>().sizeDelta.y * 0.08f;
+        yPadding = mainCanvas.GetComponent<RectTransform>().sizeDelta.y * 0.1f;
         UpdateCardPositions();
     }
 
