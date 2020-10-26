@@ -18,22 +18,26 @@ public class CombatStep : State {
         // Debug.Log("beginning combat");
 
         OnBeginCombat?.Invoke(TurnSystem.turnCount);
-        CheckGameConditions();
+        
+        if (!CheckGameConditions()) {
+            // Initiate combat and wait for end
+            combatOver = false;
+            AttackAnimator.OnAnimateComplete += OnAnimateComplete;
+            TurnSystem.StartCoroutine(EnemyAttacks());
 
-        // Initiate combat and wait for end
-        combatOver = false;
-        AttackAnimator.OnAnimateComplete += OnAnimateComplete;
-        TurnSystem.StartCoroutine(EnemyAttacks());
+            while (!combatOver) {
+                yield return new WaitForSeconds(0.1f);
+            }
 
-        while (!combatOver) {
-            yield return new WaitForSeconds(0.1f);
+            if (!CheckGameConditions()) {
+                OnEndCombat?.Invoke(TurnSystem.turnCount);
+                if (!CheckGameConditions()) {
+                    // After completion, change state to EndTurn
+                    TurnSystem.SetState(new EndTurn(TurnSystem));
+                }
+            }
         }
 
-        OnEndCombat?.Invoke(TurnSystem.turnCount);
-        CheckGameConditions();
-
-        // After completion, change state to EndTurn
-        TurnSystem.SetState(new EndTurn(TurnSystem));
         yield break;
     }
 
@@ -71,7 +75,7 @@ public class CombatStep : State {
 
                     // Change the life total to reflect damage taken
                     if (summon) {
-                        SummonController.Instance.CompleteAttack(defender.id, attacker);
+                        SummonController.Instance.CompleteAttack(defender.Id, attacker);
                     }
                     else {
                         PlayerController.Instance.CompleteAttack(attacker);
@@ -81,12 +85,21 @@ public class CombatStep : State {
                     yield return new WaitForSeconds(0.3f);
 
                     // Checks if the game has ended
-                    CheckGameConditions();
+                    if (CheckGameConditions()) {
+                        combatOver = true;
+                        break;
+                    }
                 }
+            }
+            if (combatOver) {
+                break;
             }
         }
 
-        TurnSystem.StartCoroutine(SummonAttacks());
+        if (!combatOver) {
+            TurnSystem.StartCoroutine(SummonAttacks());
+        }
+        
         yield break;
     }
 
@@ -117,18 +130,27 @@ public class CombatStep : State {
                     }
 
                     // Change the life total to reflect damage taken
-                    EnemyController.Instance.CompleteAttack(defender.id, attacker);
+                    EnemyController.Instance.CompleteAttack(defender.Id, attacker);
 
                     // wait for health to decrease before the next attack
                     yield return new WaitForSeconds(0.3f);
 
                     // Checks if the game has ended
-                    CheckGameConditions();
+                    if (CheckGameConditions()) {
+                        combatOver = true;
+                        break;
+                    }
                 }
+            }
+            if (combatOver) {
+                break;
             }
         }
 
-        TurnSystem.StartCoroutine(PlayerAttacks());
+        if (!combatOver) {
+            TurnSystem.StartCoroutine(PlayerAttacks());
+        }
+        
         yield break;
     }
 
@@ -156,13 +178,16 @@ public class CombatStep : State {
                 }
 
                 // Change the life total to reflect damage taken
-                EnemyController.Instance.CompleteAttack(defender.id, player);
+                EnemyController.Instance.CompleteAttack(defender.Id, player);
 
                 // wait for health to decrease before the next attack
                 yield return new WaitForSeconds(0.3f);
 
                 // Checks if the game has ended
-                CheckGameConditions();
+                if (CheckGameConditions()) {
+                    combatOver = true;
+                    break;
+                }
             }
         }
 

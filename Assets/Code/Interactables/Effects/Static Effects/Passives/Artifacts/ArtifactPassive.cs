@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
+[Serializable]
 public abstract class ArtifactPassive : Passive {
     // Artifact passives are a bit unique in that they are not directly triggered by events
     // Instead, they are controlled by the Artifact itself

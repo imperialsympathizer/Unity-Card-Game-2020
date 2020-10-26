@@ -33,17 +33,19 @@ public class VisualController : BaseController {
     private Dictionary<string, GameObject> prefabs;
     private Dictionary<string, Sprite> images;
 
-    protected override bool Initialize() {
+    protected override bool Initialize(bool reinitialize) {
         Instance = this;
+
+        if (!reinitialize) {
+            // Initialize prefabs
+            prefabs = new Dictionary<string, GameObject>(ResourceController.prefabDictionary);
+            images = new Dictionary<string, Sprite>(ResourceController.spriteDictionary);
+        }
 
         // Main camera is sometimes useful for positional calculation,
         // But calling Camera.main every time is is needed is VERY expensive
         // Better to have it cached for when it is necessary
         mainCamera = Camera.main;
-
-        // Initialize prefabs
-        prefabs = new Dictionary<string, GameObject>(ResourceController.prefabDictionary);
-        images = new Dictionary<string, Sprite>(ResourceController.spriteDictionary);
 
         // Game controller
         gameController = GameObject.Find("GameController");

@@ -1,11 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
+[Serializable]
 public class DestroySummon : TargetableDynamicEffect {
     public DestroySummon(int effectCount, List<Target> validTargets, string targetingDialogue, int minTargets, int maxTargets) : base(effectCount, validTargets, targetingDialogue, minTargets, maxTargets) {
     }
 
     public override bool IsValid() {
-        return (id >= 0 && effectCount >= 0);
+        return (Id >= 0 && effectCount >= 0);
     }
 
     public override void ResolveEffect() {

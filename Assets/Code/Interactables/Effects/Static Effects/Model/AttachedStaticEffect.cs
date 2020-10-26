@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
+[Serializable]
 public abstract class AttachedStaticEffect : StaticEffect {
     // This StaticEffect child class deals specifically with effects that are attached to specific entities
     // If a character has a modifier or status applied to it, it will be an instance of this class
@@ -16,15 +18,15 @@ public abstract class AttachedStaticEffect : StaticEffect {
     public void AttachEffectToCharacter(Character character) {
         if (!IsAttached) {
             this.character = character;
-            this.character.attachedEffects.Add(this.id, this);
+            this.character.attachedEffects.Add(this.Id, this);
             ActivateTriggers();
             IsAttached = true;
         }
     }
 
     public void RemoveEffectFromCharacter() {
-        if (IsAttached && character.attachedEffects.ContainsKey(this.id)) {
-            character.attachedEffects.Remove(this.id);
+        if (IsAttached && character.attachedEffects.ContainsKey(this.Id)) {
+            character.attachedEffects.Remove(this.Id);
         }
         IsAttached = false;
     }

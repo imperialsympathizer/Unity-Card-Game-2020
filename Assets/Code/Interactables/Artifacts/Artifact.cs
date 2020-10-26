@@ -26,7 +26,8 @@ public class Artifact : BaseInteractable {
         bool controlledByTurnElements)
         : base(name, description) {
         this.rarity = rarity;
-        this.effects = effects;
+
+        this.effects = new List<ArtifactPassive>(effects);
         this.controlledByTurnElements = controlledByTurnElements;
 
         // Initialize required elements
@@ -45,16 +46,28 @@ public class Artifact : BaseInteractable {
 
     public Artifact(Artifact artifactToCopy) : base(artifactToCopy.name, artifactToCopy.description) {
         this.rarity = artifactToCopy.rarity;
-        this.effects = new List<ArtifactPassive>(artifactToCopy.effects);
-        this.typesRequired = new List<Element.ElementType>(artifactToCopy.typesRequired);
-        this.elementsRequired = new Dictionary<Element.ElementType, Tuple<int, int>>(artifactToCopy.elementsRequired);
-        this.controlledByTurnElements = artifactToCopy.controlledByTurnElements;
 
-        // Initialize all ArtifactPassives with the correct artifactId
-        foreach (ArtifactPassive effect in this.effects) {
-            effect.artifactId = id;
+        this.effects = new List<ArtifactPassive>();
+        foreach (ArtifactPassive effect in artifactToCopy.effects) {
+            effect.artifactId = Id;
+            effect.ModifyId(ResourceController.GenerateId());
             StaticEffectController.Instance.AddPassive(effect);
+            this.effects.Add(effect);
         }
+
+        this.typesRequired = new List<Element.ElementType>();
+        this.elementsRequired = new Dictionary<Element.ElementType, Tuple<int, int>>();
+        foreach (KeyValuePair<Element.ElementType, Tuple<int, int>> element in artifactToCopy.elementsRequired) {
+            if (this.elementsRequired.TryGetValue(element.Key, out Tuple<int, int> elementValues)) {
+                this.elementsRequired[element.Key] = new Tuple<int, int>(elementValues.Item1 + element.Value.Item1, 0);
+            }
+            else {
+                this.typesRequired.Add(element.Key);
+                this.elementsRequired.Add(element.Key, new Tuple<int, int>(element.Value.Item1, 0));
+            }
+        }
+
+        this.controlledByTurnElements = artifactToCopy.controlledByTurnElements;
     }
 
     public override void ClearVisual() {
@@ -86,6 +99,10 @@ public class Artifact : BaseInteractable {
         // TODO
     }
 
+    public override void SetVisualScale(Vector3 scale) {
+        // TODO
+    }
+
     public override void UpdateVisual() {
         display.HideTooltip();
         display.UpdateElementCounts(elementsRequired);
@@ -107,7 +124,7 @@ public class Artifact : BaseInteractable {
         // Trigger for as many times as the threshold is met
         while (CheckThresholdMet()) {
             // Send trigger to all effects controlled by this artifact
-            OnArtifactActivate?.Invoke(id);
+            OnArtifactActivate?.Invoke(Id);
             ReduceCountsByThreshold();
         }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
+[Serializable]
 public abstract class TargetableDynamicEffect : DynamicEffect {
 
     public List<Target> validTargets = new List<Target>();

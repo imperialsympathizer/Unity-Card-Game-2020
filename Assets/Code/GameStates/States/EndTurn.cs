@@ -12,13 +12,15 @@ public class EndTurn : State {
         // Debug.Log("ending turn");
 
         EndTurnEffects();
-        CheckGameConditions();
+        if (!CheckGameConditions()) {
+            OnEndTurn?.Invoke(TurnSystem.turnCount);
 
-        OnEndTurn?.Invoke(TurnSystem.turnCount);
-        CheckGameConditions();
+            if (!CheckGameConditions()) {
+                // After completion, change state to BeginTurn
+                TurnSystem.SetState(new BeginTurn(TurnSystem));
+            }
+        }
 
-        // After completion, change state to BeginTurn
-        TurnSystem.SetState(new BeginTurn(TurnSystem));
         yield break;
     }
 

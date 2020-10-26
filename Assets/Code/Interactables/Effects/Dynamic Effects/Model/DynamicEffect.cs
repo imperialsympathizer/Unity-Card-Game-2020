@@ -1,5 +1,6 @@
 ﻿using System;
 
+[Serializable]
 public abstract class DynamicEffect : BaseEffect {
     // This class is to be instantiated for specific effects that are dynamically created (by card plays, attacks, etc.)
     // DynamicEffects will be pushed into the DynamicEffectController's queue and resolved in sequence

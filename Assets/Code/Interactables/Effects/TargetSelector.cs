@@ -102,7 +102,7 @@ public class TargetSelector : MonoBehaviour, IPointerClickHandler {
                 Vector3 relativePos = selectableArea.transform.InverseTransformPoint(mousePos);
                 // If the click was inside the area of the selectable object, select it
                 if (relativePos.x <= halfWidth && relativePos.y <= halfHeight && relativePos.x >= -halfWidth && relativePos.x >= -halfHeight) {
-                    Tuple<int, Target> selectedItem = new Tuple<int, Target>(selectable.id, selectableTargets[i].Item2);
+                    Tuple<int, Target> selectedItem = new Tuple<int, Target>(selectable.Id, selectableTargets[i].Item2);
                     // If the object was already selected, deselect it
                     if (selectedTargets.Contains(selectedItem)) {
                         selectable.SetVisualOutline(unselectedColor);

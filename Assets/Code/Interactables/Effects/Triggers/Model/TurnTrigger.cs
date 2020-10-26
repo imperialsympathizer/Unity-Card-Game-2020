@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
+[Serializable]
 public abstract class TurnTrigger : Trigger {
     public int turnNumber { get; protected set; }
 

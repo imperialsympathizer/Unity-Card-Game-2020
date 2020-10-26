@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
+[Serializable]
 public class ChangeFighterAttackEot : Modifier {
     // Modifier for changing a fighter's attack at the end of the turn
     // effectCount: The amount to modify the value by whenever triggered (can be positive or negative)

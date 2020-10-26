@@ -37,7 +37,7 @@ public class Enemy : Fighter {
         // Spawn an object to view the summon on screen
         // Not using the ObjectPooler as there is only one player character
         GameObject enemyVisual = ObjectPooler.Spawn(prefab, new Vector3(0, 0, -10), Quaternion.identity);
-        display = new EnemyView(enemyVisual, id, 410);
+        display = new EnemyView(enemyVisual, Id, 410);
         UpdateVisual();
     }
 
@@ -66,6 +66,10 @@ public class Enemy : Fighter {
 
     public override void SetVisualOutline(Color color) {
         display.SetVisualOutline(color);
+    }
+
+    public override void SetVisualScale(Vector3 scale) {
+        display.SetVisualScale(scale);
     }
 
     public override void PerformAttack() {

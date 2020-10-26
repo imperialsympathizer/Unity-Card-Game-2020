@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
+[Serializable]
 public class CardCostChanger : Status {
     public CardCostChanger(int effectCount)
         : base(

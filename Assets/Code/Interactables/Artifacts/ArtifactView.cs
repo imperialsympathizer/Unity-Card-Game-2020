@@ -12,7 +12,7 @@ public class ArtifactView : BaseView {
 
     private Dictionary<Element.ElementType, GameObject> elementThresholds;
 
-    public ArtifactView(GameObject visual, Artifact artifactSource) : base(visual, artifactSource.id) {
+    public ArtifactView(GameObject visual, Artifact artifactSource) : base(visual, artifactSource.Id) {
         this.visual.SetActive(false);
         VisualController.Instance.ParentToArtifactCanvas(this.visual.transform);
         this.visual.transform.localScale = Vector3.one;

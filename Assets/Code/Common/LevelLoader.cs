@@ -3,14 +3,20 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class LevelLoader : MonoBehaviour {
-    public static LevelLoader SharedInstance;
+    public static LevelLoader Instance;
 
     public Animator transition;
 
     public float transitionTime = 1f;
 
+    public enum Level {
+        MAIN_MENU = 0,
+        BATTLE = 1
+    }
+
     private void Awake() {
-        SharedInstance = this;
+        Instance = this;
+        transition = this.transform.GetChild(0).GetComponent<Animator>();
     }
 
     public void LoadLevel(Level level) {
@@ -26,12 +32,10 @@ public class LevelLoader : MonoBehaviour {
 
         // Load scene
         SceneManager.LoadScene((int)level);
+        if (level == Level.BATTLE) {
+            
+        }
 
         yield break;
-    }
-
-    public enum Level {
-        MAIN_MENU = 0,
-        BATTLE = 1
     }
 }

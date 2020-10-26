@@ -11,7 +11,7 @@ public class StaticEffectController : BaseController {
     // Structure containing all passive effects that aren't directly attached to characters/entities
     private Dictionary<int, Passive> passiveEffects = new Dictionary<int, Passive>();
 
-    protected override bool Initialize() {
+    protected override bool Initialize(bool reinitialize) {
         Instance = this;
         return true;
     }
@@ -23,21 +23,21 @@ public class StaticEffectController : BaseController {
     public void AddModifier(Character character, Modifier modifier) {
         if (character != null && modifier != null) {
             modifier.AttachEffectToCharacter(character);
-            attachedEffects.Add(modifier.id, modifier);
+            attachedEffects.Add(modifier.Id, modifier);
         }
     }
 
     public void AddStatus(Character character, Status status) {
         if (character != null && status != null) {
             status.AttachEffectToCharacter(character);
-            attachedEffects.Add(status.id, status);
+            attachedEffects.Add(status.Id, status);
         }
     }
 
     public void AddPassive(Passive passive) {
         if (passive != null) {
             passive.Activate();
-            passiveEffects.Add(passive.id, passive);
+            passiveEffects.Add(passive.Id, passive);
         }
     }
 

@@ -70,7 +70,7 @@ public class LTSeq {
         this.current.toggle = true;
         LTSeq lastCurrent = this.current;
         this.current = LeanTween.sequence(true);
-        // Debug.Log("this.current:" + this.current.id + " lastCurrent:" + lastCurrent.id);
+        // Debug.Log("this.current:" + this.current.Id + " lastCurrent:" + lastCurrent.Id);
         this.current.previous = lastCurrent;
         lastCurrent.toggle = false;
         this.current.totalDelay = lastCurrent.totalDelay;

@@ -1,4 +1,8 @@
-﻿public class ChangeFighterAttackValue : DynamicEffect {
+﻿using System;
+
+[Serializable]
+public class ChangeFighterAttackValue : DynamicEffect {
+    // IMPORTANT: this class should only be used programmatically at runtime
     private Fighter fighter;
 
     public ChangeFighterAttackValue(int effectCount, Fighter fighter) : base(effectCount) {
@@ -8,7 +12,7 @@
     // effectCount can be positive or negative
     // Cannot target cards
     public override bool IsValid() {
-        return (id >= 0 && effectCount != 0 && fighter != null);
+        return (Id >= 0 && effectCount != 0 && fighter != null);
     }
 
     public override void ResolveEffect() {

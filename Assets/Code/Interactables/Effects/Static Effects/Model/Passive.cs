@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
+[Serializable]
 public abstract class Passive : StaticEffect {
     // This StaticEffect child class deals specifically with effects that wouldn't be attached to one specific entity
     // Effects that do things unrelated to characters (e.g. drawing cards, reducing card costs), etc.
@@ -20,6 +22,6 @@ public abstract class Passive : StaticEffect {
         DeactivateTriggers();
 
         // Then, remove the effect from the StaticEffectController
-        StaticEffectController.Instance.RemovePassive(id);
+        StaticEffectController.Instance.RemovePassive(Id);
     }
 }

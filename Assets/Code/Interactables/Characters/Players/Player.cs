@@ -21,6 +21,8 @@ public class Player : Fighter {
     // Visual component of the slots
     private GameObject slotPrefab;
 
+    public readonly PlayerCharacter type;
+
     // Since there probably won't be many player characters, we'll use an enum for setup
     public enum PlayerCharacter {
         NECROMANCER
@@ -50,13 +52,30 @@ public class Player : Fighter {
         SlotsValue = slotsValue;
     }
 
+    // Copy constructor for transferring data between scenes/levels
+    public Player(Player player) : base(player.name, Fighter.FighterType.PLAYER, player.AttackValue, player.AttackTimes, true, player.MaxLife, player.LifeValue) {
+        slotPrefab = VisualController.Instance.GetPrefab("SlotPrefab");
+        MaxWill = player.MaxWill;
+        WillValue = player.WillValue;
+        HasSlots = player.HasSlots;
+        MaxSlots = player.MaxSlots;
+        type = player.type;
+        switch (player.type) {
+            case Player.PlayerCharacter.NECROMANCER:
+            default:
+                prefab = VisualController.Instance.GetPrefab("NecromancerPrefab");
+                SlotsValue = 3;
+                break;
+        }
+    }
+
     #region Visual Methods
 
     public override void CreateVisual() {
         // Spawn an object to view the player on screen
         // Not using the ObjectPooler as there is only one player character
         GameObject playerVisual = GameObject.Instantiate(prefab, new Vector3(0, 0, -10), Quaternion.identity);
-        display = new PlayerView(playerVisual, id, slotPrefab, SlotsValue);
+        display = new PlayerView(playerVisual, Id, slotPrefab, SlotsValue);
         UpdateVisual();
     }
 
@@ -66,6 +85,10 @@ public class Player : Fighter {
 
     public override void SetVisualOutline(Color color) {
         display.SetVisualOutline(color);
+    }
+
+    public override void SetVisualScale(Vector3 scale) {
+        display.SetVisualScale(scale);
     }
 
     public override void ClearVisual() {

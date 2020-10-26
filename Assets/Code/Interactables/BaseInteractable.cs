@@ -1,8 +1,12 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
+[Serializable]
 public abstract class BaseInteractable {
+    public int Id { get { return id; } }
+
     public readonly string name;
-    public readonly int id;
+    private int id;
     protected readonly string description;
 
     public BaseInteractable(string name, string description) {
@@ -17,6 +21,10 @@ public abstract class BaseInteractable {
         this.description = description;
     }
 
+    public void ModifyId(int newId) {
+        this.id = newId;
+    }
+
     public abstract void CreateVisual();
 
     public abstract void UpdateVisual();
@@ -28,4 +36,6 @@ public abstract class BaseInteractable {
     public abstract RectTransform GetVisualRect();
 
     public abstract void SetVisualOutline(Color color);
+
+    public abstract void SetVisualScale(Vector3 scale);
 }

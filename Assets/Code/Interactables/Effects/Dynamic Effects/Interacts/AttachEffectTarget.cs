@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
+[Serializable]
 public class AttachEffectTarget : TargetableDynamicEffect {
     // DynamicEffect that adds the specified AttachedStaticEffect (Status or Modifier) to the target
     AttachedStaticEffect attachedEffect;
@@ -21,7 +22,7 @@ public class AttachEffectTarget : TargetableDynamicEffect {
     }
 
     public override bool IsValid() {
-        return (id >= 0 && effectCount >= 0 && selectedTargets != null && selectedTargets.Count > 0);
+        return (Id >= 0 && effectCount >= 0 && selectedTargets != null && selectedTargets.Count > 0);
     }
 
     public override void ResolveEffect() {

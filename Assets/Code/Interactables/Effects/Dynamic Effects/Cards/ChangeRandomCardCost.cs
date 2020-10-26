@@ -1,11 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
+[Serializable]
 public class ChangeRandomCardCost : DynamicEffect {
     // This dynamic effect reduces the cost of a card in hand by effectCount
     public ChangeRandomCardCost(int effectCount) : base(effectCount) { }
 
     public override bool IsValid() {
-        return (id >= 0 && effectCount != 0);
+        return (Id >= 0 && effectCount != 0);
     }
 
     public override void ResolveEffect() {

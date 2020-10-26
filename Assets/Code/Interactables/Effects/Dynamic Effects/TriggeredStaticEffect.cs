@@ -1,6 +1,8 @@
 ﻿public class TriggeredStaticEffect : DynamicEffect {
     // This is a generic DynamicEffect class for encapsulating triggered StaticEffects and working them into the DynamicEffect queue
     // When a StaticEffect is triggered, a new TriggeredStaticEffect should be instantiated and passed to the DynamicEffectController
+    // IMPORTANT: this class is not serializable because it requires objects to be instantiated
+    // E.G.: only use programmatically at runtime
 
     // The trigger object holds a reference to the effect that should be operated on
     Trigger trigger;
@@ -10,7 +12,7 @@
     }
 
     public override bool IsValid() {
-        return (id >= 0 && effectCount != 0 && trigger != null && trigger.effect != null);
+        return (Id >= 0 && effectCount != 0 && trigger != null && trigger.effect != null);
     }
 
     public override void ResolveEffect() {

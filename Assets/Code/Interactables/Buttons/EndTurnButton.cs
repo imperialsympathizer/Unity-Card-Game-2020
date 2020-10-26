@@ -11,6 +11,6 @@ public class EndTurnButton : MonoBehaviour, IPointerClickHandler {
     public void OnPointerClick(PointerEventData eventData) {
         // Fires the event when the end turn button is clicked
         // Debug.Log("button pressed");
-        OnEndTurnClicked.Invoke();
+        OnEndTurnClicked?.Invoke();
     }
 }

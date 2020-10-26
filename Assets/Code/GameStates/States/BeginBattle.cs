@@ -11,10 +11,10 @@ public class BeginBattle : State {
 
         OnBeginBattle?.Invoke();
 
-        CheckGameConditions();
-
-        // After completion, change state to BeginTurn
-        TurnSystem.SetState(new BeginTurn(TurnSystem));
+        if (!CheckGameConditions()) {
+            // After completion, change state to BeginTurn
+            TurnSystem.SetState(new BeginTurn(TurnSystem));
+        }
         yield break;
     }
 }

@@ -14,7 +14,7 @@ public static class ObjectPooler {
     /// The Pool class represents the pool for a particular prefab.
     /// </summary>
     class Pool {
-        // We append an id to the name of anything we instantiate. This is purely cosmetic.
+        // We append an Id to the name of anything we instantiate. This is purely cosmetic.
         int nextId = 1;
 
         // The structure containing our inactive objects.

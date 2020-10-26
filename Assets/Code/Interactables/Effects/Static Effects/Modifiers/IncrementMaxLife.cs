@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
+[Serializable]
 public class IncrementMaxLife : Modifier {
     // Modifier for incrementing character max life
     // effectCount: The amount to modify the value by whenever triggered (can be positive or negative)

@@ -20,7 +20,7 @@ public class ElementController : BaseController {
     public static event Action<Dictionary<Element.ElementType, int>> OnTotalElementUpdate;
     public static event Action<List<Element>> OnTurnElementUpdate;
 
-    protected override bool Initialize() {
+    protected override bool Initialize(bool reinitialize) {
         Instance = this;
         // CardManager and VisualController need to be initialized
         if (CardManager.Instance != null && CardManager.Instance.Initialized &&
@@ -30,14 +30,16 @@ public class ElementController : BaseController {
             totalElements = new Dictionary<Element.ElementType, int>();
             turnElements = new Dictionary<Element.ElementType, int>();
 
-            elementImages = new Dictionary<Element.ElementType, Sprite>();
-            elementImages.Add(Element.ElementType.AIR, VisualController.Instance.GetImage(Element.GetElementString(Element.ElementType.AIR)));
-            elementImages.Add(Element.ElementType.EARTH, VisualController.Instance.GetImage(Element.GetElementString(Element.ElementType.EARTH)));
-            elementImages.Add(Element.ElementType.FIRE, VisualController.Instance.GetImage(Element.GetElementString(Element.ElementType.FIRE)));
-            elementImages.Add(Element.ElementType.WATER, VisualController.Instance.GetImage(Element.GetElementString(Element.ElementType.WATER)));
-            elementImages.Add(Element.ElementType.LIFE, VisualController.Instance.GetImage(Element.GetElementString(Element.ElementType.LIFE)));
-            elementImages.Add(Element.ElementType.DEATH, VisualController.Instance.GetImage(Element.GetElementString(Element.ElementType.DEATH)));
-            elementImages.Add(Element.ElementType.ARTIFICE, VisualController.Instance.GetImage(Element.GetElementString(Element.ElementType.ARTIFICE)));
+            if (!reinitialize) {
+                elementImages = new Dictionary<Element.ElementType, Sprite>();
+                elementImages.Add(Element.ElementType.AIR, VisualController.Instance.GetImage(Element.GetElementString(Element.ElementType.AIR)));
+                elementImages.Add(Element.ElementType.EARTH, VisualController.Instance.GetImage(Element.GetElementString(Element.ElementType.EARTH)));
+                elementImages.Add(Element.ElementType.FIRE, VisualController.Instance.GetImage(Element.GetElementString(Element.ElementType.FIRE)));
+                elementImages.Add(Element.ElementType.WATER, VisualController.Instance.GetImage(Element.GetElementString(Element.ElementType.WATER)));
+                elementImages.Add(Element.ElementType.LIFE, VisualController.Instance.GetImage(Element.GetElementString(Element.ElementType.LIFE)));
+                elementImages.Add(Element.ElementType.DEATH, VisualController.Instance.GetImage(Element.GetElementString(Element.ElementType.DEATH)));
+                elementImages.Add(Element.ElementType.ARTIFICE, VisualController.Instance.GetImage(Element.GetElementString(Element.ElementType.ARTIFICE)));
+            }
 
             ResetTotalElements();
 
@@ -109,7 +111,7 @@ public class ElementController : BaseController {
 
     public void ResetTotalElements() {
         totalElements.Clear();
-        foreach (Card card in CardManager.Instance.GetRunDeckCards()) {
+        foreach (Card card in CardManager.Instance.GetRunDeckList()) {
             foreach (Element element in card.GetOrderedElements()) {
                 if (totalElements.TryGetValue(element.type, out int currentValue)) {
                     totalElements[element.type] = currentValue + element.count;

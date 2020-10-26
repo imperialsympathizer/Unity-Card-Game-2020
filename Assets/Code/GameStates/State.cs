@@ -11,7 +11,7 @@ public abstract class State {
         yield break;
     }
 
-    public void CheckGameConditions() {
-        TurnSystem.CheckGameConditions();
+    public bool CheckGameConditions() {
+        return TurnSystem.CheckGameConditions();
     }
 }
