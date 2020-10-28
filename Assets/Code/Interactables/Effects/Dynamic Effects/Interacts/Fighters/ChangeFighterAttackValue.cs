@@ -17,7 +17,7 @@ public class ChangeFighterAttackValue : DynamicEffect {
 
     public override void ResolveEffect() {
         fighter.UpdateAttackValue(effectCount);
-        fighter.UpdateVisual();
+        // fighter.UpdateVisual();
 
         // After resolving effects, remove event listener then fire OnEffectComplete
         DynamicEffectController.OnEffectBegin -= ResolveEffect;

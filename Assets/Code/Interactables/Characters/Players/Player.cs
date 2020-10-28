@@ -75,7 +75,7 @@ public class Player : Fighter {
         // Spawn an object to view the player on screen
         // Not using the ObjectPooler as there is only one player character
         GameObject playerVisual = GameObject.Instantiate(prefab, new Vector3(0, 0, -10), Quaternion.identity);
-        display = new PlayerView(playerVisual, Id, slotPrefab, SlotsValue);
+        display = new PlayerView(playerVisual, this, slotPrefab, SlotsValue);
         UpdateVisual();
     }
 
@@ -97,10 +97,10 @@ public class Player : Fighter {
         }
     }
 
-    public override void UpdateVisual() {
+    protected override void UpdateVisual() {
         display.SetActive(false);
-        display.SetAttack(AttackValue);
-        display.SetAttackTimes(AttackValue, AttackTimes);
+        //display.SetAttack(AttackValue);
+        //display.SetAttackTimes(AttackValue, AttackTimes);
         display.SetLife(true, LifeValue, MaxLife);
         display.SetWill(WillValue, MaxWill);
         display.SetVigor(VigorValue, MaxLife);
@@ -171,10 +171,10 @@ public class Player : Fighter {
     public new void ReceiveAttack(Fighter attacker) {
         // Invoke the OnAttack event before dealing damage
         // Allows for buffs on attack triggers before damage is dealt
-        OnAttack?.Invoke(attacker, this);
+        InvokeOnAttack(attacker, this);
         UpdateLifeValue(-attacker.AttackValue, false);
         // Invoke damage from attack event
-        OnDamageAttack?.Invoke(attacker, this, attacker.AttackValue, LifeValue);
+        InvokeOnDamageFromAttack(attacker, this, attacker.AttackValue, LifeValue);
     }
 
     public override void PerformAttack() {

@@ -151,7 +151,7 @@ public class SummonController : BaseController {
                 summonDictionary.Remove(defender.Id);
             }
             else {
-                defender.UpdateVisual();
+                // defender.UpdateVisual();
                 // Update the summon objects in the list and dictionary
                 summonDictionary[defender.Id] = defender;
             }

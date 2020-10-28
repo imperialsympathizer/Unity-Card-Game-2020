@@ -4,11 +4,11 @@ using System.Collections.Generic;
 [Serializable]
 public class OnDamageAttack : CombatTrigger {
     public OnDamageAttack(List<TriggerAction> triggerActions) : base(triggerActions) {
-        Fighter.OnDamageAttack += OnEventTriggered;
+        Fighter.OnDamageFromAttack += OnEventTriggered;
     }
 
     public override void DeactivateTrigger() {
-        Fighter.OnDamageAttack -= OnEventTriggered;
+        Fighter.OnDamageFromAttack -= OnEventTriggered;
     }
 
     private void OnEventTriggered(Fighter attacker, Fighter defender, int damage, int lifeResult) {

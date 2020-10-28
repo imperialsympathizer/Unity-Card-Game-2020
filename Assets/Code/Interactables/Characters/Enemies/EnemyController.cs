@@ -128,7 +128,7 @@ public class EnemyController : BaseController {
                 enemyDictionary.Remove(enemyId);
             }
             else {
-                defender.UpdateVisual();
+                // defender.UpdateVisual();
                 // Update the enemy objects in the list and dictionary
                 enemyDictionary[defender.Id] = defender;
             }

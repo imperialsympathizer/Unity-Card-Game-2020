@@ -35,7 +35,7 @@ public abstract class BaseInteractable {
 
     public abstract void CreateVisual();
 
-    public abstract void UpdateVisual();
+    protected abstract void UpdateVisual();
 
     public abstract void EnableVisual(bool enable);
 

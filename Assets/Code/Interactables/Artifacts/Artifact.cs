@@ -107,7 +107,7 @@ public class Artifact : BaseInteractable {
         // TODO
     }
 
-    public override void UpdateVisual() {
+    protected override void UpdateVisual() {
         display.HideTooltip();
         display.UpdateElementCounts(elementsRequired);
         display.DisplayTooltip();

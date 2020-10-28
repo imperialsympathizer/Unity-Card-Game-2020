@@ -10,6 +10,7 @@ public class PlayerView : FighterView {
     protected RectTransform lifeIcon;
     protected RectTransform vigorIcon;
 
+    // TODO: global variable
     private readonly int willIconSize = 280;
     private readonly int lifeIconSize = 290;
     private readonly int vigorIconSize = 270;
@@ -18,17 +19,13 @@ public class PlayerView : FighterView {
     private List<GameObject> slots = new List<GameObject>();
     private GameObject slotPrefab;
 
-    public PlayerView(GameObject player, int id, GameObject slotPrefab, int startSlots) : base(player, id, Fighter.FighterType.PLAYER, 0) {
+    public PlayerView(GameObject playerVisual, Player player, GameObject slotPrefab, int startSlots) : base(playerVisual, player, Fighter.FighterType.PLAYER, 0) {
         this.slotPrefab = slotPrefab;
         visual.SetActive(false);
-        sprite = visual.transform.GetChild(0).GetComponent<SpriteRenderer>();
+        sprite = visual.transform.GetChild(0).GetChild(0).GetComponent<SpriteRenderer>();
         VisualController.Instance.ParentToPlayerCanvas(visual.transform);
         visual.transform.localScale = new Vector3(1, 1, 1);
         visual.transform.localPosition = new Vector3(visual.transform.localPosition.x, visual.transform.localPosition.y, -20);
-
-        attackValue = visual.transform.GetChild(2).GetComponent<TextMeshProUGUI>();
-        attackTimes = visual.transform.GetChild(3).GetComponent<TextMeshProUGUI>();
-        xText = visual.transform.GetChild(4).GetComponent<TextMeshProUGUI>();
 
         willIcon = VisualController.Instance.GetWillIcon().transform.GetChild(1).GetComponent<RectTransform>();
         lifeIcon = VisualController.Instance.GetLifeIcon().transform.GetChild(1).GetComponent<RectTransform>();

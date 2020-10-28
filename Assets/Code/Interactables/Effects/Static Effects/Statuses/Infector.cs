@@ -11,7 +11,7 @@ public class Infector : Status {
         base(
         effectCount,
         new List<Trigger> { // List of triggers for the effect
-            new OnDamageAttack(new List<Trigger.TriggerAction> { // Subscribe to the OnDamageAttack trigger
+            new OnDamageAttack(new List<Trigger.TriggerAction> { // Subscribe to the OnDamageFromAttack trigger
                 Trigger.TriggerAction.RESOLVE // Execute ResolveEffect() when triggered
             })
         },

@@ -76,10 +76,10 @@
         player.UpdateVigorValue(player.MaxLife - player.VigorValue);
     }
 
-    public void UpdateVisual() {
-        // Updates any visuals that display player data
-        player.UpdateVisual();
-    }
+    //public void UpdateVisual() {
+    //    // Updates any visuals that display player data
+    //    player.UpdateVisual();
+    //}
 
     public Player GetPlayer() {
         return player;
@@ -100,7 +100,7 @@
             // TODO: death animation
         }
 
-        player.UpdateVisual();
+        // player.UpdateVisual();
 
         return true;
     }

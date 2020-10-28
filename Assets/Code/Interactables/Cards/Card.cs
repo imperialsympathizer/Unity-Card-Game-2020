@@ -162,7 +162,7 @@ public class Card : BaseInteractable {
         UpdateVisual();
     }
 
-    public override void UpdateVisual() {
+    protected override void UpdateVisual() {
         display.SetActive(false);
         display.SetName(Id, name);
         display.SetCost(Id, lifeCost);

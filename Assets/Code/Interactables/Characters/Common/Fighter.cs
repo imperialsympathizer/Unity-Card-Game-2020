@@ -4,38 +4,52 @@ public abstract class Fighter : Character {
     // abstract class defining a combatant that has both health and attack
     public readonly FighterType fighterType;
 
-    public int AttackValue { get; private set; }
-    public int AttackTimes { get; private set; }
-    public bool HasLife { get; private set; }
-    public int MaxLife { get; private set; }
-    public int LifeValue { get; private set; }
+    public int AttackValue { get { return attackValue; } }
+    private int attackValue;
+    public int AttackTimes { get { return attackTimes; } }
+    private int attackTimes;
+    public bool HasLife { get { return hasLife; } }
+    private bool hasLife;
+    public int MaxLife { get { return maxLife; } }
+    private int maxLife;
+    public int LifeValue { get { return lifeValue; } }
+    private int lifeValue;
 
-    public static Action<Fighter, Fighter> OnAttack;
-    public static Action<Fighter, Fighter, int, int> OnDamageAttack;
-    public static Action<Fighter, int, int> OnDamageNonAttack;
-    public static Action<Fighter, int, int> OnHeal;
+    public enum FighterType {
+        PLAYER,
+        SUMMON,
+        ENEMY
+    }
+
+    public static event Action<Fighter, Fighter> OnAttack;
+    public static event Action<Fighter, Fighter, int, int> OnDamageFromAttack;
+    public static event Action<Fighter, int, int> OnDamageFromNonAttack;
+    public static event Action<Fighter, int, int> OnHeal;
+    public static event Action<int, int, int> OnAttackChange;
 
     public Fighter(string name, FighterType fighterType, int baseAttack, int baseAttackTimes, bool hasLife = false, int baseMaxLife = 0, int baseLife = 0) : base(name, "") {
         this.fighterType = fighterType;
-        AttackValue = baseAttack;
-        AttackTimes = baseAttackTimes;
-        HasLife = hasLife;
-        MaxLife = baseMaxLife;
-        LifeValue = baseLife;
+        attackValue = baseAttack;
+        attackTimes = baseAttackTimes;
+        this.hasLife = hasLife;
+        maxLife = baseMaxLife;
+        lifeValue = baseLife;
     }
 
     public void UpdateAttackValue(int valueChange) {
         // Add or subtract an value from the current
-        AttackValue += valueChange;
+        attackValue += valueChange;
+        OnAttackChange?.Invoke(Id, attackValue, attackTimes);
     }
 
     public void UpdateAttackTimes(int valueChange) {
-        AttackTimes += valueChange;
+        attackTimes += valueChange;
+        OnAttackChange?.Invoke(Id, attackValue, attackTimes);
     }
 
     public bool UpdateMaxLife(int valueChange) {
-        MaxLife += valueChange;
-        if (LifeValue > MaxLife) {
+        maxLife += valueChange;
+        if (lifeValue > maxLife) {
             return UpdateLifeValue(0, false);
         }
         else {
@@ -46,23 +60,23 @@ public abstract class Fighter : Character {
 
     // Updates life value and returns if the character is considered dead
     public bool UpdateLifeValue(int valueChange, bool triggerEvents = true) {
-        LifeValue += valueChange;
-        if (LifeValue > MaxLife) {
+        lifeValue += valueChange;
+        if (lifeValue > maxLife) {
             // Life value cannot exceed max life
-            LifeValue = MaxLife;
+            lifeValue = maxLife;
         }
         if (valueChange > 0 && triggerEvents) {
-            OnHeal?.Invoke(this, valueChange, LifeValue);
+            OnHeal?.Invoke(this, valueChange, lifeValue);
         }
         else if (valueChange < 0 && triggerEvents) {
-            OnDamageNonAttack?.Invoke(this, valueChange, LifeValue);
+            OnDamageFromNonAttack?.Invoke(this, valueChange, lifeValue);
         }
         UpdateVisual();
         return CheckDeath();
     }
 
     public bool CheckDeath() {
-        if (HasLife && (LifeValue < 1 || MaxLife < 1)) {
+        if (hasLife && (lifeValue < 1 || maxLife < 1)) {
             return true;
         }
         return false;
@@ -72,16 +86,18 @@ public abstract class Fighter : Character {
         // Invoke the OnAttack event before dealing damage
         // Allows for buffs on attack triggers before damage is dealt
         OnAttack?.Invoke(attacker, this);
-        LifeValue -= attacker.AttackValue;
+        UpdateLifeValue(-attacker.AttackValue, false);
         // Invoke damage from attack event
-        OnDamageAttack?.Invoke(attacker, this, attacker.AttackValue, LifeValue);
+        OnDamageFromAttack?.Invoke(attacker, this, attacker.AttackValue, lifeValue);
     }
 
     public abstract void PerformAttack();
 
-    public enum FighterType {
-        PLAYER,
-        SUMMON,
-        ENEMY
+    protected void InvokeOnAttack(Fighter attacker, Fighter defender) {
+        OnAttack?.Invoke(attacker, defender);
+    }
+
+    protected void InvokeOnDamageFromAttack(Fighter attacker, Fighter defender, int attackValue, int resultingLife) {
+        OnDamageFromAttack?.Invoke(attacker, defender, attackValue, resultingLife);
     }
 }

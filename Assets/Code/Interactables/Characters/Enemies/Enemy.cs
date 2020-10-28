@@ -37,14 +37,14 @@ public class Enemy : Fighter {
         // Spawn an object to view the summon on screen
         // Not using the ObjectPooler as there is only one player character
         GameObject enemyVisual = ObjectPooler.Spawn(prefab, new Vector3(0, 0, -10), Quaternion.identity);
-        display = new EnemyView(enemyVisual, Id, 410);
+        display = new EnemyView(enemyVisual, this, 410);
         UpdateVisual();
     }
 
-    public override void UpdateVisual() {
+    protected override void UpdateVisual() {
         display.SetActive(false);
-        display.SetAttack(AttackValue);
-        display.SetAttackTimes(AttackValue, AttackTimes);
+        //display.SetAttack(AttackValue);
+        //display.SetAttackTimes(AttackValue, AttackTimes);
         display.SetMaxLife(MaxLife);
         display.SetLife(HasLife, LifeValue, MaxLife);
         display.SetActive(true);

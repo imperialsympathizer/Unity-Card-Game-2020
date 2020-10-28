@@ -210,7 +210,8 @@ public class CardManager : MonoBehaviour {
             ElementController.Instance.AddTurnElements(playedCard.GetOrderedElements());
 
             // Update visuals on screen
-            PlayerController.Instance.UpdateVisual();
+            // PlayerController.Instance.UpdateVisual();
+            // TODO: fire events for updating, not use a method
             UpdateVisuals();
 
             // Fire card played event

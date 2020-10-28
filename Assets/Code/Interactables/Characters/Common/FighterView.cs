@@ -4,9 +4,7 @@ using UnityEngine;
 public abstract class FighterView : BaseView {
     public readonly Fighter.FighterType fighterType;
 
-    protected TextMeshProUGUI attackValue;
-    protected TextMeshProUGUI xText;
-    protected TextMeshProUGUI attackTimes;
+    protected AttackView attackView;
 
     protected RectTransform healthBar;
     protected TextMeshProUGUI maxLife;
@@ -16,8 +14,10 @@ public abstract class FighterView : BaseView {
 
     protected int healthBarSize;
 
-    public FighterView(GameObject visual, int id, Fighter.FighterType fighterType, int healthBarSize) : base(visual, id) {
+    public FighterView(GameObject visual, Fighter fighter, Fighter.FighterType fighterType, int healthBarSize) : base(visual, fighter.Id) {
         this.fighterType = fighterType;
+        attackView = visual.transform.GetChild(1).GetComponent<AttackView>();
+        attackView.InitializeView(fighter.Id, fighter.AttackValue, fighter.AttackTimes);
         this.healthBarSize = healthBarSize;
     }
 
@@ -27,11 +27,6 @@ public abstract class FighterView : BaseView {
 
     public void SetVisualOutline(Color color) {
         sprite.material.SetColor("_OutlineColor", color);
-    }
-
-    public void SetAttack(int val) {
-        // NumberAnimator.Instance.AnimateNumberChange(this.attackValue, val);
-        this.attackValue.text = val.ToString();
     }
 
     public void SetMaxLife(int val) {
@@ -51,31 +46,6 @@ public abstract class FighterView : BaseView {
         else {
             healthBar.transform.parent.gameObject.SetActive(false);
         }
-    }
-
-    public void SetAttackTimes(int attackVal, int times) {
-        // If the val is 1, disable the x and AttackTimes displays
-        // If val is 0, disable all attack displays
-        if (times == 1) {
-            attackValue.gameObject.SetActive(false);
-            attackTimes.gameObject.SetActive(false);
-            xText.text = attackVal.ToString();
-            // Use the xText display to display attack since it is the box centered over the character
-            // it will be used as the attackValue display unless a character has attackTimes > 1
-        }
-        else if (times == 0) {
-            attackValue.gameObject.SetActive(false);
-            attackTimes.gameObject.SetActive(false);
-            xText.gameObject.SetActive(false);
-        }
-        else {
-            // Make sure to reset the xText
-            xText.text = "x";
-            attackValue.gameObject.SetActive(true);
-            attackTimes.gameObject.SetActive(true);
-            xText.gameObject.SetActive(true);
-        }
-        this.attackTimes.text = times.ToString();
     }
 
     public void SetActive(bool active = true) {
