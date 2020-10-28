@@ -71,6 +71,8 @@ public class CardManager : MonoBehaviour {
             hand = new Hand();
             exile = new Exile();
 
+            deck.Shuffle();
+
             handArea = VisualController.Instance.GetHand().GetComponent<CurvedLayout>();
             deckCount = VisualController.Instance.GetDeckCount().GetComponent<TextMeshProUGUI>();
             discardCount = VisualController.Instance.GetDiscardCount().GetComponent<TextMeshProUGUI>();

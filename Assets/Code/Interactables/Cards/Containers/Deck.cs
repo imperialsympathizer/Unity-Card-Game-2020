@@ -17,8 +17,6 @@ public class Deck : CardStore {
         if (cardSource.TryGetValue("Revitalize", out card) && card != null) {
             AddCard(new Card(card));
         }
-
-        Shuffle();
     }
 
     // Constructor meant for copying the run deck but keeping the same card ids
@@ -27,8 +25,6 @@ public class Deck : CardStore {
         foreach (Card card in deckToCopy.cards) {
             AddCard(new Card(card, true));
         }
-
-        Shuffle();
     }
 
     public Card DrawCard() {
