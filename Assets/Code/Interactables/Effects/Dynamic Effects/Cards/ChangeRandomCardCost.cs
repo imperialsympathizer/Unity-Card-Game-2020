@@ -20,7 +20,7 @@ public class ChangeRandomCardCost : DynamicEffect {
             cards = CardManager.Instance.GetHandCards();
         }
 
-        int randomIndex = RandomNumberGenerator.getRandomIndexFromRange(cards.Count - 1);
+        int randomIndex = RandomNumberGenerator.Instance.GetRandomIntFromRange(cards.Count);
         if (randomIndex >= 0) {
             Card updatedCard = cards[randomIndex];
             updatedCard.UpdateLifeCost(effectCount);

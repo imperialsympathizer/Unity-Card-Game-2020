@@ -6,6 +6,10 @@ public class EndTurn : State {
 
     public static event Action<int> OnEndTurn;
 
+    public static void ClearSubscriptions() {
+        OnEndTurn = null;
+    }
+
     public override IEnumerator Start() {
         // EndTurn removes player agency as EOT effects are resolved
         // Discard player hand -> CheckGameConditions -> Resolve end of turn effects -> CheckGameConditions -> CombatStep

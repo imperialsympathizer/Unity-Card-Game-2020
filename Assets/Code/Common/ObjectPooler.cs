@@ -131,7 +131,7 @@ public static class ObjectPooler {
         }
         else {
             // First, parent unused objects to the GameController to prevent sibling indexing issues with other visuals
-            VisualController.Instance.RemoveFromVisual(obj.transform);
+            VisualController.Instance.ParentToObjectPooler(obj.transform);
             // Then despawn the object
             pm.myPool.Despawn(obj);
         }

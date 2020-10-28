@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,6 +11,10 @@ public class ResourceController : MonoBehaviour {
     private List<BaseController> controllers;
 
     private static int uniqueId = 0;
+
+    public static System.Random rand;
+    private static int seed;
+    private static int sampleCount;
 
     public static Dictionary<string, GameObject> prefabDictionary;
     public static Dictionary<string, Sprite> spriteDictionary;
@@ -24,6 +29,14 @@ public class ResourceController : MonoBehaviour {
         if (Instance == null) {
             Instance = this;
             DontDestroyOnLoad(this.gameObject);
+            seed = (int)DateTime.Now.Ticks;
+            sampleCount = 0;
+            rand = new System.Random(seed);
+            //Debug.Log(rand.Next(10) + " " + rand.Next(10) + " " + rand.NextDouble() + " " + rand.Next(10) + " " + rand.Next(10));
+            //Debug.Log(rand.Next(10) + " " + rand.Next(10) + " " + rand.Next(10) + " " + rand.Next(10) + " " + rand.Next(10));
+            //rand = new System.Random(seed);
+            //Debug.Log(rand.Next(10) + " " + rand.Next(10) + " " + rand.Next(10) + " " + rand.Next(10) + " " + rand.Next(10));
+            //Debug.Log(rand.Next(10) + " " + rand.Next(10) + " " + rand.Next(10) + " " + rand.Next(10) + " " + rand.Next(10));
         }
         else if (Instance != this) {
             // When new scenes are loaded, a new GameController object will be created
@@ -34,6 +47,7 @@ public class ResourceController : MonoBehaviour {
 
     public void Load(bool reinitialize) {
         Loaded = false;
+        
         if (Instance == this) {
             // Instead of doing a full reload of resources, reinitialize them with the required data
             InitializeResources(reinitialize);
@@ -61,6 +75,7 @@ public class ResourceController : MonoBehaviour {
             }
 
             controllers = new List<BaseController> {
+                new RandomNumberGenerator(),
                 new VisualController(),
                 new NumberAnimator(),
                 new PlayerController(),
@@ -116,15 +131,61 @@ public class ResourceController : MonoBehaviour {
         return uniqueId++;
     }
 
-    public void DeloadLevel() {
-        // Store all necessary resources first, then load the next level scene
-        
+    public void Save() {
+        // Store all necessary resources first
         playerCharacter = PlayerController.Instance.GetPlayer();
+        playerCharacter.ClearVisual();
+        // Clear all player statuses
+        
+
         runDeck = CardManager.Instance.GetRunDeck();
+        foreach (Card card in runDeck.GetCards()) {
+            card.ClearVisual();
+        }
+
         runArtifacts = ArtifactController.Instance.GetRunArtifacts();
-        // Reset the unique Id counter and 
+        foreach (Artifact artifact in runArtifacts) {
+            artifact.ClearVisual();
+        }
+
+        rand = RandomNumberGenerator.GetRng();
+        sampleCount = RandomNumberGenerator.GetSampleCount();
+    }
+
+    public void LoadNextLevel() {
+        // Store all necessary resources first
+        Save();
+
+        // Clear all subscriptions
+        ClearAllSubscriptions();
+
+        // Reset the unique Id counter and battleOver 
         uniqueId = 0;
+        TurnSystem.battleOver = false;
         // Load the next level
         LevelLoader.Instance.LoadLevel(LevelLoader.Level.BATTLE);
+    }
+
+    private void ClearAllSubscriptions() {
+        BeginBattle.ClearSubscriptions();
+        BeginTurn.ClearSubscriptions();
+        CombatStep.ClearSubscriptions();
+        EndBattle.ClearSubscriptions();
+        EndTurn.ClearSubscriptions();
+        Artifact.ClearSubscriptions();
+        BaseInteractable.ClearSubscriptions();
+        EndTurnButton.ClearSubscriptions();
+        RewardsButton.ClearSubscriptions();
+        TargetsSelectedButton.ClearSubscriptions();
+        Card.ClearSubscriptions();
+        CardManager.ClearSubscriptions();
+        CardControl.ClearSubscriptions();
+        CardSelect.ClearSubscriptions();
+        AttackAnimator.ClearSubscriptions();
+        BaseEffect.ClearSubscriptions();
+        DynamicEffectController.ClearSubscriptions();
+        DynamicEffect.ClearSubscriptions();
+        TargetSelector.ClearSubscriptions();
+        ElementController.ClearSubscriptions();
     }
 }

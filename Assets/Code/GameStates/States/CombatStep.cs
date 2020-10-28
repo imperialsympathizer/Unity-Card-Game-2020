@@ -12,6 +12,11 @@ public class CombatStep : State {
     private bool combatOver = false;
     private bool animationComplete = false;
 
+    public static void ClearSubscriptions() {
+        OnBeginCombat = null;
+        OnEndCombat = null;
+    }
+
     public override IEnumerator Start() {
         // Combat occurs between player turns, after EndTurn and before BeginTurn (except on turn 1)
         // Every CombatStep, Enemies attack -> CheckGameConditions -> Summons attack -> CheckGameConditions -> player attacks -> CheckGameConditions

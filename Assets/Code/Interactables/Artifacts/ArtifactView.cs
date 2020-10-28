@@ -63,4 +63,8 @@ public class ArtifactView : BaseView {
             }
         }
     }
+
+    public void Despawn() {
+        ObjectPooler.Despawn(visual);
+    }
 }

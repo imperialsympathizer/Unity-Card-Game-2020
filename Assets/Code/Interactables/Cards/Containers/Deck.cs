@@ -2,7 +2,6 @@
 
 public class Deck : CardStore {
     public Deck(Dictionary<string, Card> cardSource) : base() {
-
         Card card;
         if (cardSource.TryGetValue("Awaken the Bones", out card) && card != null) {
             for (int j = 0; j < 8; j++) {
@@ -28,6 +27,8 @@ public class Deck : CardStore {
         foreach (Card card in deckToCopy.cards) {
             AddCard(new Card(card, true));
         }
+
+        Shuffle();
     }
 
     public Card DrawCard() {

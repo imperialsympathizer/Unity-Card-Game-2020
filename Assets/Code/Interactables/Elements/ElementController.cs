@@ -20,6 +20,11 @@ public class ElementController : BaseController {
     public static event Action<Dictionary<Element.ElementType, int>> OnTotalElementUpdate;
     public static event Action<List<Element>> OnTurnElementUpdate;
 
+    public static void ClearSubscriptions() {
+        OnTotalElementUpdate = null;
+        OnTurnElementUpdate = null;
+    }
+
     protected override bool Initialize(bool reinitialize) {
         Instance = this;
         // CardManager and VisualController need to be initialized

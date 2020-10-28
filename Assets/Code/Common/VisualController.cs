@@ -23,6 +23,8 @@ public class VisualController : BaseController {
     private GameObject hand;
     private GameObject artifacts;
 
+    private GameObject objectPooler;
+
     // Nothing should ever be parented to this, it is just a rect for checking if cards have been played
     private GameObject playZone;
 
@@ -49,6 +51,9 @@ public class VisualController : BaseController {
 
         // Game controller
         gameController = GameObject.Find("GameController");
+
+        // Object Pooler
+        objectPooler = GameObject.Find("ObjectPooler");
 
         // Display canvas
         displayCanvas = GameObject.Find("Display");
@@ -135,6 +140,10 @@ public class VisualController : BaseController {
 
     public void ParentToArtifactCanvas(Transform transform) {
         transform.SetParent(artifacts.transform, true);
+    }
+
+    public void ParentToObjectPooler(Transform transform) {
+        transform.SetParent(objectPooler.transform, true);
     }
 
     // This is the bottom layer object (therefore is at the front of the screen)

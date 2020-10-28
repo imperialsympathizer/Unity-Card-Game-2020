@@ -54,8 +54,8 @@ public class TurnSystem : StateMachine {
             }
 
             // TODO: remove, this is being used for testing purposes
-            battleOver = true;
-            victory = true;
+            //battleOver = true;
+            //victory = true;
         }
 
         if (battleOver) {

@@ -132,7 +132,7 @@ public class SummonController : BaseController {
             }
         }
 
-        return summonsWithLife[RandomNumberGenerator.getRandomIndexFromRange(summonsWithLife.Count - 1)];
+        return summonsWithLife[RandomNumberGenerator.Instance.GetRandomIntFromRange(summonsWithLife.Count)];
     }
     #endregion
 

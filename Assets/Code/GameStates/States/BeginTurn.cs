@@ -6,6 +6,10 @@ public class BeginTurn : State {
 
     public static event Action<int> OnBeginTurn;
 
+    public static void ClearSubscriptions() {
+        OnBeginTurn = null;
+    }
+
     public override IEnumerator Start() {
         // At the start of every turn, draw 5 cards
         // Then, resolve any over-time effects

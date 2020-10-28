@@ -9,6 +9,14 @@ public abstract class BaseInteractable {
     private int id;
     protected readonly string description;
 
+    public static event Action<int, string> OnInteractableNameChange;
+    public static event Action<int, string> OnInteractableDescriptionChange;
+
+    public static void ClearSubscriptions() {
+        OnInteractableNameChange = null;
+        OnInteractableDescriptionChange = null;
+    }
+
     public BaseInteractable(string name, string description) {
         this.id = ResourceController.GenerateId();
         this.name = name;

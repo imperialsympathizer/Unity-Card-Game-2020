@@ -25,6 +25,10 @@ public class TargetSelector : MonoBehaviour, IPointerClickHandler {
 
     public static event Action<List<Tuple<int, Target>>> OnTargetingComplete;
 
+    public static void ClearSubscriptions() {
+        OnTargetingComplete = null;
+    }
+
     private void Awake() {
         Instance = this;
         Selecting = false;

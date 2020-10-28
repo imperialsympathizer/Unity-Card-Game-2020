@@ -12,6 +12,10 @@ public abstract class BaseEffect {
     // This event should be fired when updating effectCount value (int is value change)
     public static event Action<int> OnEffectCountChange;
 
+    public static void ClearSubscriptions() {
+        OnEffectCountChange = null;
+    }
+
     public BaseEffect(int effectCount) {
         this.effectCount = effectCount;
         id = ResourceController.GenerateId();

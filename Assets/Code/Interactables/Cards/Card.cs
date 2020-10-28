@@ -21,6 +21,14 @@ public class Card : BaseInteractable {
     // Visual component of the card, stored within its own View class
     private CardView display;
 
+    public static event Action<int, int> OnCardCostChange;
+    public static event Action<int, List<Element>> OnElementsChange;
+
+    public static new void ClearSubscriptions() {
+        OnCardCostChange = null;
+        OnElementsChange = null;
+    }
+
     // Constructor that creates the object, but does not instantiate visuals.
     // Those can be called as needed by the CreateVisual() function
     public Card(string name, string description, int cost, Rarity rarity, int uses, List<DynamicEffect> effects, List<Element> elements) : base(name, description) {
@@ -71,7 +79,7 @@ public class Card : BaseInteractable {
         if (lifeCost < 0) {
             lifeCost = 0;
         }
-        UpdateVisual();
+        OnCardCostChange?.Invoke(Id, lifeCost);
     }
 
     public void UpdateElements(Element.ElementType type, int count) {
@@ -109,6 +117,7 @@ public class Card : BaseInteractable {
                 ElementTotal += element.count;
             }
         }
+        OnElementsChange?.Invoke(Id, GetOrderedElements());
     }
 
     public List<Element> GetOrderedElements() {
@@ -155,10 +164,10 @@ public class Card : BaseInteractable {
 
     public override void UpdateVisual() {
         display.SetActive(false);
-        display.SetName(name);
-        display.SetCost(lifeCost);
-        display.SetDescription(description);
-        display.SetElements(GetOrderedElements());
+        display.SetName(Id, name);
+        display.SetCost(Id, lifeCost);
+        display.SetDescription(Id, description);
+        display.SetElements(Id, GetOrderedElements());
         display.SetActive(true);
     }
 

@@ -10,6 +10,10 @@ public class EndBattle : State {
 
     public static event Action<int, bool> OnEndBattle;
 
+    public static void ClearSubscriptions() {
+        OnEndBattle = null;
+    }
+
     public override IEnumerator Start() {
         // EndBattle is only triggered when all enemies are defeated, the player is defeated, or another trigger which would cause a win/loss
         // This state can only be reached by the CheckGameConditions state

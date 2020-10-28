@@ -16,6 +16,10 @@ public class Artifact : BaseInteractable {
 
     public static event Action<int> OnArtifactActivate;
 
+    public static void ClearSubscriptions() {
+        OnArtifactActivate = null;
+    }
+
     // This constructor is to be exclusively used for creating Artifact data, not Artifact objects
     // If an Artifact object needs to be created, use the copy constructor
     public Artifact(string name,
@@ -71,7 +75,7 @@ public class Artifact : BaseInteractable {
     }
 
     public override void ClearVisual() {
-        throw new System.NotImplementedException();
+        display.Despawn();
     }
 
     public override void CreateVisual() {

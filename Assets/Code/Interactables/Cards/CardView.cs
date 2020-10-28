@@ -37,6 +37,12 @@ public class CardView : BaseView {
         control.cardId = id;
         control.hand = VisualController.Instance.GetHand().GetComponent<CurvedLayout>();
         visual.SetActive(true);
+
+        // Subscribe to events that change visuals of the card
+        BaseInteractable.OnInteractableNameChange += SetName;
+        BaseInteractable.OnInteractableDescriptionChange += SetDescription;
+        Card.OnCardCostChange += SetCost;
+        Card.OnElementsChange += SetElements;
     }
 
     // This constructor is for creating decorative card visuals
@@ -78,20 +84,26 @@ public class CardView : BaseView {
         cardImage.material.SetColor("_OutlineColor", color);
     }
 
-    public void SetName(string name) {
-        this.cardName.text = name;
+    public void SetName(int id, string name) {
+        if (id == this.Id) {
+            this.cardName.text = name;
+        }
     }
 
-    public void SetDescription(string description) {
-        this.description.text = description;
+    public void SetDescription(int id, string description) {
+        if (id == this.Id) {
+            this.description.text = description;
+        }
     }
 
-    public void SetCost(int cost) {
-        this.cost.text = cost.ToString();
-        // NumberAnimator.AnimateNumberChange(this.cost, cost);
+    public void SetCost(int id, int cost) {
+        if (id == this.Id) {
+            this.cost.text = cost.ToString();
+            // NumberAnimator.AnimateNumberChange(this.cost, cost);
+        }
     }
 
-    public void SetElements(List<Element> elementList) {
+    public void SetElements(int id, List<Element> elementList) {
         int childIndex = 0;
         foreach (Element element in elementList) {
             for (int i = 0; i < element.count; i++) {
@@ -115,6 +127,11 @@ public class CardView : BaseView {
     }
 
     public void Despawn() {
+        // Unsubscribe from events that change visuals of the card
+        BaseInteractable.OnInteractableNameChange -= SetName;
+        BaseInteractable.OnInteractableDescriptionChange -= SetDescription;
+        Card.OnCardCostChange -= SetCost;
+        Card.OnElementsChange -= SetElements;
         // Despawn element icons first
         foreach (GameObject icon in elements) {
             ObjectPooler.Despawn(icon);

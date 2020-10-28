@@ -109,7 +109,7 @@ public class EnemyController : BaseController {
             }
         }
 
-        return enemiesWithLife[RandomNumberGenerator.getRandomIndexFromRange(enemiesWithLife.Count - 1)];
+        return enemiesWithLife[RandomNumberGenerator.Instance.GetRandomIntFromRange(enemiesWithLife.Count)];
     }
     #endregion
 

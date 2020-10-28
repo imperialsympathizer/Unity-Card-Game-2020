@@ -9,6 +9,10 @@ public abstract class DynamicEffect : BaseEffect {
     // TODO: implement animations for effects so that they can be paired together
     public static event Action OnEffectComplete;
 
+    public static new void ClearSubscriptions() {
+        OnEffectComplete = null;
+    }
+
     public DynamicEffect(int effectCount) : base(effectCount) {
     }
 

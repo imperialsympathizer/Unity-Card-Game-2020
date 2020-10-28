@@ -55,6 +55,7 @@ public class GameEndManager : BaseController {
             cardRewardCanvas = endDisplay.transform.GetChild(2).gameObject;
 
             // Create card rewards
+            rewardCards.Clear();
             for (int i = 0; i < 3; i++) {
                 Card rewardCard = new Card(CardManager.Instance.GenerateRewardCard(rewardCards.Select(kv => kv.Value).ToDictionary(card => card.name)));
                 rewardCard.CreateDudVisual(cardRewardCanvas.transform, 1.3f);
@@ -92,7 +93,7 @@ public class GameEndManager : BaseController {
         // Add the card to the run deck and load the next battle
         if (rewardCards.TryGetValue(cardId, out Card chosenCard)) {
             CardManager.Instance.AddCardToRunDeck(chosenCard);
-            ResourceController.Instance.DeloadLevel();
+            ResourceController.Instance.LoadNextLevel();
         }
     }
 }

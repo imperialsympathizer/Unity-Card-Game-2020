@@ -12,6 +12,10 @@ public class AttackAnimator : BaseController {
 
     public static event Action OnAnimateComplete;
 
+    public static void ClearSubscriptions() {
+        OnAnimateComplete = null;
+    }
+
     protected override bool Initialize(bool reinitialize) {
         Instance = this;
 

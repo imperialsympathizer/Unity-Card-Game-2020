@@ -11,10 +11,6 @@ public class CardManager : MonoBehaviour {
     // It also triggers visuals on cards (e.g. they appear on screen) when relevant
     public static CardManager Instance;
 
-    public static event Action<Card> OnCardDraw;
-    public static event Action<Card> OnCardPlay;
-    public static event Action<Card> OnDiscard;
-
     // The library of all cards
     private CardSource cardSource;
 
@@ -37,6 +33,17 @@ public class CardManager : MonoBehaviour {
     private List<Tuple<int, Target>> effectTargets = new List<Tuple<int, Target>>();
 
     public bool Initialized { get; private set; } = false;
+
+
+    public static event Action<Card> OnCardDraw;
+    public static event Action<Card> OnCardPlay;
+    public static event Action<Card> OnDiscard;
+
+    public static void ClearSubscriptions() {
+        OnCardDraw = null;
+        OnCardPlay = null;
+        OnDiscard = null;
+    }
 
     private void Awake() {
         Instance = this;
@@ -82,7 +89,7 @@ public class CardManager : MonoBehaviour {
         // Filter the list of possible card rewards (specific rarity, no overlapping names with cardsNot)
         Card[] possibleCards = cardSource.allCards.Select(kv => kv.Value).Where(card => (card.rarity == rarity && !cardsNot.ContainsKey(card.name))).ToArray();
         // Return the card at a random index in possibleCards
-        return possibleCards[RandomNumberGenerator.getRandomIndexFromRange(possibleCards.Length - 1)];
+        return possibleCards[RandomNumberGenerator.Instance.GetRandomIntFromRange(possibleCards.Length)];
     }
 
     public List<Card> GetHandCards() {

@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-public class RewardController : BaseController {
+﻿public class RewardController : BaseController {
     public static RewardController Instance;
 
     private float uncommonCardChance = 0;
@@ -21,7 +19,7 @@ public class RewardController : BaseController {
 
     public Rarity GenerateCardRarity() {
         Rarity rarity = Rarity.COMMON;
-        float randNum = Random.Range(0f, 1f);
+        float randNum = RandomNumberGenerator.Instance.GetRandomFloat();
         if (randNum >= 1f - rareCardChance - cardDesireSensor) {
             rarity = Rarity.RARE;
         }
@@ -42,7 +40,7 @@ public class RewardController : BaseController {
 
     public Rarity GenerateArtifactRarity() {
         Rarity rarity = Rarity.COMMON;
-        float randNum = Random.Range(0f, 1f);
+        float randNum = RandomNumberGenerator.Instance.GetRandomFloat();
         if (randNum >= 1f - rareArtifactChance - artifactDesireSensor) {
             rarity = Rarity.RARE;
         }

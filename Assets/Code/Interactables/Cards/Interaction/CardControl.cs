@@ -19,6 +19,10 @@ public class CardControl : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     public static event Action<int> OnCardPlayed;
 
+    public static void ClearSubscriptions() {
+        OnCardPlayed = null;
+    }
+
     public void OnPointerEnter(PointerEventData eventData) {
         if (!dragging) {
             zooming = true;
