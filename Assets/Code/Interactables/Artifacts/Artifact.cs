@@ -16,7 +16,7 @@ public class Artifact : BaseInteractable {
 
     public static event Action<int> OnArtifactActivate;
 
-    public static void ClearSubscriptions() {
+    public static new void ClearSubscriptions() {
         OnArtifactActivate = null;
     }
 

@@ -167,25 +167,25 @@ public class ResourceController : MonoBehaviour {
     }
 
     private void ClearAllSubscriptions() {
-        //BeginBattle.ClearSubscriptions();
-        //BeginTurn.ClearSubscriptions();
-        //CombatStep.ClearSubscriptions();
-        //EndBattle.ClearSubscriptions();
-        //EndTurn.ClearSubscriptions();
-        //Artifact.ClearSubscriptions();
-        //BaseInteractable.ClearSubscriptions();
-        //EndTurnButton.ClearSubscriptions();
-        //RewardsButton.ClearSubscriptions();
-        //TargetsSelectedButton.ClearSubscriptions();
-        //Card.ClearSubscriptions();
-        //CardManager.ClearSubscriptions();
-        //CardControl.ClearSubscriptions();
-        //CardSelect.ClearSubscriptions();
-        //AttackAnimator.ClearSubscriptions();
-        //BaseEffect.ClearSubscriptions();
-        //DynamicEffectController.ClearSubscriptions();
-        //DynamicEffect.ClearSubscriptions();
-        //TargetSelector.ClearSubscriptions();
-        //ElementController.ClearSubscriptions();
+        BeginBattle.ClearSubscriptions();
+        BeginTurn.ClearSubscriptions();
+        CombatStep.ClearSubscriptions();
+        EndBattle.ClearSubscriptions();
+        EndTurn.ClearSubscriptions();
+        Artifact.ClearSubscriptions();
+        BaseInteractable.ClearSubscriptions();
+        EndTurnButton.ClearSubscriptions();
+        RewardsButton.ClearSubscriptions();
+        TargetsSelectedButton.ClearSubscriptions();
+        Card.ClearSubscriptions();
+        CardManager.ClearSubscriptions();
+        CardControl.ClearSubscriptions();
+        CardSelect.ClearSubscriptions();
+        AttackAnimator.ClearSubscriptions();
+        BaseEffect.ClearSubscriptions();
+        DynamicEffectController.ClearSubscriptions();
+        DynamicEffect.ClearSubscriptions();
+        TargetSelector.ClearSubscriptions();
+        ElementController.ClearSubscriptions();
     }
 }
