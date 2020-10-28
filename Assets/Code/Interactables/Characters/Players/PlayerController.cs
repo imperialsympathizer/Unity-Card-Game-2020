@@ -3,11 +3,17 @@
 
     private Player player;
 
-    protected override bool Initialize() {
+    protected override bool Initialize(bool reinitialize) {
         Instance = this;
         if (VisualController.Instance != null && VisualController.Instance.Initialized &&
             NumberAnimator.Instance != null && NumberAnimator.Instance.Initialized) {
-            CreatePlayer(Player.PlayerCharacter.NECROMANCER);
+            if (reinitialize && ResourceController.playerCharacter != null) {
+                player = new Player(ResourceController.playerCharacter);
+                player.CreateVisual();
+            }
+            else {
+                CreatePlayer(Player.PlayerCharacter.NECROMANCER);
+            }
 
             return true;
         }

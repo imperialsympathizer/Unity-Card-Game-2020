@@ -13,7 +13,7 @@ public class Hand {
 
     public void UpdateCard(Card card) {
         for (int i = 0; i < cards.Count; i++) {
-            if (cards[i].id == card.id) {
+            if (cards[i].Id == card.Id) {
                 cards[i] = card;
                 break;
             }
@@ -24,7 +24,7 @@ public class Hand {
         Card removed = null;
         for (int i = 0; i < cards.Count; i++) {
             removed = cards[i];
-            if (removed.id == cardId) {
+            if (removed.Id == cardId) {
                 cards.RemoveAt(i);
                 break;
             }
@@ -38,7 +38,7 @@ public class Hand {
 
     public Card GetCard(int cardId) {
         for (int i = 0; i < cards.Count; i++) {
-            if (cards[i].id == cardId) {
+            if (cards[i].Id == cardId) {
                 return cards[i];
             }
         }

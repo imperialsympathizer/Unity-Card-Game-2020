@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,19 +19,15 @@ public class CardView : BaseView {
     public CardView(GameObject visual, int id) : base(visual, id) {
         // Deactivate the visual while linking the UI components
         visual.SetActive(false);
-        cardImage = visual.transform.GetChild(1).GetComponent<Image>();
-        cardName = cardImage.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
-        cost = cardImage.transform.GetChild(1).GetComponent<TextMeshProUGUI>();
-        description = cardImage.transform.GetChild(2).GetComponent<TextMeshProUGUI>();
-        elementsContainer = visual.transform.GetChild(2).transform;
+        AssignObjects();
 
         elements = new List<GameObject>();
 
         // Move the card to hand
         MoveToHand();
 
-        // Ensure the real card doesn't have lingering effects from an old card
-        visual.transform.localScale = new Vector3(1, 1, 1);
+        // Ensure the card doesn't have lingering effects from an old card
+        visual.transform.localScale = Vector3.one;
         // Set the position roughly to where the "deck" is so it animates to hand from that location
         visual.transform.localPosition = new Vector3(-VisualController.Instance.GetDisplaySize().x / 3f, 0, 0);
         visual.transform.rotation = Quaternion.identity;
@@ -42,6 +37,39 @@ public class CardView : BaseView {
         control.cardId = id;
         control.hand = VisualController.Instance.GetHand().GetComponent<CurvedLayout>();
         visual.SetActive(true);
+
+        // Subscribe to events that change visuals of the card
+        BaseInteractable.OnInteractableNameChange += SetName;
+        BaseInteractable.OnInteractableDescriptionChange += SetDescription;
+        Card.OnCardCostChange += SetCost;
+        Card.OnElementsChange += SetElements;
+    }
+
+    // This constructor is for creating decorative card visuals
+    public CardView(GameObject visual, int id, Transform parent, float scale) : base(visual, id) {
+        // Deactivate the visual while linking the UI components
+        visual.SetActive(false);
+        AssignObjects();
+        
+        elements = new List<GameObject>();
+
+        // Move the card to the given transform
+        visual.transform.SetParent(parent);
+        visual.transform.localScale = new Vector3(scale, scale, 1);
+        visual.transform.rotation = Quaternion.identity;
+
+        // Set the CardSelect parameters
+        CardSelect control = visual.GetComponent<CardSelect>();
+        control.cardId = id;
+        visual.SetActive(true);
+    }
+
+    private void AssignObjects() {
+        cardImage = visual.transform.GetChild(1).GetComponent<Image>();
+        cardName = cardImage.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
+        cost = cardImage.transform.GetChild(1).GetComponent<TextMeshProUGUI>();
+        description = cardImage.transform.GetChild(2).GetComponent<TextMeshProUGUI>();
+        elementsContainer = visual.transform.GetChild(2).transform;
     }
 
     public void MoveToHand() {
@@ -56,20 +84,26 @@ public class CardView : BaseView {
         cardImage.material.SetColor("_OutlineColor", color);
     }
 
-    public void SetName(string name) {
-        this.cardName.text = name;
+    public void SetName(int id, string name) {
+        if (id == this.Id) {
+            this.cardName.text = name;
+        }
     }
 
-    public void SetDescription(string description) {
-        this.description.text = description;
+    public void SetDescription(int id, string description) {
+        if (id == this.Id) {
+            this.description.text = description;
+        }
     }
 
-    public void SetCost(int cost) {
-        this.cost.text = cost.ToString();
-        // NumberAnimator.AnimateNumberChange(this.cost, cost);
+    public void SetCost(int id, int cost) {
+        if (id == this.Id) {
+            this.cost.text = cost.ToString();
+            // NumberAnimator.AnimateNumberChange(this.cost, cost);
+        }
     }
 
-    public void SetElements(List<Element> elementList) {
+    public void SetElements(int id, List<Element> elementList) {
         int childIndex = 0;
         foreach (Element element in elementList) {
             for (int i = 0; i < element.count; i++) {
@@ -93,6 +127,11 @@ public class CardView : BaseView {
     }
 
     public void Despawn() {
+        // Unsubscribe from events that change visuals of the card
+        BaseInteractable.OnInteractableNameChange -= SetName;
+        BaseInteractable.OnInteractableDescriptionChange -= SetDescription;
+        Card.OnCardCostChange -= SetCost;
+        Card.OnElementsChange -= SetElements;
         // Despawn element icons first
         foreach (GameObject icon in elements) {
             ObjectPooler.Despawn(icon);

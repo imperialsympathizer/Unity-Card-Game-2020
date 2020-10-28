@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
+[Serializable]
 public abstract class StaticEffect : BaseEffect {
     // StaticEffects are created BY DynamicEffects and persist across a specific timeframe (a turn, multiple turns, for the rest of the game, etc.)
     // However, it is possible that a StaticEffect could, in turn, create DynamicEffects as well
@@ -9,7 +11,9 @@ public abstract class StaticEffect : BaseEffect {
 
     // Some static effects will need to be implemented with a "timing" system of sorts to know when to trigger, that's what Triggers are for
     // Some effects have multiple Triggers, so we use a list for all Triggers that cause this effect to occur (if there are none, should pass the NONE Trigger)
-    public List<Trigger> Triggers { get; private set; }
+    public List<Trigger> Triggers { get { return triggers; } }
+
+    private List<Trigger> triggers;
 
     // When multiple static effects are triggered by a Trigger, there is a priority system for the order in which effects are resolved
     // 0 is highest priority
@@ -22,26 +26,26 @@ public abstract class StaticEffect : BaseEffect {
     // In this case, triggers and priority are un-needed
     public StaticEffect(int effectCount, List<Trigger> triggers = null, int priority = 0) : base(effectCount) {
         if (triggers == null) {
-            Triggers = new List<Trigger>();
+            this.triggers = new List<Trigger>();
         }
         else {
-            Triggers = triggers;
+            this.triggers = triggers;
         }
         this.priority = priority;
     }
 
     protected void ActivateTriggers() {
-        if (Triggers != null && Triggers.Count > 0) {
-            for (int i = 0; i < Triggers.Count; i++) {
-                Triggers[i].InitializeTrigger(this);
+        if (triggers != null && triggers.Count > 0) {
+            for (int i = 0; i < triggers.Count; i++) {
+                triggers[i].InitializeTrigger(this);
             }
         }
     }
 
     protected void DeactivateTriggers() {
-        if (Triggers != null && Triggers.Count > 0) {
-            for (int i = 0; i < Triggers.Count; i++) {
-                Triggers[i].DeactivateTrigger();
+        if (triggers != null && triggers.Count > 0) {
+            for (int i = 0; i < triggers.Count; i++) {
+                triggers[i].DeactivateTrigger();
             }
         }
     }

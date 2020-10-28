@@ -1,14 +1,11 @@
-﻿public class Element {
+﻿using System;
+
+[Serializable]
+public class Element {
     public readonly ElementType type;
     // Some entities may have multiple of the same element
     // Count should be used instead of creating new Element objects
     public int count;
-
-    public Element(ElementType type, int count) {
-        this.type = type;
-        this.count = count;
-    }
-
 
     public enum ElementType {
         AIR,
@@ -18,6 +15,11 @@
         LIFE,
         DEATH,
         ARTIFICE
+    }
+
+    public Element(ElementType type, int count) {
+        this.type = type;
+        this.count = count;
     }
 
     public static string GetElementString(ElementType elementType) {

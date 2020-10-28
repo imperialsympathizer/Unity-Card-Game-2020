@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 
@@ -9,10 +10,6 @@ public class CardManager : MonoBehaviour {
     // It delegates responsiblities to the Deck, Hand, and Discard for moving objects between them
     // It also triggers visuals on cards (e.g. they appear on screen) when relevant
     public static CardManager Instance;
-
-    public static event Action<Card> OnCardDraw;
-    public static event Action<Card> OnCardPlay;
-    public static event Action<Card> OnDiscard;
 
     // The library of all cards
     private CardSource cardSource;
@@ -37,25 +34,44 @@ public class CardManager : MonoBehaviour {
 
     public bool Initialized { get; private set; } = false;
 
+
+    public static event Action<Card> OnCardDraw;
+    public static event Action<Card> OnCardPlay;
+    public static event Action<Card> OnDiscard;
+
+    public static void ClearSubscriptions() {
+        OnCardDraw = null;
+        OnCardPlay = null;
+        OnDiscard = null;
+    }
+
     private void Awake() {
         Instance = this;
     }
 
-    public IEnumerator Initialize() {
-        if (!Initialized) {
+    public IEnumerator Initialize(bool reinitialize) {
+        if (!Initialized || reinitialize) {
             // Wait for VisualController to be initialized
-            while (VisualController.Instance == null || !VisualController.Instance.Initialized) {
+            while (VisualController.Instance == null || !VisualController.Instance.Initialized ||
+                RewardController.Instance == null || !RewardController.Instance.Initialized) {
                 yield return null;
             }
 
             cardSource = new CardSource();
-            // Create the starter deck
-            runDeck = new Deck(cardSource.allCards);
+            if (!reinitialize) {
+                // Create the starter deck
+                runDeck = new Deck(cardSource.allCards);
+            }
+            else {
+                runDeck = new Deck(ResourceController.runDeck);
+            }
 
             deck = new Deck(runDeck);
             discard = new Discard();
             hand = new Hand();
             exile = new Exile();
+
+            deck.Shuffle();
 
             handArea = VisualController.Instance.GetHand().GetComponent<CurvedLayout>();
             deckCount = VisualController.Instance.GetDeckCount().GetComponent<TextMeshProUGUI>();
@@ -65,8 +81,25 @@ public class CardManager : MonoBehaviour {
         }
     }
 
+    public void ResetInitialization() {
+        Initialized = false;
+    }
+
+    public Card GenerateRewardCard(Dictionary<string, Card> cardsNot) {
+        // Determine card rarity from RewardController
+        Rarity rarity = RewardController.Instance.GenerateCardRarity();
+        // Filter the list of possible card rewards (specific rarity, no overlapping names with cardsNot)
+        Card[] possibleCards = cardSource.allCards.Select(kv => kv.Value).Where(card => (card.rarity == rarity && !cardsNot.ContainsKey(card.name))).ToArray();
+        // Return the card at a random index in possibleCards
+        return possibleCards[RandomNumberGenerator.Instance.GetRandomIntFromRange(possibleCards.Length)];
+    }
+
     public List<Card> GetHandCards() {
         return hand.GetCards();
+    }
+
+    public void AddCardToRunDeck(Card chosenCard) {
+        runDeck.AddCard(chosenCard);
     }
 
     public Card GetHandCardById(int cardId) {
@@ -77,8 +110,12 @@ public class CardManager : MonoBehaviour {
         hand.UpdateCard(updatedCard);
     }
 
-    public List<Card> GetRunDeckCards() {
+    public List<Card> GetRunDeckList() {
         return runDeck.GetCards();
+    }
+
+    public Deck GetRunDeck() {
+        return runDeck;
     }
 
     #region PlayCard
@@ -146,7 +183,7 @@ public class CardManager : MonoBehaviour {
         // If all targets and options were successfully chosen by the player, finish playing the card
         if (cardPlayed) {
             // Remove the card from hand
-            hand.RemoveCard(playedCard.id);
+            hand.RemoveCard(playedCard.Id);
 
             // Calculate resulting life and will (the player can kill themselves)
             PlayerController.Instance.UpdateVigor(-playedCard.LifeCost);

@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
+[Serializable]
 public abstract class Status : AttachedStaticEffect {
     // Statuses tend to be more "special" effects that often require unique implementation
     // Statuses can only be attached to specific characters and entities, they cannot be passive
@@ -11,7 +13,7 @@ public abstract class Status : AttachedStaticEffect {
             DeactivateTriggers();
 
             // Then, remove the effect from the character and from the StaticEffectController
-            StaticEffectController.Instance.RemoveStatus(id);
+            StaticEffectController.Instance.RemoveStatus(Id);
         }
     }
 }

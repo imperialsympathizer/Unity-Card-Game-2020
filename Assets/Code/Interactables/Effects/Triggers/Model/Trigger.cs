@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
+[Serializable]
 public abstract class Trigger {
     // This is the parent class for triggers in the game
     // Since each trigger may have unique information that needs to be passed to the StaticEffect, they are implemented as separate classes

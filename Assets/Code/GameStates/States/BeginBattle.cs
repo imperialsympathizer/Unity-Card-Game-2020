@@ -6,15 +6,19 @@ public class BeginBattle : State {
 
     public static event Action OnBeginBattle;
 
+    public static void ClearSubscriptions() {
+        OnBeginBattle = null;
+    }
+
     public override IEnumerator Start() {
         // Debug.Log("beginning battle");
 
         OnBeginBattle?.Invoke();
 
-        CheckGameConditions();
-
-        // After completion, change state to BeginTurn
-        TurnSystem.SetState(new BeginTurn(TurnSystem));
+        if (!CheckGameConditions()) {
+            // After completion, change state to BeginTurn
+            TurnSystem.SetState(new BeginTurn(TurnSystem));
+        }
         yield break;
     }
 }

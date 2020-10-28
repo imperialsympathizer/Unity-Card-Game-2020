@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
+[Serializable]
 public class ChangeCardCost : TargetableDynamicEffect {
     // This dynamic effect changes the cost of a card in hand by effectCount
 
@@ -10,7 +12,7 @@ public class ChangeCardCost : TargetableDynamicEffect {
         : base(effectCount, new List<Target> { Target.CARD }, targetingDialogue, minTargets, maxTargets) { }
 
     public override bool IsValid() {
-        return (id >= 0 && effectCount != 0 && selectedTargets != null && selectedTargets.Count > 0);
+        return (Id >= 0 && effectCount != 0 && selectedTargets != null && selectedTargets.Count > 0);
     }
 
     public override void ResolveEffect() {

@@ -35,13 +35,15 @@ public abstract class FighterView : BaseView {
     }
 
     public void SetMaxLife(int val) {
-        NumberAnimator.Instance.AnimateNumberChange(this.maxLife, val);
+        // NumberAnimator.Instance.AnimateNumberChange(this.maxLife, val);
+        this.maxLife.text = val.ToString();
     }
 
     public void SetLife(bool hasLife, int life, int maxLife) {
         if (hasLife) {
             healthBar.transform.parent.gameObject.SetActive(true);
-            NumberAnimator.Instance.AnimateNumberChange(this.lifeValue, life);
+            // NumberAnimator.Instance.AnimateNumberChange(this.lifeValue, life);
+            this.lifeValue.text = life.ToString();
             // Animate the healthbar
             float newSize = healthBarSize * ((float)life / (float)maxLife);
             LeanTween.size(healthBar, new Vector2(newSize, healthBar.sizeDelta.y), 0.2f);

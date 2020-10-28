@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ArtifactView : BaseView {
     private SpriteRenderer icon;
@@ -11,7 +12,7 @@ public class ArtifactView : BaseView {
 
     private Dictionary<Element.ElementType, GameObject> elementThresholds;
 
-    public ArtifactView(GameObject visual, Artifact artifactSource) : base(visual, artifactSource.id) {
+    public ArtifactView(GameObject visual, Artifact artifactSource) : base(visual, artifactSource.Id) {
         this.visual.SetActive(false);
         VisualController.Instance.ParentToArtifactCanvas(this.visual.transform);
         this.visual.transform.localScale = Vector3.one;
@@ -27,7 +28,7 @@ public class ArtifactView : BaseView {
         foreach (Element.ElementType requiredType in artifactSource.typesRequired) {
             GameObject newThreshold = ObjectPooler.Spawn(VisualController.Instance.GetPrefab("Element Threshold"), Vector3.zero, Quaternion.identity);
             // Set icon
-            newThreshold.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = VisualController.Instance.GetImage(Element.GetElementString(requiredType));
+            newThreshold.transform.GetChild(0).GetComponent<Image>().sprite = VisualController.Instance.GetImage(Element.GetElementString(requiredType));
             // Set parent and scale
             newThreshold.transform.SetParent(visual.transform.GetChild(1).GetChild(1), true);
             newThreshold.transform.localScale = Vector3.one;
@@ -61,5 +62,9 @@ public class ArtifactView : BaseView {
                 thresholdDisplay.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = requiredElement.Value.Item1.ToString();
             }
         }
+    }
+
+    public void Despawn() {
+        ObjectPooler.Despawn(visual);
     }
 }

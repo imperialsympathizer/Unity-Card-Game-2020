@@ -222,16 +222,16 @@ public enum LeanProp {
 /**
 * LeanTween is an efficient tweening engine for Unity3d<br /><br />
 * <a href="#index">Index of All Methods</a> | <a href="LTDescr.html">Optional Paramaters that can be passed</a><br /><br />
-* <strong id='optional'>Optional Parameters</strong> are passed at the end of every method<br /> 
+* <strong Id='optional'>Optional Parameters</strong> are passed at the end of every method<br /> 
 * <br />
 * <i>Example:</i><br />
 * LeanTween.moveX( gameObject, 1f, 1f).setEase( <a href="LeanTweenType.html">LeanTweenType</a>.easeInQuad ).setDelay(1f);<br />
 * <br />
 * You can pass the optional parameters in any order, and chain on as many as you wish!<br /><br />
-* You can also modify this tween later, just save the unique id of the tween.<br />
+* You can also modify this tween later, just save the unique Id of the tween.<br />
 * <h4>Example:</h4>
-* int id = LeanTween.moveX(gameObject, 1f, 1f).id;<br />
-* <a href="LTDescr.html">LTDescr</a> d = LeanTween.<a href="#method_LeanTween.descr">descr</a>( id );<br /><br />
+* int Id = LeanTween.moveX(gameObject, 1f, 1f).Id;<br />
+* <a href="LTDescr.html">LTDescr</a> d = LeanTween.<a href="#method_LeanTween.descr">descr</a>( Id );<br /><br />
 * if(d!=null){ <span style="color:gray">// if the tween has already finished it will return null</span><br />
 * <span style="color:gray">&#160;&#160; // change some parameters</span><br />
 * &#160;&#160; d.setOnComplete( onCompleteFunc ).setEase( <a href="LeanTweenType.html">LeanTweenType</a>.easeInOutBack );<br />
@@ -437,7 +437,7 @@ public class LeanTween : MonoBehaviour {
 
 
 
-    public static void removeTween(int i, int uniqueId) { // Only removes the tween if the unique id matches <summary>Move a GameObject to a certain location</summary>
+    public static void removeTween(int i, int uniqueId) { // Only removes the tween if the unique Id matches <summary>Move a GameObject to a certain location</summary>
         if (tweens[i].uniqueId == uniqueId) {
             removeTween(i);
         }
@@ -452,7 +452,7 @@ public class LeanTween : MonoBehaviour {
             if (tweens[i].destroyOnComplete) {
                 //              Debug.Log("destroying tween.type:"+tween.type+" ltRect"+(tweens[i]._optional.ltRect==null));
                 if (tweens[i]._optional.ltRect != null) {
-                    //  Debug.Log("destroy i:"+i+" id:"+tweens[i].ltRect.id);
+                    //  Debug.Log("destroy i:"+i+" Id:"+tweens[i].ltRect.Id);
                     LTGUI.destroy(tweens[i]._optional.ltRect.id);
                 }
                 else { // check if equal to tweenEmpty
@@ -555,7 +555,7 @@ public class LeanTween : MonoBehaviour {
     //          init();
     //          int backId = uniqueId & 0xFFFF;
     //          int backCounter = uniqueId >> 16;
-    //          // Debug.Log("uniqueId:"+uniqueId+ " id:"+backId +" counter:"+backCounter + " setCounter:"+ tweens[backId].counter + " tweens[id].type:"+tweens[backId].type);
+    //          // Debug.Log("uniqueId:"+uniqueId+ " Id:"+backId +" counter:"+backCounter + " setCounter:"+ tweens[backId].counter + " tweens[Id].type:"+tweens[backId].type);
     //          if(tweens[backId].trans==null || (tweens[backId].trans.gameObject == gameObject && tweens[backId].counter==backCounter))
     //              removeTween((int)backId);
     //      }
@@ -566,7 +566,7 @@ public class LeanTween : MonoBehaviour {
             init();
             int backId = uniqueId & 0xFFFF;
             int backCounter = uniqueId >> 16;
-            // Debug.Log("uniqueId:"+uniqueId+ " id:"+backId +" counter:"+backCounter + " setCounter:"+ tw     eens[backId].counter + " tweens[id].type:"+tweens[backId].type);
+            // Debug.Log("uniqueId:"+uniqueId+ " Id:"+backId +" counter:"+backCounter + " setCounter:"+ tw     eens[backId].counter + " tweens[Id].type:"+tweens[backId].type);
             if (tweens[backId].trans == null || (tweens[backId].trans.gameObject == gameObject && tweens[backId].counter == backCounter)) {
                 if (callOnComplete && tweens[backId].optional.onComplete != null)
                     tweens[backId].optional.onComplete();
@@ -580,20 +580,20 @@ public class LeanTween : MonoBehaviour {
             init();
             int backId = uniqueId & 0xFFFF;
             int backCounter = uniqueId >> 16;
-            // Debug.Log("uniqueId:"+uniqueId+ " id:"+backId +" action:"+(TweenAction)backType + " tweens[id].type:"+tweens[backId].type);
+            // Debug.Log("uniqueId:"+uniqueId+ " Id:"+backId +" action:"+(TweenAction)backType + " tweens[Id].type:"+tweens[backId].type);
             if (tweens[backId]._optional.ltRect == ltRect && tweens[backId].counter == backCounter)
                 removeTween((int)backId);
         }
     }
 
     /**
-    * <summary>Cancel a specific tween with the provided id</summary>
+    * <summary>Cancel a specific tween with the provided Id</summary>
     * 
     * @method LeanTween.cancel
-    * @param {int} id:int unique id that represents that tween
+    * @param {int} Id:int unique Id that represents that tween
     * @param {bool} callOnComplete:bool (optional) whether to call the onComplete method before canceling
-    * @example int id = LeanTween.move( gameObject, new Vector3(0f,1f,2f), 1f).id; <br />
-    * LeanTween.cancel( id );
+    * @example int Id = LeanTween.move( gameObject, new Vector3(0f,1f,2f), 1f).Id; <br />
+    * LeanTween.cancel( Id );
     */
     public static void cancel(int uniqueId) {
         cancel(uniqueId, false);
@@ -620,7 +620,7 @@ public class LeanTween : MonoBehaviour {
                 }
             }
             else { // tween
-                // Debug.Log("uniqueId:"+uniqueId+ " id:"+backId +" action:"+(TweenAction)backType + " tweens[id].type:"+tweens[backId].type);
+                // Debug.Log("uniqueId:"+uniqueId+ " Id:"+backId +" action:"+(TweenAction)backType + " tweens[Id].type:"+tweens[backId].type);
                 if (tweens[backId].counter == backCounter) {
                     if (callOnComplete && tweens[backId].optional.onComplete != null)
                         tweens[backId].optional.onComplete();
@@ -634,10 +634,10 @@ public class LeanTween : MonoBehaviour {
     * <summary>Retrieve a tweens LTDescr object to modify</summary>
     * 
     * @method LeanTween.descr
-    * @param {int} id:int unique id that represents that tween
-    * @example int id = LeanTween.move( gameObject, new Vector3(0f,1f,2f), 1f).setOnComplete( oldMethod ).id; <br /><br />
+    * @param {int} Id:int unique Id that represents that tween
+    * @example int Id = LeanTween.move( gameObject, new Vector3(0f,1f,2f), 1f).setOnComplete( oldMethod ).Id; <br /><br />
     * <div style="color:gray">// later I want decide I want to change onComplete method </div>
-    * LTDescr descr = LeanTween.descr( id );<br />
+    * LTDescr descr = LeanTween.descr( Id );<br />
     * if(descr!=null) <span style="color:gray">// if the tween has already finished it will come back null</span><br />
     * &#160;&#160;descr.setOnComplete( newMethod );<br />
     */
@@ -668,7 +668,7 @@ public class LeanTween : MonoBehaviour {
     * <summary>Retrieve a tweens LTDescr object(s) to modify</summary>
     * 
     * @method LeanTween.descriptions
-    * @param {GameObject} id:GameObject object whose tween descriptions you want to retrieve
+    * @param {GameObject} Id:GameObject object whose tween descriptions you want to retrieve
     * @example LeanTween.move( gameObject, new Vector3(0f,1f,2f), 1f).setOnComplete( oldMethod ); <br /><br />
     * <div style="color:gray">// later I want decide I want to change onComplete method </div>
     * LTDescr[] descr = LeanTween.descriptions( gameObject );<br />
@@ -687,7 +687,7 @@ public class LeanTween : MonoBehaviour {
         return descrs.ToArray();
     }
 
-    [System.Obsolete("Use 'pause( id )' instead")]
+    [System.Obsolete("Use 'pause( Id )' instead")]
     public static void pause(GameObject gameObject, int uniqueId) {
         pause(uniqueId);
     }
@@ -696,12 +696,12 @@ public class LeanTween : MonoBehaviour {
     * <summary>Pause all tweens for a GameObject</summary>
     * 
     * @method LeanTween.pause
-    * @param {int} id:int Id of the tween you want to pause
+    * @param {int} Id:int Id of the tween you want to pause
     * @example 
-    * int id = LeanTween.moveX(gameObject, 5, 1.0).id<br />
-    * LeanTween.pause( id );<br />
+    * int Id = LeanTween.moveX(gameObject, 5, 1.0).Id<br />
+    * LeanTween.pause( Id );<br />
     * // Later....<br />
-    * LeanTween.resume( id );
+    * LeanTween.resume( Id );
     */
     public static void pause(int uniqueId) {
         int backId = uniqueId & 0xFFFF;
@@ -750,7 +750,7 @@ public class LeanTween : MonoBehaviour {
         }
     }
 
-    [System.Obsolete("Use 'resume( id )' instead")]
+    [System.Obsolete("Use 'resume( Id )' instead")]
     public static void resume(GameObject gameObject, int uniqueId) {
         resume(uniqueId);
     }
@@ -759,12 +759,12 @@ public class LeanTween : MonoBehaviour {
     * <summary>Resume a specific tween</summary>
     * 
     * @method LeanTween.resume
-    * @param {int} id:int Id of the tween you want to resume
+    * @param {int} Id:int Id of the tween you want to resume
     * @example 
-    * int id = LeanTween.moveX(gameObject, 5, 1.0).id<br />
-    * LeanTween.pause( id );<br />
+    * int Id = LeanTween.moveX(gameObject, 5, 1.0).Id<br />
+    * LeanTween.pause( Id );<br />
     * // Later....<br />
-    * LeanTween.resume( id );
+    * LeanTween.resume( Id );
     */
     public static void resume(int uniqueId) {
         int backId = uniqueId & 0xFFFF;
@@ -818,11 +818,11 @@ public class LeanTween : MonoBehaviour {
     * <summary>Test whether or not a tween is paused or not</summary>
     * 
     * @method LeanTween.isPaused
-    * @param {GameObject} id:int id of the tween that you want to test if it is paused
+    * @param {GameObject} Id:int Id of the tween that you want to test if it is paused
     * @example
-    * int id = LeanTween.moveX(gameObject, 1f, 3f).id;<br />
+    * int Id = LeanTween.moveX(gameObject, 1f, 3f).Id;<br />
     * LeanTween.pause(gameObject);<br />
-    * if(LeanTween.isPaused( id ))<br />
+    * if(LeanTween.isPaused( Id ))<br />
     * &#160;&#160; &#160;&#160;Debug.Log("I am paused!");<br />
     */
     public static bool isPaused(int uniqueId) {
@@ -866,10 +866,10 @@ public class LeanTween : MonoBehaviour {
     * <summary>Test whether or not a tween is active or not</summary>
     * 
     * @method LeanTween.isTweening
-    * @param {GameObject} id:int id of the tween that you want to test if it is tweening
+    * @param {GameObject} Id:int Id of the tween that you want to test if it is tweening
     * @example
-    * int id = LeanTween.moveX(gameObject, 1f, 3f).id;<br />
-    * if(LeanTween.isTweening( id ))<br />
+    * int Id = LeanTween.moveX(gameObject, 1f, 3f).Id;<br />
+    * if(LeanTween.isTweening( Id ))<br />
     * &#160;&#160; &#160;&#160;Debug.Log("I am tweening!");<br />
     */
     public static bool isTweening(int uniqueId) {

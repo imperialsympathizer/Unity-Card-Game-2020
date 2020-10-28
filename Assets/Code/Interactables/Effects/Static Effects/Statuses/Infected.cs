@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
+[Serializable]
 public class Infected : Status {
     // This status goes on characters that are infected
     // At the beginning of each turn, the character takes damage equal to effectCount, then effectCount is decremented by 1

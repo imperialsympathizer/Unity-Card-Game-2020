@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
+[Serializable]
 public class OnEndTurn : TurnTrigger {
 
     public OnEndTurn(List<TriggerAction> triggerActions) : base(triggerActions) {

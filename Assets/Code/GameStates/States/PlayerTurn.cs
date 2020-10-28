@@ -24,11 +24,17 @@ public class PlayerTurn : State {
                 CardManager.Instance.BeginCardPlay(cardId);
                 cardPlayed = false;
             }
+            if (CheckGameConditions()) {
+                break;
+            }
             yield return new WaitForEndOfFrame();
         }
 
-        // After completion, change state to CombatStep
-        TurnSystem.SetState(new CombatStep(TurnSystem));
+        if (!CheckGameConditions()) {
+            // After completion, change state to CombatStep
+            TurnSystem.SetState(new CombatStep(TurnSystem));
+        }
+        
         yield break;
     }
 

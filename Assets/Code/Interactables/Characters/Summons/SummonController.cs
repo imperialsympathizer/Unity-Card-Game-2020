@@ -8,8 +8,11 @@ public class SummonController : BaseController {
     // List is used for resolving things like combat, where iteration is important
     private Dictionary<int, Summon> summonDictionary = new Dictionary<int, Summon>();
 
-    protected override bool Initialize() {
+    protected override bool Initialize(bool reinitialize) {
         Instance = this;
+        if (reinitialize) {
+            summonDictionary.Clear();
+        }
         return true;
     }
 
@@ -35,7 +38,7 @@ public class SummonController : BaseController {
                     break;
             }
             newSummon.CreateVisual();
-            summonDictionary.Add(newSummon.id, newSummon);
+            summonDictionary.Add(newSummon.Id, newSummon);
         }
     }
 
@@ -129,7 +132,7 @@ public class SummonController : BaseController {
             }
         }
 
-        return summonsWithLife[RandomNumberGenerator.getRandomIndexFromRange(summonsWithLife.Count - 1)];
+        return summonsWithLife[RandomNumberGenerator.Instance.GetRandomIntFromRange(summonsWithLife.Count)];
     }
     #endregion
 
@@ -145,12 +148,12 @@ public class SummonController : BaseController {
                 // TODO: death animation
                 // Clear the visual first to ensure proper removal
                 defender.ClearVisual();
-                summonDictionary.Remove(defender.id);
+                summonDictionary.Remove(defender.Id);
             }
             else {
                 defender.UpdateVisual();
                 // Update the summon objects in the list and dictionary
-                summonDictionary[defender.id] = defender;
+                summonDictionary[defender.Id] = defender;
             }
         }
     }

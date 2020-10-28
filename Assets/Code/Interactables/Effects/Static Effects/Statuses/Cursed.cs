@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+
+[Serializable]
 public class Cursed : Status {
     public Cursed(int effectCount)
         : base(

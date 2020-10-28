@@ -12,11 +12,14 @@ public class AttackAnimator : BaseController {
 
     public static event Action OnAnimateComplete;
 
-    protected override bool Initialize() {
+    public static void ClearSubscriptions() {
+        OnAnimateComplete = null;
+    }
+
+    protected override bool Initialize(bool reinitialize) {
         Instance = this;
 
         if (VisualController.Instance != null && VisualController.Instance.Initialized) {
-
             playerCanvas = VisualController.Instance.GetPlayerCanvas().GetComponent<HorizontalLayoutGroup>();
             summonCanvas = VisualController.Instance.GetSummonCanvas().GetComponent<HorizontalLayoutGroup>();
             enemyCanvas = VisualController.Instance.GetEnemyCanvas().GetComponent<HorizontalLayoutGroup>();

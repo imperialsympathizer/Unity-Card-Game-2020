@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 
+[Serializable]
 public class ChangeTargetFighterHealth : TargetableDynamicEffect {
     public ChangeTargetFighterHealth(int effectCount, List<Target> validTargets, string targetingDialogue, int minTargets, int maxTargets)
         : base(effectCount, validTargets, targetingDialogue, minTargets, maxTargets) { }
 
     // effectCount can be positive (heal) or negative (damage)
     public override bool IsValid() {
-        return (id >= 0 && effectCount != 0 && selectedTargets != null && selectedTargets.Count > 0);
+        return (Id >= 0 && effectCount != 0 && selectedTargets != null && selectedTargets.Count > 0);
     }
 
     public override void ResolveEffect() {

@@ -1,10 +1,12 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
+[Serializable]
 public class ChangeSlots : DynamicEffect {
     public ChangeSlots(int effectCount) : base(effectCount) { }
 
     public override bool IsValid() {
-        return (id >= 0 && effectCount != 0);
+        return (Id >= 0 && effectCount != 0);
     }
 
     public override void ResolveEffect() {

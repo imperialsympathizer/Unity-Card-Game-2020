@@ -6,6 +6,10 @@ public class BeginTurn : State {
 
     public static event Action<int> OnBeginTurn;
 
+    public static void ClearSubscriptions() {
+        OnBeginTurn = null;
+    }
+
     public override IEnumerator Start() {
         // At the start of every turn, draw 5 cards
         // Then, resolve any over-time effects
@@ -17,16 +21,18 @@ public class BeginTurn : State {
         for (int i = 0; i < 5; i++) {
             CardManager.Instance.DrawCard();
         }
-        CheckGameConditions();
 
-        OnBeginTurn?.Invoke(TurnSystem.turnCount);
-        // Reset available life to spend
-        PlayerController.Instance.ResetVigor();
+        if (!CheckGameConditions()) {
+            OnBeginTurn?.Invoke(TurnSystem.turnCount);
+            // Reset available life to spend
+            PlayerController.Instance.ResetVigor();
 
-        CheckGameConditions();
-
-        // After completion, change state to PlayerTurn
-        TurnSystem.SetState(new PlayerTurn(TurnSystem));
+            if (!CheckGameConditions()) {
+                // After completion, change state to PlayerTurn
+                TurnSystem.SetState(new PlayerTurn(TurnSystem));
+            }
+        }
+        
         yield break;
     }
 }

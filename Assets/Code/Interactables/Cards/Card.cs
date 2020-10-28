@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Card : BaseInteractable {
@@ -20,12 +21,24 @@ public class Card : BaseInteractable {
     // Visual component of the card, stored within its own View class
     private CardView display;
 
+    public static event Action<int, int> OnCardCostChange;
+    public static event Action<int, List<Element>> OnElementsChange;
+
+    public static new void ClearSubscriptions() {
+        OnCardCostChange = null;
+        OnElementsChange = null;
+    }
+
     // Constructor that creates the object, but does not instantiate visuals.
     // Those can be called as needed by the CreateVisual() function
     public Card(string name, string description, int cost, Rarity rarity, int uses, List<DynamicEffect> effects, List<Element> elements) : base(name, description) {
         this.lifeCost = cost;
         this.rarity = rarity;
-        this.effects = effects;
+        this.effects = new List<DynamicEffect>();
+        foreach (DynamicEffect effect in effects) {
+            effect.ModifyId(ResourceController.GenerateId());
+            this.effects.Add(effect);
+        }
         this.uses = uses;
         this.ElementTotal = 0;
         this.elements = new Dictionary<Element.ElementType, Element>();
@@ -34,20 +47,28 @@ public class Card : BaseInteractable {
         }
     }
 
-    // Creates a Card with a new id (for copying cards and such)
+    // Creates a Card with a new Id (for copying cards and such)
     public Card(Card cardSource) : base(cardSource.name, cardSource.description) {
         this.lifeCost = cardSource.LifeCost;
-        this.effects = cardSource.effects;
+        this.effects = new List<DynamicEffect>();
+        foreach (DynamicEffect effect in cardSource.effects) {
+            effect.ModifyId(ResourceController.GenerateId());
+            this.effects.Add(effect);
+        }
         this.uses = cardSource.uses;
         this.ElementTotal = cardSource.ElementTotal;
         this.elements = new Dictionary<Element.ElementType, Element>(cardSource.elements);
     }
 
-    // Creates a Card with the same id 
-    // Used for separation of run deck from battle deck, but allows linking between the cards later through id
-    public Card(Card cardSource, bool copyId) : base(cardSource.name, cardSource.description, cardSource.id) {
+    // Creates a Card with the same Id
+    // Used for separation of run deck from battle deck, but allows linking between the cards later through Id
+    public Card(Card cardSource, bool copyId) : base(cardSource.name, cardSource.description, copyId? cardSource.Id : -1) {
         this.lifeCost = cardSource.LifeCost;
-        this.effects = cardSource.effects;
+        this.effects = new List<DynamicEffect>();
+        foreach (DynamicEffect effect in cardSource.effects) {
+            effect.ModifyId(ResourceController.GenerateId());
+            this.effects.Add(effect);
+        }
         this.uses = cardSource.uses;
         this.ElementTotal = cardSource.ElementTotal;
         this.elements = new Dictionary<Element.ElementType, Element>(cardSource.elements);
@@ -58,7 +79,7 @@ public class Card : BaseInteractable {
         if (lifeCost < 0) {
             lifeCost = 0;
         }
-        UpdateVisual();
+        OnCardCostChange?.Invoke(Id, lifeCost);
     }
 
     public void UpdateElements(Element.ElementType type, int count) {
@@ -96,6 +117,7 @@ public class Card : BaseInteractable {
                 ElementTotal += element.count;
             }
         }
+        OnElementsChange?.Invoke(Id, GetOrderedElements());
     }
 
     public List<Element> GetOrderedElements() {
@@ -129,16 +151,23 @@ public class Card : BaseInteractable {
 
     public override void CreateVisual() {
         // Spawn an object to view the card on screen
-        display = new CardView(ObjectPooler.Spawn(VisualController.Instance.GetPrefab("CardPrefab"), new Vector3(0, 0, 0), Quaternion.identity), id);
+        display = new CardView(ObjectPooler.Spawn(VisualController.Instance.GetPrefab("CardPrefab"), new Vector3(0, 0, 0), Quaternion.identity), Id);
+        UpdateVisual();
+    }
+
+    // Creates a card that cannot be picked up/controlled and parents it to the given transform
+    public void CreateDudVisual(Transform parent, float scale) {
+        // Spawn an object to view the card on screen
+        display = new CardView(ObjectPooler.Spawn(VisualController.Instance.GetPrefab("CardDudPrefab"), new Vector3(0, 0, 0), Quaternion.identity), Id, parent, scale);
         UpdateVisual();
     }
 
     public override void UpdateVisual() {
         display.SetActive(false);
-        display.SetName(name);
-        display.SetCost(lifeCost);
-        display.SetDescription(description);
-        display.SetElements(GetOrderedElements());
+        display.SetName(Id, name);
+        display.SetCost(Id, lifeCost);
+        display.SetDescription(Id, description);
+        display.SetElements(Id, GetOrderedElements());
         display.SetActive(true);
     }
 
@@ -152,6 +181,10 @@ public class Card : BaseInteractable {
 
     public override void SetVisualOutline(Color color) {
         display.SetVisualOutline(color);
+    }
+
+    public override void SetVisualScale(Vector3 scale) {
+        display.SetVisualScale(scale);
     }
 
     // Function to call before moving card off the screen to another location (such as deck or discard)

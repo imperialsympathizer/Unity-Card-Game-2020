@@ -1,20 +1,33 @@
-﻿using TMPro;
+﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameEndManager : BaseController {
     public static GameEndManager Instance;
 
-    private static GameObject prefab;
-    private static GameObject endDisplay;
+    private GameObject prefab;
+    private GameObject endDisplay;
+    private GameObject rewardsButton;
+    private GameObject cardRewardCanvas;
 
-    private static bool battleOver;
+    private bool battleOver;
 
-    protected override bool Initialize() {
+    Dictionary<int, Card> rewardCards;
+
+    protected override bool Initialize(bool reinitialize) {
         Instance = this;
 
-        if (VisualController.Instance != null && VisualController.Instance.Initialized) {
+        if (VisualController.Instance != null && VisualController.Instance.Initialized &&
+            RewardController.Instance != null && RewardController.Instance.Initialized &&
+            CardManager.Instance != null && CardManager.Instance.Initialized) {
             battleOver = false;
-            prefab = VisualController.Instance.GetPrefab("BattleEnd");
+            prefab = VisualController.Instance.GetPrefab("Rewards");
+
+            rewardCards = new Dictionary<int, Card>();
+
+            // Set up listener for the end of battle
+            EndBattle.OnEndBattle += ShowGameEnd;
 
             return true;
         }
@@ -22,7 +35,8 @@ public class GameEndManager : BaseController {
         return false;
     }
 
-    public void ShowGameEnd(bool win) {
+    public void ShowGameEnd(int turn, bool win) {
+        EndBattle.OnEndBattle -= ShowGameEnd;
         if (!battleOver) {
             battleOver = true;
 
@@ -32,60 +46,54 @@ public class GameEndManager : BaseController {
             // Move the visual to the front
             endDisplay.transform.SetAsLastSibling();
             endDisplay.transform.position = Vector3.zero;
-            GameObject canvas = endDisplay.transform.GetChild(0).gameObject;
-            canvas.GetComponent<Canvas>().worldCamera = VisualController.Instance.mainCamera;
-            TextMeshPro text = canvas.transform.GetChild(canvas.transform.childCount - 1).GetComponent<TextMeshPro>();
+            endDisplay.GetComponent<Canvas>().worldCamera = VisualController.Instance.mainCamera;
+            Image background = endDisplay.transform.GetChild(0).GetComponent<Image>();
+            // TextMeshPro text = canvas.transform.GetChild(canvas.transform.childCount - 1).GetComponent<TextMeshPro>();
             endDisplay.transform.localScale = Vector3.one;
 
-            // Make the canvas active (needs to be done prior to animations)
+            rewardsButton = endDisplay.transform.GetChild(1).gameObject;
+            cardRewardCanvas = endDisplay.transform.GetChild(2).gameObject;
 
-            // Set initial alpha of sprites to 0
-            LeanTween.alpha(canvas, 0, 0);
-
-            // TextMeshPro is a bit tricky to fade using LT, have to use value to do so
-            if (win) {
-                text.text = "VICTORY";
-                LeanTween.value(text.gameObject, a => text.color = a, new Color(0.2f, 0.6f, 1, 0), new Color(0.2f, 0.6f, 1, 1), 3);
-            }
-            else {
-                text.text = "GAME OVER";
-                LeanTween.value(text.gameObject, a => text.color = a, new Color(0.8f, 0, 0, 0), new Color(0.8f, 0, 0, 1), 3);
-            }
-            // Fade in the canvas (including black background)
-            LeanTween.alpha(canvas, 1, 3);
-            LeanTween.alphaCanvas(canvas.GetComponent<CanvasGroup>(), 1, 3);
-
-            // These loops swap the particle falling sprites to the correct clips so that the animations aren't all in sync
-            Animator sprite;
-            for (int i = 1; i < 5; i++) {
-                sprite = canvas.transform.GetChild(i).GetComponent<Animator>();
-                sprite.SetInteger("particleAnimation", 6);
+            // Create card rewards
+            rewardCards.Clear();
+            for (int i = 0; i < 3; i++) {
+                Card rewardCard = new Card(CardManager.Instance.GenerateRewardCard(rewardCards.Select(kv => kv.Value).ToDictionary(card => card.name)));
+                rewardCard.CreateDudVisual(cardRewardCanvas.transform, 1.3f);
+                rewardCards.Add(rewardCard.Id, rewardCard);
             }
 
-            for (int i = 5; i < 9; i++) {
-                sprite = canvas.transform.GetChild(i).GetComponent<Animator>();
-                sprite.SetInteger("particleAnimation", 1);
-            }
+            rewardsButton.SetActive(false);
+            cardRewardCanvas.SetActive(false);
 
-            for (int i = 9; i < 13; i++) {
-                sprite = canvas.transform.GetChild(i).GetComponent<Animator>();
-                sprite.SetInteger("particleAnimation", 4);
-            }
+            // Fade the background in and show button on fade complete
+            LeanTween.value(0, 0.65f, 2f).setOnUpdate((float alpha) => {
+                background.color = new Color(0.55f, 0.55f, 0.55f, alpha);
+            }).setOnComplete(() => {
+                rewardsButton.SetActive(true);
+                RewardsButton.OnRewardsButtonClicked += ShowCardRewards;
+            });
+        }
+    }
 
-            for (int i = 13; i < 17; i++) {
-                sprite = canvas.transform.GetChild(i).GetComponent<Animator>();
-                sprite.SetInteger("particleAnimation", 2);
+    public void ShowCardRewards() {
+        RewardsButton.OnRewardsButtonClicked -= ShowCardRewards;
+        rewardsButton.SetActive(false);
+        cardRewardCanvas.SetActive(true);
+        LeanTween.value(0, 1.3f, 0.5f).setOnUpdate((float scale) => {
+            foreach (KeyValuePair<int, Card> cardPair in rewardCards) {
+                cardPair.Value.SetVisualScale(new Vector3(scale, scale, 1));
             }
+        }).setOnComplete(() => {
+            CardSelect.OnCardSelect += AddCardToRunDeck;
+        });
+    }
 
-            for (int i = 17; i < 21; i++) {
-                sprite = canvas.transform.GetChild(i).GetComponent<Animator>();
-                sprite.SetInteger("particleAnimation", 5);
-            }
-
-            for (int i = 21; i < 25; i++) {
-                sprite = canvas.transform.GetChild(i).GetComponent<Animator>();
-                sprite.SetInteger("particleAnimation", 3);
-            }
+    private void AddCardToRunDeck(int cardId) {
+        CardSelect.OnCardSelect -= AddCardToRunDeck;
+        // Add the card to the run deck and load the next battle
+        if (rewardCards.TryGetValue(cardId, out Card chosenCard)) {
+            CardManager.Instance.AddCardToRunDeck(chosenCard);
+            ResourceController.Instance.LoadNextLevel();
         }
     }
 }

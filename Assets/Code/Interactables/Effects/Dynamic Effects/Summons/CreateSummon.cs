@@ -1,4 +1,7 @@
-﻿public class CreateSummon : DynamicEffect {
+﻿using System;
+
+[Serializable]
+public class CreateSummon : DynamicEffect {
     // The type of summon to create
     private readonly Summon.Summonable summonType;
 
@@ -7,7 +10,7 @@
     }
 
     public override bool IsValid() {
-        return (id >= 0 && effectCount >= 0);
+        return (Id >= 0 && effectCount >= 0);
     }
 
     public override void ResolveEffect() {

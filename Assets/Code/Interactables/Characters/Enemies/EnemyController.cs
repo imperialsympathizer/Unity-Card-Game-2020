@@ -6,10 +6,13 @@ public class EnemyController : BaseController {
     // List is used for resolving things like combat, where iteration is important
     private Dictionary<int, Enemy> enemyDictionary = new Dictionary<int, Enemy>();
 
-    protected override bool Initialize() {
+    protected override bool Initialize(bool reinitialize) {
         Instance = this;
         if (VisualController.Instance != null && VisualController.Instance.Initialized &&
             NumberAnimator.Instance != null && NumberAnimator.Instance.Initialized) {
+            if (reinitialize) {
+                enemyDictionary.Clear();
+            }
             CreateEnemy(Enemy.EnemyType.KNIGHT);
 
             return true;
@@ -27,7 +30,7 @@ public class EnemyController : BaseController {
                 break;
         }
         newEnemy.CreateVisual();
-        enemyDictionary.Add(newEnemy.id, newEnemy);
+        enemyDictionary.Add(newEnemy.Id, newEnemy);
     }
 
     #region Update
@@ -106,7 +109,7 @@ public class EnemyController : BaseController {
             }
         }
 
-        return enemiesWithLife[RandomNumberGenerator.getRandomIndexFromRange(enemiesWithLife.Count - 1)];
+        return enemiesWithLife[RandomNumberGenerator.Instance.GetRandomIntFromRange(enemiesWithLife.Count)];
     }
     #endregion
 
@@ -127,7 +130,7 @@ public class EnemyController : BaseController {
             else {
                 defender.UpdateVisual();
                 // Update the enemy objects in the list and dictionary
-                enemyDictionary[defender.id] = defender;
+                enemyDictionary[defender.Id] = defender;
             }
 
             return true;

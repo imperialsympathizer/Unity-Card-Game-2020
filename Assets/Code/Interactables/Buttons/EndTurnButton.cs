@@ -8,9 +8,13 @@ public class EndTurnButton : MonoBehaviour, IPointerClickHandler {
 
     // TODO: implement a check for the E button being pressed to end the turn as well;
 
+    public static void ClearSubscriptions() {
+        OnEndTurnClicked = null;
+    }
+
     public void OnPointerClick(PointerEventData eventData) {
         // Fires the event when the end turn button is clicked
         // Debug.Log("button pressed");
-        OnEndTurnClicked.Invoke();
+        OnEndTurnClicked?.Invoke();
     }
 }

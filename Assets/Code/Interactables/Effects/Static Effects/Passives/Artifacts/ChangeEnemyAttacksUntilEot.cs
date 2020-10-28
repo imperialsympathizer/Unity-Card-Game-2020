@@ -1,4 +1,7 @@
-﻿public class ChangeEnemyAttacksUntilEot : ArtifactPassive {
+﻿using System;
+
+[Serializable]
+public class ChangeEnemyAttacksUntilEot : ArtifactPassive {
     public ChangeEnemyAttacksUntilEot(int effectCount) : base(effectCount, 0) { }
 
     protected override void OperateOnEffect(Trigger trigger) { }

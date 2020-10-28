@@ -10,7 +10,7 @@ public class NumberAnimator : BaseController {
     // TODO: add to global variable
     private float timeConstant = 0.5f;
 
-    protected override bool Initialize() {
+    protected override bool Initialize(bool reinitialize) {
         Instance = this;
         return true;
     }

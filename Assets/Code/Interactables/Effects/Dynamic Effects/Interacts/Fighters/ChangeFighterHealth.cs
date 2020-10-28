@@ -1,4 +1,8 @@
-﻿public class ChangeFighterHealth : DynamicEffect {
+﻿using System;
+
+[Serializable]
+public class ChangeFighterHealth : DynamicEffect {
+    // IMPORTANT: this class should only be used programmatically at runtime
     private Fighter fighter;
 
     public ChangeFighterHealth(int effectCount, Fighter fighter) : base(effectCount) {
@@ -8,15 +12,15 @@
     // effectCount can be positive (heal) or negative (damage)
     // Cannot target cards
     public override bool IsValid() {
-        return (id >= 0 && effectCount != 0 && fighter != null);
+        return (Id >= 0 && effectCount != 0 && fighter != null);
     }
 
     public override void ResolveEffect() {
         if (fighter is Enemy enemy) {
-            EnemyController.Instance.UpdateLife(fighter.id, effectCount);
+            EnemyController.Instance.UpdateLife(fighter.Id, effectCount);
         }
         else if (fighter is Summon summon) {
-            SummonController.Instance.UpdateLife(fighter.id, effectCount);
+            SummonController.Instance.UpdateLife(fighter.Id, effectCount);
         }
         else if (fighter is Player player) {
             PlayerController.Instance.UpdateLife(effectCount);

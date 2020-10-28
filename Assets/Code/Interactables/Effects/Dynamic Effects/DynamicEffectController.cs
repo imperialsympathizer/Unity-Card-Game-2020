@@ -9,12 +9,14 @@ public class DynamicEffectController : MonoBehaviour {
     // effects will resolve in tandem with their animations, and the next effect will not be pushed until all previous animations are complete
 
     private Queue<DynamicEffect> effects = new Queue<DynamicEffect>();
-
     private bool effectInProgress = false;
+    private bool running;
 
     public static event Action OnEffectBegin;
 
-    private bool running;
+    public static void ClearSubscriptions() {
+        OnEffectBegin = null;
+    }
 
     private void Awake() {
         Instance = this;

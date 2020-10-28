@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
+[Serializable]
 public class IncrementLifeValue : Modifier {
     // Modifier for incrementing character life value
     // effectCount: The amount to modify the value by whenever triggered (can be positive or negative)

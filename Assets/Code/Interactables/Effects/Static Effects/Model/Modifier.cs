@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
+[Serializable]
 public abstract class Modifier : AttachedStaticEffect {
     // Modifiers directly influence the value of certain parameters, such as attack on a character
     // Modifiers can only be attached to specific characters and entities, they cannot be passive
@@ -15,7 +17,7 @@ public abstract class Modifier : AttachedStaticEffect {
             DeactivateTriggers();
 
             // Then, remove the effect from the character and from the StaticEffectController
-            StaticEffectController.Instance.RemoveModifier(id);
+            StaticEffectController.Instance.RemoveModifier(Id);
         }
     }
 }

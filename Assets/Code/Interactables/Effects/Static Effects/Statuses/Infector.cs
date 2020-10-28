@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
+[Serializable]
 public class Infector : Status {
     // This status goes on characters that deal infection when they attack
     // Additionally, on the character's death, it will trigger infection if killed by an enemy

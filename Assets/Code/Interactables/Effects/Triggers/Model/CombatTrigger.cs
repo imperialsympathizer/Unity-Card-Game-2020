@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
+[Serializable]
 public abstract class CombatTrigger : Trigger {
     public Fighter attacker { get; protected set; }
     public Fighter defender { get; protected set; }

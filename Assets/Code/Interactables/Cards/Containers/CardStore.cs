@@ -8,13 +8,13 @@ public abstract class CardStore {
     public CardStore() { }
 
     protected void Randomize() {
-        System.Random rnd = new System.Random();
         int n = cards.Count;
-        for (int i = 0; i < cards.Count - 1; i++) {
-            int r = i + rnd.Next(n - i);
+        while (n > 1) {
+            n--;
+            int r = RandomNumberGenerator.Instance.GetRandomIntFromRange(n + 1);
             Card c = cards[r];
-            cards[r] = cards[i];
-            cards[i] = c;
+            cards[r] = cards[n];
+            cards[n] = c;
         }
     }
 

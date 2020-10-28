@@ -1,19 +1,14 @@
 ﻿public abstract class BaseController {
-    public bool Initialized { get; private set; } = false;
+    public bool Initialized { get; set; } = false;
 
-    public bool InitializeController() {
+    public bool InitializeController(bool reinitialize = false) {
         if (!Initialized) {
-            Initialized = Initialize();
+            Initialized = Initialize(reinitialize);
             return Initialized;
         }
 
         return true;
     }
 
-    public bool ReinitializeController() {
-        Initialized = false;
-        return InitializeController();
-    }
-
-    protected abstract bool Initialize();
+    protected abstract bool Initialize(bool reinitialize);
 }
