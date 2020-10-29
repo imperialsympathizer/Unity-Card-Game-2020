@@ -17,7 +17,7 @@ public abstract class FighterView : BaseView {
     public FighterView(GameObject visual, Fighter fighter, Fighter.FighterType fighterType, int healthBarSize) : base(visual, fighter.Id) {
         this.fighterType = fighterType;
         attackView = visual.transform.GetChild(1).GetComponent<AttackView>();
-        attackView.InitializeView(fighter.Id, fighter.AttackValue, fighter.AttackTimes);
+        attackView.InitializeView(fighter);
         this.healthBarSize = healthBarSize;
     }
 

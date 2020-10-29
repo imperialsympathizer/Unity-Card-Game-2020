@@ -21,11 +21,12 @@ public abstract class Fighter : Character {
         ENEMY
     }
 
-    public static event Action<Fighter, Fighter> OnAttack;
-    public static event Action<Fighter, Fighter, int, int> OnDamageFromAttack;
-    public static event Action<Fighter, int, int> OnDamageFromNonAttack;
-    public static event Action<Fighter, int, int> OnHeal;
-    public static event Action<int, int, int> OnAttackChange;
+    public event Action<Fighter, Fighter> OnAttack;
+    public event Action<Fighter, Fighter, int, int> OnDamageFromAttack;
+    public event Action<Fighter, int, int> OnDamageFromNonAttack;
+    public event Action<Fighter, int, int> OnHeal;
+    public event Action<int, int> OnAttackChange;
+    public event Action<int> OnLifeValueChange;
 
     public Fighter(string name, FighterType fighterType, int baseAttack, int baseAttackTimes, bool hasLife = false, int baseMaxLife = 0, int baseLife = 0) : base(name, "") {
         this.fighterType = fighterType;
@@ -39,12 +40,12 @@ public abstract class Fighter : Character {
     public void UpdateAttackValue(int valueChange) {
         // Add or subtract an value from the current
         attackValue += valueChange;
-        OnAttackChange?.Invoke(Id, attackValue, attackTimes);
+        OnAttackChange?.Invoke(attackValue, attackTimes);
     }
 
     public void UpdateAttackTimes(int valueChange) {
         attackTimes += valueChange;
-        OnAttackChange?.Invoke(Id, attackValue, attackTimes);
+        OnAttackChange?.Invoke(attackValue, attackTimes);
     }
 
     public bool UpdateMaxLife(int valueChange) {
@@ -71,7 +72,10 @@ public abstract class Fighter : Character {
         else if (valueChange < 0 && triggerEvents) {
             OnDamageFromNonAttack?.Invoke(this, valueChange, lifeValue);
         }
-        UpdateVisual();
+        if (triggerEvents) {
+            OnLifeValueChange?.Invoke(lifeValue);
+        }
+        // UpdateVisual();
         return CheckDeath();
     }
 

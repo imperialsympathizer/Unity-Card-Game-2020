@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 
 [Serializable]
-public class OnDamageAttack : CombatTrigger {
-    public OnDamageAttack(List<TriggerAction> triggerActions) : base(triggerActions) {
+public class OnDamageFromAttack : CombatTrigger {
+    public OnDamageFromAttack(List<TriggerAction> triggerActions) : base(triggerActions) {
         Fighter.OnDamageFromAttack += OnEventTriggered;
     }
 

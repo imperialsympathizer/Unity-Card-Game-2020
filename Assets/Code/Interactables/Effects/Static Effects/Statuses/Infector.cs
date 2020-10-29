@@ -11,14 +11,14 @@ public class Infector : Status {
         base(
         effectCount,
         new List<Trigger> { // List of triggers for the effect
-            new OnDamageAttack(new List<Trigger.TriggerAction> { // Subscribe to the OnDamageFromAttack trigger
+            new OnDamageFromAttack(new List<Trigger.TriggerAction> { // Subscribe to the OnDamageFromAttack trigger
                 Trigger.TriggerAction.RESOLVE // Execute ResolveEffect() when triggered
             })
         },
         0) { }
 
     protected override void ResolveEffect(Trigger trigger) {
-        if (trigger is OnDamageAttack onDmg) {
+        if (trigger is OnDamageFromAttack onDmg) {
             // On an attack event where the character is the attacker, apply infection equal to infectionValue to the defender
             if (onDmg.attacker == this.character) {
                 InfectCharacter(onDmg.defender);
